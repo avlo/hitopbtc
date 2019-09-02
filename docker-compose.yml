@@ -1,0 +1,21 @@
+version: '3'
+services: 
+  hitop-mysql-02:
+    image: mysql:latest
+    ports:
+      - 3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=ThePassword
+      - MYSQL_DATABASE=hitop
+  spring-jpa-app:
+    image: hitop/hitop:latest
+    depends_on:
+      - hitop-mysql-02
+    ports:
+      - 8080:8080
+    environment:
+      - DATABASE_HOST=hitop-mysql-02
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=ThePassword
+      - DATABASE_NAME=hitop  
+      - DATABASE_PORT=3306

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<title>Hi-Top Order</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/noui/nouislider.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="css/util.css">
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<!--===============================================================================================-->
+
+<style type="text/css">
+img.canbong-center {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 40%;
+	height: auto%;
+}
+</style>
+
+</head>
+<body>
+
+	<div class="container-contact100">
+		<div class="wrap-contact100">
+			<form class="contact100-form validate-form">
+				<img src="/images/can_bong.png" alt="EVERYBODY CAN"
+					class="canbong-center"> <span class="contact100-form-title">Hi-Top
+					Order</span> 
+					
+				<span class="contact50-form-title">
+					<div class="qrcode-opp">All fields required before bitcoin
+						payment qr-code will display</div>
+				</span>
+
+				<div class="wrap-input100 validate-input bg1"
+					data-validate="Please Type Your Name">
+					<span class="label-input100">Name</span> <input class="input100"
+						type="text" name="name" placeholder="Enter Your Name">
+				</div>
+
+				<div class="wrap-input100 validate-input bg1"
+					data-validate="Enter Your Email (e@a.x)">
+					<span class="label-input100">Email</span> <input class="input100"
+						type="text" name="email" placeholder="Enter Your Email">
+				</div>
+
+				<div class="wrap-input100 validate-input bg1"
+					data-validate="Enter Your Address">
+					<span class="label-input100">Street address & Apt# or PO Box</span>
+					<input class="input100" type="text" name="address"
+						placeholder="Enter Street Address">
+				</div>
+
+				<div class="wrap-input100 validate-input bg1"
+					data-validate="Enter City">
+					<span class="label-input100">City</span> <input
+						class="input100" type="text" name="city"
+						placeholder="Enter Your City">
+				</div>
+
+				<div class="wrap-input100 validate-input bg1"
+					data-validate="Enter State/Province">
+					<span class="label-input100">State/Province</span> <input
+						class="input100" type="text" name="state"
+						placeholder="Enter Your State/Province">
+				</div>
+
+				<div class="wrap-input100 validate-input bg1"
+					data-validate="Enter Your ZipCode">
+					<span class="label-input100">ZipCode</span> <input class="input100"
+						type="text" name="zipcode" placeholder="Enter Your ZipCode">
+				</div>
+
+				<div class="wrap-input100 validate-input bg1"
+					data-validate="Enter Your Country">
+					<span class="label-input100">Country</span> <input class="input100"
+						type="text" name="country" placeholder="Enter Your Country">
+				</div>
+
+				<div class="wrap-input100 input100-select bg1">
+					<span class="label-input100">Quantity</span>
+					<div>
+						<select class="js-select2" name="service">
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+							<option>6</option>
+							<option>7</option>
+							<option>8</option>
+							<option>9</option>
+							<option>10</option>
+						</select>
+						<div class="dropDownSelect2"></div>
+					</div>
+				</div>
+
+
+				<span class="contact50-form-title">
+					<div class="qrcode-opp">All fields required before bitcoin
+						payment qr-code will display</div>
+				</span>
+
+
+				<div class="container-contact100-form-btn">
+					<div class="qrcode">
+						<img th:src="${walletid}">
+					</div>
+				</div>
+
+				<div class="container-contact100-form-btn">
+					<h3>
+						$<font color="red">8.99</font><font color="black"> = Ƀ</font><font
+							color="red">0.00011111</font>
+					</h3>
+				</div>
+			</form>
+		</div>
+	</div>
+
+
+
+	<!--===============================================================================================-->
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			validate();
+			$('input').on('keyup', validate);
+		});
+
+		function validate() {
+			var inputsWithValues = 0;
+
+			// get all input fields except for type='submit'
+			var myInputs = $("input:not([type='submit'])");
+
+			myInputs.each(function(e) {
+				// if it has a value, increment the counter
+				if ($(this).val()) {
+					inputsWithValues += 1;
+				}
+			});
+
+			if (inputsWithValues == myInputs.length) {
+				$(".qrcode").show();
+				$(".qrcode-opp").hide();
+			} else {
+				$(".qrcode").hide();
+				$(".qrcode-opp").show();
+			}
+		}
+	</script>
+	<!--===============================================================================================-->
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+	<script>
+		$(".js-select2").each(function() {
+			$(this).select2({
+				minimumResultsForSearch : 20,
+				dropdownParent : $(this).next('.dropDownSelect2')
+			});
+
+			$(".js-select2").each(function() {
+				$(this).on('select2:close', function(e) {
+					if ($(this).val() == "Please chooses") {
+						$('.js-show-service').slideUp();
+					} else {
+						$('.js-show-service').slideUp();
+						$('.js-show-service').slideDown();
+					}
+				});
+			});
+		})
+	</script>
+	<!--===============================================================================================-->
+	<script src="vendor/daterangepicker/moment.min.js"></script>
+	<script src="vendor/daterangepicker/daterangepicker.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/countdowntime/countdowntime.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/noui/nouislider.min.js"></script>
+	<script>
+		var filterBar = document.getElementById('filter-bar');
+
+		noUiSlider.create(filterBar, {
+			start : [ 1500, 3900 ],
+			connect : true,
+			range : {
+				'min' : 1500,
+				'max' : 7500
+			}
+		});
+
+		var skipValues = [ document.getElementById('value-lower'),
+				document.getElementById('value-upper') ];
+
+		filterBar.noUiSlider.on('update', function(values, handle) {
+			skipValues[handle].innerHTML = Math.round(values[handle]);
+			$('.contact100-form-range-value input[name="from-value"]').val(
+					$('#value-lower').html());
+			$('.contact100-form-range-value input[name="to-value"]').val(
+					$('#value-upper').html());
+		});
+	</script>
+	<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+
+	<!-- Global site tag (gtag.js) - Google Analytics 
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-23581568-13');
+</script> -->
+
+</body>
+</html>

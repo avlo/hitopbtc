@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<script>
+	$(document).ready(function() {
+		validate();
+		$('input').on('keyup', validate);
+	});
+
+	function validate() {
+		var inputsWithValues = 0;
+
+		// get all input fields except for type='submit'
+		var myInputs = $("input:not([type='submit'])");
+
+		myInputs.each(function(e) {
+			// if it has a value, increment the counter
+			if ($(this).val()) {
+				inputsWithValues += 1;
+			}
+		});
+
+		if (inputsWithValues == myInputs.length) {
+			$(".two").show();
+		} else {
+			$(".two").hide();
+		}
+	}
+</script>
+
+
+<style type="text/css">
+#one {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 40%;
+	height: auto%;
+}
+</style>
+</head>
+<body>
+
+	<input class="input100" type="text" name="city"
+		placeholder="Enter Your City ">
+	<input class="input100" type="text" name="state"
+		placeholder="Enter Your City ">
+
+	<img id="one"
+		src="/home/nick/git/gs-accessing-data-mysql/complete/src/main/resources/public/images/can_bong.png">
+	<div class="two">
+		<img src="https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=bitcoin:n3hRLRnQ83EwBTMREF2oQx3kv63sqqWcnz?amount=0.0001111">
+	</div>
+
+</body>
+</html>

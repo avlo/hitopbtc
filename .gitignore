@@ -1,0 +1,7 @@
+monitor-service-testnet
+monitor-service-testnet.spvchain
+monitor-service-testnet.wallet
+.gradle/
+hitop-001.pem
+mysqlpwd
+target/
