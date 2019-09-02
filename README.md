@@ -34,3 +34,13 @@ TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
 indicating application is ready for use (on bitcoin testnet).  any bitcoin payment made (to payment page HD wallet address) will be registered on the bitcoin network, then displayed in the console.  
 
 > note: a unique bitcoin address is generated for each QR code displayed on the payment page. each of these addresses is a child address of the parent HD wallet address, such that all payments are accumulated in the parent HD wallet.
+
+# eclipse/intellij users
+
+hitopbtc uses project lombok annotations.  run the following command from project root prior to IDE startup to properly configure either IDE for lombok usage.
+
+```
+$ java -jar lib/lombok.jar
+```
+
+and follow steps as indicated
