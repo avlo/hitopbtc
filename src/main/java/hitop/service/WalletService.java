@@ -1,4 +1,4 @@
-package hitop;
+package hitop.service;
 
 import java.io.File;
 import org.bitcoinj.core.LegacyAddress;
@@ -6,14 +6,16 @@ import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.params.TestNet3Params;
 import org.bitcoinj.utils.BriefLogFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WalletMonitorService {
+public class WalletService {
+  final Logger logger = LoggerFactory.getLogger(WalletService.class);
 
   private WalletAppKit kit;
-  private String qrCodeApi;
   private NetworkParameters params;
 
   private static final String BITCOIN_DIGIT_FORMAT = "%.9f";
@@ -21,12 +23,12 @@ public class WalletMonitorService {
   private static final String QR_URL = "https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=bitcoin:%s?amount=%s";
   
   @Autowired
-  BtcRateService btcRateService;
+  RateService btcRateService;
   
   @Autowired
-  BtcWalletCoinsReceivedService btcWalletCoinsReceivedService;
+  CoinService btcWalletCoinsReceivedService;
 
-  public WalletMonitorService() throws Exception {
+  public WalletService() throws Exception {
     // This line makes the log output more compact and easily read, especially when using the JDK log adapter.
     BriefLogFormatter.init();
 
@@ -53,17 +55,9 @@ public class WalletMonitorService {
     kit.awaitRunning();
   }
 
-  public void monitorEvent() throws Exception {
+  public void monitorReceiveEvent() throws Exception {
     // We want to know when we receive money.
     kit.wallet().addCoinsReceivedEventListener(btcWalletCoinsReceivedService);
-
-    String sendToAddress = LegacyAddress.fromKey(params, kit.wallet().currentReceiveKey()).toString();
-    String btcValue = String.format(BITCOIN_DIGIT_FORMAT, btcRateService.getUsdtoBtc(btcRateService.getBtcRate()));
-    qrCodeApi = String.format(QR_URL, sendToAddress, btcValue);
-
-    System.out.println("Send coins to: " + sendToAddress);
-    System.out.println("QR-Code URL: " + qrCodeApi);
-    System.out.println("Waiting for coins to arrive. Press Ctrl-C to quit.");
 
     //    try {
     //      Thread.sleep(Long.MAX_VALUE);
@@ -71,6 +65,14 @@ public class WalletMonitorService {
   }
 
   public String qrCodeApi() {
+    String sendToAddress = LegacyAddress.fromKey(params, kit.wallet().currentReceiveKey()).toString();
+    String btcValue = String.format(BITCOIN_DIGIT_FORMAT, btcRateService.getUsdtoBtc(btcRateService.getBtcRate()));
+    String qrCodeApi = String.format(QR_URL, sendToAddress, btcValue);
+
+    logger.info("Send coins to: {} ", sendToAddress);
+    logger.info("QR-Code URL: {}", qrCodeApi);
+    logger.info("Waiting for coins to arrive. Press Ctrl-C to quit.");
+
     return qrCodeApi;
   }
 

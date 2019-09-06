@@ -1,22 +1,25 @@
-package hitop;
+package hitop.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import hitop.entity.HitopOrder;
+import hitop.repository.HitopOrderRepository;
 
 @Service
-public class WalletTransactionService {
+public class OrderService {
+  Logger logger = LoggerFactory.getLogger(OrderService.class);
   
   @Autowired
   private HitopOrderRepository hitopOrderRepository;
   
   @Autowired
-  private BtcRateService btcRateService;
+  private RateService btcRateService;
 
   public String addNewOrder () {
-    System.out.println("3333333333333333");
-    System.out.println("3333333333333333");
-    System.out.println("3333333333333333");
-    return "BTC event received";
+    logger.info("new order received");
+    return "new order received";
   }
   
   public String addNewOrder (

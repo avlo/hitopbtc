@@ -1,4 +1,4 @@
-package hitop;
+package hitop.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
