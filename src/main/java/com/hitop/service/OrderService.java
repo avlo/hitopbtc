@@ -18,21 +18,27 @@ public class OrderService {
   private RateService btcRateService;
 
   public String addNewOrder () {
-    logger.info("new order received");
-    return "new order received";
+    final String crlf = System.getProperty("line.separator");
+    String out = 
+        "**************" + crlf +
+        "PLACEHOLDER" + crlf +
+        "call overloaded addNewOrder(params) when ready" + crlf +
+        "**************";
+    logger.info(out);
+    return out;
   }
   
   public String addNewOrder (
-      String name,
-      String email,
-      String address,
-      String city,
-      String state,
-      String zip,
-      String country,
-      String btcPublicKey,
-      String btcTransaction,
-      Integer status) 
+      final String name,
+      final String email,
+      final String address,
+      final String city,
+      final String state,
+      final String zip,
+      final String country,
+      final String btcPublicKey,
+      final String btcTransaction,
+      final Integer status) 
   {
     HitopOrder n = new HitopOrder();
     n.setName(name);
@@ -49,6 +55,8 @@ public class OrderService {
     n.setBtcUsdAmount(btcRateService.getUsdtoBtc(rate));
     n.setStatus(status);
     hitopOrderRepository.save(n);
-    return "Saved\n\n";
+    String out = String.format("transaction %s saved.", btcTransaction);
+    logger.info(out);
+    return out;
   }
 }

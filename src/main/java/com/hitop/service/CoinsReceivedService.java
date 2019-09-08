@@ -30,12 +30,16 @@ public class CoinsReceivedService implements WalletCoinsReceivedEventListener {
     
     this.orderService = orderService;
     this.filePrefix = filePrefix;
-   
   }
+  
   @Override
-  public void onCoinsReceived(Wallet wallet, Transaction tx, Coin prevBalance, Coin newBalance) {
+  public void onCoinsReceived(
+      final Wallet wallet, 
+      final Transaction tx, 
+      final Coin prevBalance, 
+      final Coin newBalance) {
+
     // Runs in the dedicated "user thread" (see bitcoinj docs for more info on this).
-    //
     // The transaction "tx" can either be pending, or included into a block (we didn't see the broadcast).
     try {
       File file = new File(filePrefix);
