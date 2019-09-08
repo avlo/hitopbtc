@@ -12,16 +12,20 @@ import com.hitop.ExchangeRate;
 @Service
 public class RateService {
   
-  @Value("${rateurl}")
-  private String rateUrl;
-  
-  @Value("${shipping.price.usd}")
-  private Double shippingPriceUsd;
-  
-  @Value("${unit.price.usd}")
-  private Double unitPriceUsd;
-      
   private static final String CURRENCY = "USD";
+  private final String rateUrl;
+  private final Double shippingPriceUsd;
+  private final Double unitPriceUsd;
+  
+  public RateService(
+      final @Value("${rateurl}") String rateUrl,
+      final @Value("${shipping.price.usd}") Double shippingPriceUsd,
+      final @Value("${unit.price.usd}") Double unitPriceUsd) {
+    
+    this.rateUrl = rateUrl;
+    this.shippingPriceUsd = shippingPriceUsd;
+    this.unitPriceUsd = unitPriceUsd;
+  }
   
   public Double getBtcRate() {
     ResponseEntity<List<ExchangeRate>> rateResponse =

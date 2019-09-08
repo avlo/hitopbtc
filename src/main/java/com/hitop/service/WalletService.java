@@ -15,16 +15,18 @@ import org.springframework.stereotype.Service;
 public class WalletService {
   final Logger logger = LoggerFactory.getLogger(WalletService.class);
   
-  @Value("${bitcoinformat}")
-  private String bitcoinDigitFormat;
+  private final String bitcoinDigitFormat;
+  private final String qrUrl;
+  private final WalletAppKit kit;
+  private final NetworkParameters params;
   
-  @Value("${qrurl}")
-  private String qrUrl;
-
-  private WalletAppKit kit;
-  private NetworkParameters params;
-  
-  public WalletService(final @Value("${wallet.filename.prefix}") String filePrefix) throws Exception {
+  public WalletService(
+      final @Value("${wallet.filename.prefix}") String filePrefix,
+      final @Value("${bitcoinformat}") String bitcoinDigitFormat,
+      final @Value("${qrurl}") String qrUrl) throws Exception {
+    
+    this.bitcoinDigitFormat = bitcoinDigitFormat;
+    this.qrUrl = qrUrl;
     // log output more compact and easily read, especially when using the JDK log adapter.
     BriefLogFormatter.init();
 
