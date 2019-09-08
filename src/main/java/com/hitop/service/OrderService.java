@@ -1,11 +1,11 @@
-package hitop.service;
+package com.hitop.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import hitop.entity.HitopOrder;
-import hitop.repository.HitopOrderRepository;
+import com.hitop.entity.HitopOrder;
+import com.hitop.repository.HitopOrderRepository;
 
 @Service
 public class OrderService {

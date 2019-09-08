@@ -5,3 +5,7 @@ monitor-service-testnet.wallet
 hitop-001.pem
 mysqlpwd
 target/
+.classpath
+.factorypath
+.project
+.settings/

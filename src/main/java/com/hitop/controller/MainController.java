@@ -1,4 +1,4 @@
-package hitop.controller;
+package com.hitop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import hitop.entity.HitopOrder;
-import hitop.repository.HitopOrderRepository;
-import hitop.service.WalletService;
+import com.hitop.entity.HitopOrder;
+import com.hitop.repository.HitopOrderRepository;
+import com.hitop.service.WalletService;
 
 @Controller
 @RequestMapping(path="/")
@@ -18,7 +18,7 @@ public class MainController {
   private HitopOrderRepository hitopOrderRepository;
   
   @Autowired
-  private WalletService monitorWalletService;
+  private WalletService walletService;
   
   public MainController() throws Exception {
 //    getTransactionJson("");
@@ -26,9 +26,9 @@ public class MainController {
   
   @GetMapping(path="/orderscreen")
   public ModelAndView displayOrderForm () throws Exception {
-    monitorWalletService.monitorReceiveEvent();
+    walletService.monitorReceiveEvent();
     ModelAndView modelAndView = new ModelAndView("order");
-    modelAndView.addObject("walletid", monitorWalletService.qrCodeApi());
+    modelAndView.addObject("walletid", walletService.getQRCodeUrl());
     return modelAndView;
   }
   

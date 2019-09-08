@@ -1,4 +1,4 @@
-package hitop.service;
+package com.hitop.service;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,16 +10,18 @@ import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.MoreExecutors;
 
 @Service
-public class CoinService implements WalletCoinsReceivedEventListener {
-  final Logger logger = LoggerFactory.getLogger(CoinService.class);
+public class CoinsReceivedService implements WalletCoinsReceivedEventListener {
+  final Logger logger = LoggerFactory.getLogger(CoinsReceivedService.class);
 
-  private static final String FILE_PREFIX = "monitor-service-testnet";
+  @Value("${wallet.filename.prefix:monitor-service-testnet}")
+  private String filePrefix;
 
   @Autowired
   OrderService orderService;
@@ -30,7 +32,7 @@ public class CoinService implements WalletCoinsReceivedEventListener {
     //
     // The transaction "tx" can either be pending, or included into a block (we didn't see the broadcast).
     try {
-      File file = new File(FILE_PREFIX);
+      File file = new File(filePrefix);
       logger.info("saving file {}...", file.toString());
       wallet.saveToFile(file);
       logger.info("{} saved.", file.toString());

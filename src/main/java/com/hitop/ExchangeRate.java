@@ -1,4 +1,4 @@
-package hitop;
+package com.hitop;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
