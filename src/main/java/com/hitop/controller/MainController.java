@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import com.hitop.entity.HitopOrder;
 import com.hitop.repository.HitopOrderRepository;
+import com.hitop.service.CoinsReceivedService;
+import com.hitop.service.RateService;
 import com.hitop.service.WalletService;
 
 @Controller
@@ -20,15 +22,21 @@ public class MainController {
   @Autowired
   private WalletService walletService;
   
+  @Autowired
+  private CoinsReceivedService coinsReceivedService;
+  
+  @Autowired
+  private RateService rateService;
+  
   public MainController() throws Exception {
 //    getTransactionJson("");
   }
   
   @GetMapping(path="/orderscreen")
   public ModelAndView displayOrderForm () throws Exception {
-    walletService.monitorReceiveEvent();
+    walletService.monitorReceiveEvent(coinsReceivedService);
     ModelAndView modelAndView = new ModelAndView("order");
-    modelAndView.addObject("walletid", walletService.getQRCodeUrl());
+    modelAndView.addObject("walletid", walletService.getQRCodeUrl(rateService));
     return modelAndView;
   }
   

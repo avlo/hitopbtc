@@ -8,7 +8,6 @@ import org.bitcoinj.params.TestNet3Params;
 import org.bitcoinj.utils.BriefLogFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,23 +15,16 @@ import org.springframework.stereotype.Service;
 public class WalletService {
   final Logger logger = LoggerFactory.getLogger(WalletService.class);
   
-  private static final String BITCOIN_DIGIT_FORMAT = "%.9f";
+  @Value("${bitcoinformat}")
+  private String bitcoinDigitFormat;
   
-  @Value("${wallet.filename.prefix:monitor-service-testnet}")
-  private String filePrefix;
-  
-  private static final String QR_URL = "https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=bitcoin:%s?amount=%s";
+  @Value("${qrurl}")
+  private String qrUrl;
 
   private WalletAppKit kit;
   private NetworkParameters params;
   
-  @Autowired
-  RateService rateService;
-  
-  @Autowired
-  CoinsReceivedService coinsReceivedService;
-  
-  public WalletService() throws Exception {
+  public WalletService(final @Value("${wallet.filename.prefix}") String filePrefix) throws Exception {
     // log output more compact and easily read, especially when using the JDK log adapter.
     BriefLogFormatter.init();
 
@@ -59,14 +51,14 @@ public class WalletService {
     kit.awaitRunning();
   }
 
-  public void monitorReceiveEvent() throws Exception {
+  public void monitorReceiveEvent(final CoinsReceivedService coinsReceivedService) throws Exception {
     kit.wallet().addCoinsReceivedEventListener(coinsReceivedService);
   }
 
-  public String getQRCodeUrl() {
+  public String getQRCodeUrl(final RateService rateService) {
     String sendToAddress = LegacyAddress.fromKey(params, kit.wallet().currentReceiveKey()).toString();
-    String btcValue = String.format(BITCOIN_DIGIT_FORMAT, rateService.getUsdtoBtc(rateService.getBtcRate()));
-    String qrCodeApi = String.format(QR_URL, sendToAddress, btcValue);
+    String btcValue = String.format(bitcoinDigitFormat, rateService.getUsdtoBtc(rateService.getBtcRate()));
+    String qrCodeApi = String.format(qrUrl, sendToAddress, btcValue);
 
     logger.info("Send coins to: {} ", sendToAddress);
     logger.info("QR-Code URL: {}", qrCodeApi);

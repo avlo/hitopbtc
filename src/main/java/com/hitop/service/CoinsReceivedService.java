@@ -20,12 +20,12 @@ import com.google.common.util.concurrent.MoreExecutors;
 public class CoinsReceivedService implements WalletCoinsReceivedEventListener {
   final Logger logger = LoggerFactory.getLogger(CoinsReceivedService.class);
 
-  @Value("${wallet.filename.prefix:monitor-service-testnet}")
-  private String filePrefix;
-
   @Autowired
   OrderService orderService;
-  
+
+  @Value("${wallet.filename.prefix}")
+  private String filePrefix;
+
   @Override
   public void onCoinsReceived(Wallet wallet, Transaction tx, Coin prevBalance, Coin newBalance) {
     // Runs in the dedicated "user thread" (see bitcoinj docs for more info on this).
