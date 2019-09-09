@@ -4,6 +4,7 @@ import java.io.File;
 import org.bitcoinj.core.LegacyAddress;
 import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.utils.BriefLogFormatter;
+import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +44,8 @@ public class WalletService {
     kit.awaitRunning();
   }
 
-  public void monitorReceiveEvent(final CoinsReceivedService coinsReceivedService) throws Exception {
-    kit.wallet().addCoinsReceivedEventListener(coinsReceivedService);
+  public void monitorReceiveEvent(final WalletCoinsReceivedEventListener listener) throws Exception {
+    kit.wallet().addCoinsReceivedEventListener(listener);
   }
 
   public String getSendToAddress() {
