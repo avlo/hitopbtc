@@ -1,9 +1,9 @@
 package com.hitop.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import com.hitop.entity.HitopOrder;
 import com.hitop.repository.HitopOrderRepository;
 
@@ -11,11 +11,17 @@ import com.hitop.repository.HitopOrderRepository;
 public class OrderService {
   Logger logger = LoggerFactory.getLogger(OrderService.class);
   
-  @Autowired
-  private HitopOrderRepository hitopOrderRepository;
+  private final HitopOrderRepository hitopOrderRepository;
+  private final RateService btcRateService;
   
   @Autowired
-  private RateService btcRateService;
+  public OrderService(
+      final HitopOrderRepository hitopOrderRepository,
+      final RateService btcRateService) {
+    
+    this.hitopOrderRepository = hitopOrderRepository;
+    this.btcRateService = btcRateService;
+  }
 
   public String addNewOrder () {
     final String crlf = System.getProperty("line.separator");
