@@ -68,7 +68,11 @@ public class CoinsReceivedService implements WalletCoinsReceivedEventListener {
     Futures.addCallback(tx.getConfidence().getDepthFuture(1), new FutureCallback<TransactionConfidence>() {
       @Override
       public void onSuccess(TransactionConfidence result) {
-        logger.info("********************* Confirmation received *********************");
+        final String crlf = System.getProperty("line.separator");
+        logger.info(crlf + 
+            "*********************" + crlf +
+            "Confirmation received" + crlf +
+            "*********************");
       }
 
       @Override

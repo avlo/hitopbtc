@@ -19,7 +19,7 @@ public class OrderService {
 
   public String addNewOrder () {
     final String crlf = System.getProperty("line.separator");
-    String out = 
+    String out = crlf +
         "**************" + crlf +
         "PLACEHOLDER" + crlf +
         "call overloaded addNewOrder(params) when ready" + crlf +

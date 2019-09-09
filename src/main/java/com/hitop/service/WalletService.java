@@ -15,18 +15,12 @@ import org.springframework.stereotype.Service;
 public class WalletService {
   final Logger logger = LoggerFactory.getLogger(WalletService.class);
   
-  private final String bitcoinDigitFormat;
-  private final String qrUrl;
   private final WalletAppKit kit;
   private final NetworkParameters params;
   
   public WalletService(
-      final @Value("${wallet.filename.prefix}") String filePrefix,
-      final @Value("${bitcoinformat}") String bitcoinDigitFormat,
-      final @Value("${qrurl}") String qrUrl) throws Exception {
+      final @Value("${wallet.filename.prefix}") String filePrefix) throws Exception {
     
-    this.bitcoinDigitFormat = bitcoinDigitFormat;
-    this.qrUrl = qrUrl;
     // log output more compact and easily read, especially when using the JDK log adapter.
     BriefLogFormatter.init();
 
@@ -57,16 +51,7 @@ public class WalletService {
     kit.wallet().addCoinsReceivedEventListener(coinsReceivedService);
   }
 
-  public String getQRCodeUrl(final RateService rateService) {
-    String sendToAddress = LegacyAddress.fromKey(params, kit.wallet().currentReceiveKey()).toString();
-    String btcValue = String.format(bitcoinDigitFormat, rateService.getUsdtoBtc(rateService.getBtcRate()));
-    String qrCodeApi = String.format(qrUrl, sendToAddress, btcValue);
-
-    logger.info("Send coins to: {} ", sendToAddress);
-    logger.info("QR-Code URL: {}", qrCodeApi);
-    logger.info("Waiting for coins to arrive. Press Ctrl-C to quit.");
-
-    return qrCodeApi;
+  public String getSendToAddress() {
+    return LegacyAddress.fromKey(params, kit.wallet().currentReceiveKey()).toString();
   }
-
 }

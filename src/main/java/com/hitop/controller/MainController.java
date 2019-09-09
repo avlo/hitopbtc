@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.hitop.entity.HitopOrder;
 import com.hitop.repository.HitopOrderRepository;
 import com.hitop.service.CoinsReceivedService;
-import com.hitop.service.RateService;
+import com.hitop.service.QRCodeService;
 import com.hitop.service.WalletService;
 
 @Controller
@@ -26,7 +26,7 @@ public class MainController {
   private CoinsReceivedService coinsReceivedService;
   
   @Autowired
-  private RateService rateService;
+  private QRCodeService qrCodeService;
   
   public MainController() throws Exception {
 //    getTransactionJson("");
@@ -36,7 +36,7 @@ public class MainController {
   public ModelAndView displayOrderForm () throws Exception {
     walletService.monitorReceiveEvent(coinsReceivedService);
     ModelAndView modelAndView = new ModelAndView("order");
-    modelAndView.addObject("walletid", walletService.getQRCodeUrl(rateService));
+    modelAndView.addObject("walletid", qrCodeService.getQRCodeUrl(walletService.getSendToAddress()));
     return modelAndView;
   }
   
