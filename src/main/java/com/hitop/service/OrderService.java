@@ -28,7 +28,7 @@ public class OrderService {
     return out;
   }
   
-  public String addNewOrder (
+  public HitopOrder addNewOrder (
       final String name,
       final String email,
       final String address,
@@ -40,23 +40,25 @@ public class OrderService {
       final String btcTransaction,
       final Integer status) 
   {
-    HitopOrder n = new HitopOrder();
-    n.setName(name);
-    n.setEmail(email);
-    n.setAddress(address);
-    n.setCity(city);
-    n.setState(state);
-    n.setZip(zip);
-    n.setCountry(country);
-    n.setBtcPublicKey(btcPublicKey);
-    n.setBtcTransaction(btcTransaction);
+    HitopOrder order = new HitopOrder();
+    order.setName(name);
+    order.setEmail(email);
+    order.setAddress(address);
+    order.setCity(city);
+    order.setState(state);
+    order.setZip(zip);
+    order.setCountry(country);
+    order.setBtcPublicKey(btcPublicKey);
+    order.setBtcTransaction(btcTransaction);
     Double rate = btcRateService.getBtcRate();
-    n.setBtcRate(rate);
-    n.setBtcUsdAmount(btcRateService.getUsdtoBtc(rate));
-    n.setStatus(status);
-    hitopOrderRepository.save(n);
-    String out = String.format("transaction %s saved.", btcTransaction);
+    order.setBtcRate(rate);
+    order.setBtcUsdAmount(btcRateService.getUsdtoBtc(rate));
+    order.setStatus(status);
+    HitopOrder savedOrder = hitopOrderRepository.save(order);
+    String out = String.format("order %s saved to db.", savedOrder);
     logger.info(out);
-    return out;
+    out = String.format("btc transaction %s saved to wallet.", btcTransaction);
+    logger.info(out);
+    return savedOrder;
   }
 }

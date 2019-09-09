@@ -21,7 +21,7 @@ public class CoinsReceivedService implements WalletCoinsReceivedEventListener {
   final Logger logger = LoggerFactory.getLogger(CoinsReceivedService.class);
 
   private final OrderService orderService;
-  private final String filePrefix;
+  private final File file;
 
   @Autowired
   public CoinsReceivedService(
@@ -29,7 +29,7 @@ public class CoinsReceivedService implements WalletCoinsReceivedEventListener {
       final @Value("${wallet.filename.prefix}") String filePrefix) {
     
     this.orderService = orderService;
-    this.filePrefix = filePrefix;
+    this.file = new File(filePrefix);
   }
   
   @Override
@@ -42,15 +42,16 @@ public class CoinsReceivedService implements WalletCoinsReceivedEventListener {
     // Runs in the dedicated "user thread" (see bitcoinj docs for more info on this).
     // The transaction "tx" can either be pending, or included into a block (we didn't see the broadcast).
     try {
-      File file = new File(filePrefix);
       logger.info("saving file {}...", file.toString());
       wallet.saveToFile(file);
       logger.info("{} saved.", file.toString());
     } catch (IOException e) {
-      logger.info("SAVE FAILED");
+      logger.info("{} save FAILED", file.toString());
       e.printStackTrace();
     }
 
+    // TODO: orderService here should probably be more generic (listener/etc) and
+    // also transactional- relocated into callback, below or try/catch above
     orderService.addNewOrder();
 
     Coin value = tx.getValueSentToMe(wallet);

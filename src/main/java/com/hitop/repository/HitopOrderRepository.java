@@ -1,10 +1,7 @@
 package com.hitop.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import com.hitop.entity.HitopOrder;
 
-// This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
-// CRUD refers Create, Read, Update, Delete
-
-public interface HitopOrderRepository extends CrudRepository<HitopOrder, Integer> {
+public interface HitopOrderRepository extends JpaRepository<HitopOrder, Integer> {
 }
