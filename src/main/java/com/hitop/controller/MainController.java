@@ -10,6 +10,7 @@ import com.hitop.entity.HitopOrder;
 import com.hitop.repository.HitopOrderRepository;
 import com.hitop.service.CoinsReceivedService;
 import com.hitop.service.QRCodeService;
+import com.hitop.service.RateService;
 import com.hitop.service.WalletService;
 
 @Controller
@@ -28,6 +29,9 @@ public class MainController {
   @Autowired
   private QRCodeService qrCodeService;
   
+  @Autowired
+  private RateService rateService;
+  
   public MainController() throws Exception {
 //    getTransactionJson("");
   }
@@ -37,6 +41,7 @@ public class MainController {
     walletService.monitorReceiveEvent(coinsReceivedService);
     ModelAndView modelAndView = new ModelAndView("order");
     modelAndView.addObject("walletid", qrCodeService.getQRCodeUrl(walletService.getSendToAddress()));
+    modelAndView.addObject("rate", String.format("%.9f", rateService.getUsdtoBtc(rateService.getBtcRate())));
     return modelAndView;
   }
   
