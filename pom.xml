@@ -20,6 +20,11 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+
 		<!-- JPA Data (We are going to use Repositories, Entities, Hibernate, etc...) -->
 
 		<dependency>
@@ -100,7 +105,7 @@
 	</dependencies>
 
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>1.9</java.version>
 		<docker.image.prefix>hitop</docker.image.prefix>
 	</properties>
 
