@@ -22,14 +22,20 @@ public class CoinsReceivedService implements WalletCoinsReceivedEventListener {
 
   private final OrderService orderService;
   private final File file;
+  private EventNotifier eventNotifier;
 
   @Autowired
   public CoinsReceivedService(
       final OrderService orderService,
+      final EventNotifier eventNotifier,
       final @Value("${wallet.filename.prefix}") String filePrefix) {
     
     this.orderService = orderService;
     this.file = new File(filePrefix);
+  }
+  
+  public void setEventNotifier(final EventNotifier eventNotifier) {
+    this.eventNotifier = eventNotifier;
   }
   
   @Override
@@ -53,6 +59,7 @@ public class CoinsReceivedService implements WalletCoinsReceivedEventListener {
     // TODO: orderService here should probably be more generic (listener/etc) and
     // also transactional- relocated into callback, below or try/catch above
     orderService.addNewOrder();
+    eventNotifier.sendEvent();
 
     Coin value = tx.getValueSentToMe(wallet);
     logger.info("Received tx for {} : {}", value.toFriendlyString(), tx);
@@ -72,10 +79,12 @@ public class CoinsReceivedService implements WalletCoinsReceivedEventListener {
         // TODO: this notification arrives ~5min after above "onCoinsReceived" event arrives.
         // it's the equivalent of single block confirmation, we can use this to update it's DB state
         final String crlf = System.getProperty("line.separator");
-        logger.info(crlf + 
+        final String val = crlf + 
             "*********************" + crlf +
             "Confirmation received" + crlf +
-            "*********************");
+            "*********************"; 
+        logger.info(val);
+        // send user email notification of first confirmation received
       }
 
       @Override

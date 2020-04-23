@@ -129,7 +129,17 @@ img.btc-symbol-thumb-center {
           <div class="qrcode-opp">All fields required before bitcoin payment qr-code will display</div>
         </span>
 
-        <h1 id="comments"></h1>
+        <table id="comments" class="table table-striped">
+            <thead>
+            <tr>
+                <th width="30%">Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="result" data-th-each="comment : ${comments}">
+            </tr>
+            </tbody>
+        </table>
 
         <div class="container-contact100-form-btn">
           <img th:src="${walletid}">

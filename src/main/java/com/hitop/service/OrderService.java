@@ -31,6 +31,7 @@ public class OrderService {
         "call overloaded addNewOrder(params) when ready" + crlf +
         "**************";
     logger.info(out);
+    // call UI to display dialog w/ order received then close purchase form window
     return out;
   }
   
