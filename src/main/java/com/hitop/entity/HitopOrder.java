@@ -14,14 +14,14 @@ public class HitopOrder {
     private Long id;
     private String name;
     private String email;
-    private String address;
-    private String city;
-    private String state;
-    private String zip;
-    private String country;
-    private String btcPublicKey;
-    private String btcTransaction;
+//    private String address;
+//    private String city;
+//    private String state;
+//    private String zip;
+//    private String country;
+//    private String btcPublicKey;
+//    private String btcTransaction;
     private Double btcRate;
     private Double btcUsdAmount;
-    private Integer status;
+//    private Integer status;
 }

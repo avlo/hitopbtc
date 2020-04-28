@@ -1,4 +1,4 @@
-package com.hitop.service;
+package com.hitop.service.bitcoin;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,36 +6,35 @@ import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.core.TransactionConfidence;
 import org.bitcoinj.wallet.Wallet;
-import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.MoreExecutors;
+import com.hitop.service.CoinReceivedService;
+import com.hitop.service.OrderServiceImpl;
 
 @Service
-public class CoinsReceivedService implements WalletCoinsReceivedEventListener {
-  final Logger logger = LoggerFactory.getLogger(CoinsReceivedService.class);
+@ConditionalOnProperty(
+    name = "spring.profiles.active", 
+    havingValue = "test")
+public class BitcoinReceivedService implements CoinReceivedService {
+  final Logger logger = LoggerFactory.getLogger(BitcoinReceivedService.class);
 
-  private final OrderService orderService;
   private final File file;
-  private EventNotifier eventNotifier;
 
   @Autowired
-  public CoinsReceivedService(
-      final OrderService orderService,
-      final EventNotifier eventNotifier,
+  public BitcoinReceivedService(
+      final OrderServiceImpl orderServiceImpl,
       final @Value("${wallet.filename.prefix}") String filePrefix) {
     
-    this.orderService = orderService;
     this.file = new File(filePrefix);
-  }
-  
-  public void setEventNotifier(final EventNotifier eventNotifier) {
-    this.eventNotifier = eventNotifier;
   }
   
   @Override
@@ -58,8 +57,7 @@ public class CoinsReceivedService implements WalletCoinsReceivedEventListener {
 
     // TODO: orderService here should probably be more generic (listener/etc) and
     // also transactional- relocated into callback, below or try/catch above
-    orderService.addNewOrder();
-    eventNotifier.sendEvent();
+//    orderServiceImpl.addNewOrder();
 
     Coin value = tx.getValueSentToMe(wallet);
     logger.info("Received tx for {} : {}", value.toFriendlyString(), tx);

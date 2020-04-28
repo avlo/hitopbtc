@@ -62,7 +62,7 @@ img.btc-symbol-thumb-center {
 <body>
   <div class="container-contact100">
     <div class="wrap-contact100">
-      <form class="contact100-form validate-form" action="#" th:action="@{/submit}" th:object="${hitopOrder}" method="post">
+      <form class="contact100-form validate-form">
         <img src="/images/can_bong.png" alt="EVERYBODY CAN" class="canbong-center">
 
         <span class="contact100-form-title">Hi-Top Order</span>
@@ -70,18 +70,41 @@ img.btc-symbol-thumb-center {
         <span class="contact50-form-title">
           <div class="qrcode-opp">All fields required before bitcoin payment qr-code will display</div>
         </span>
-	
-	    <div class="wrap-input100 validate-input bg1" data-validate="Please Type Your Name">
-	      <span class="label-input100">Name</span>
-	      <input class="input100" type="text" th:field="*{name}" id="name" placeholder="Enter Your Name">
-		  <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
-	    </div>
-				
-		<div class="wrap-input100 validate-input bg1" data-validate="Please Enter Your Email">
-	      <span class="label-input100">Email</span>
-	      <input class="input100" type="text" th:field="*{email}" id="email" placeholder="Enter Your Email">
-		  <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
-	    </div>    		    
+
+        <div class="wrap-input100 validate-input bg1" data-validate="Please Type Your Name">
+          <span class="label-input100">Name</span>
+          <input class="input100" type="text" name="name" placeholder="Enter Your Name">
+        </div>
+
+        <div class="wrap-input100 validate-input bg1" data-validate="Enter Your Email (e@a.x)">
+          <span class="label-input100">Email</span>
+          <input class="input100" type="text" name="email" placeholder="Enter Your Email">
+        </div>
+
+        <div class="wrap-input100 validate-input bg1" data-validate="Enter Your Address">
+          <span class="label-input100">Street address & Apt# or PO Box</span>
+          <input class="input100" type="text" name="address" placeholder="Enter Street Address">
+        </div>
+
+        <div class="wrap-input100 validate-input bg1" data-validate="Enter City">
+          <span class="label-input100">City</span>
+          <input class="input100" type="text" name="city" placeholder="Enter Your City">
+        </div>
+
+        <div class="wrap-input100 validate-input bg1" data-validate="Enter State/Province">
+          <span class="label-input100">State/Province</span>
+          <input class="input100" type="text" name="state" placeholder="Enter Your State/Province">
+        </div>
+
+        <div class="wrap-input100 validate-input bg1" data-validate="Enter Your ZipCode">
+          <span class="label-input100">ZipCode</span>
+          <input class="input100" type="text" name="zipcode" placeholder="Enter Your ZipCode">
+        </div>
+
+        <div class="wrap-input100 validate-input bg1" data-validate="Enter Your Country">
+          <span class="label-input100">Country</span>
+          <input class="input100" type="text" name="country" placeholder="Enter Your Country">
+        </div>
 
         <div class="wrap-input100 input100-select bg1">
           <span class="label-input100">Quantity</span>

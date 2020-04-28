@@ -62,95 +62,14 @@ img.btc-symbol-thumb-center {
 <body>
   <div class="container-contact100">
     <div class="wrap-contact100">
-      <form class="contact100-form validate-form" action="#" th:action="@{/submit}" th:object="${hitopOrder}" method="post">
-        <img src="/images/can_bong.png" alt="EVERYBODY CAN" class="canbong-center">
-
-        <span class="contact100-form-title">Hi-Top Order</span>
-
-        <span class="contact50-form-title">
-          <div class="qrcode-opp">All fields required before bitcoin payment qr-code will display</div>
-        </span>
-	
-	    <div class="wrap-input100 validate-input bg1" data-validate="Please Type Your Name">
-	      <span class="label-input100">Name</span>
-	      <input class="input100" type="text" th:field="*{name}" id="name" placeholder="Enter Your Name">
-		  <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
-	    </div>
-				
-		<div class="wrap-input100 validate-input bg1" data-validate="Please Enter Your Email">
-	      <span class="label-input100">Email</span>
-	      <input class="input100" type="text" th:field="*{email}" id="email" placeholder="Enter Your Email">
-		  <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
-	    </div>    		    
-
-        <div class="wrap-input100 input100-select bg1">
-          <span class="label-input100">Quantity</span>
-            <div>
-              <select class="js-select2" name="quantity">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
-                <option>7</option>
-                <option>8</option>
-                <option>9</option>
-                <option>10</option>
-              </select>
-                <div class="dropDownSelect2"></div>
-            </div>
-        </div>
-
-        <span class="contact50-form-title">
-          <div class="qrcode-opp">All fields required before bitcoin payment qr-code will display</div>
-        </span>
-
-        <div class="container-contact100-form-btn">
-          <img th:src="${walletid}">
-        </div>
-
-<!-- // TODO add back in rate calculation -->
-<!--<div class="container-contact100-form-btn">
-          <img class="btc-symbol-thumb-center" src="/images/btc-currency-thumb.png">
-          <span class="input101">0.0222222</span>
-        </div>
-         -->
-      </form>
+      <img src="/images/pope.png" alt="EVERYBODY CAN" class="canbong-center">
+	THNAKS
     </div>
   </div>
 
   <!--===============================================================================================-->
 
   <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-  <script>
-  $(document).ready(function() {
-    validate();
-    $('input').on('keyup', validate);
-  });
-
-  function validate() {
-    var inputsWithValues = 0;
-
-    // get all input fields except for type='submit'
-    var myInputs = $("input:not([type='submit'])");
-
-    myInputs.each(function(e) {
-      // if it has a value, increment the counter
-      if ($(this).val()) {
-        inputsWithValues += 1;
-      }
-    });
-
-    if (inputsWithValues == myInputs.length) {
-      $(".qrcode").show();
-      $(".qrcode-opp").hide();
-    } else {
-      $(".qrcode").hide();
-      $(".qrcode-opp").show();
-    }
-  }
-  </script>
   <!--===============================================================================================-->
   <script src="vendor/animsition/js/animsition.min.js"></script>
   <!--===============================================================================================-->
@@ -159,6 +78,7 @@ img.btc-symbol-thumb-center {
   <!--===============================================================================================-->
   <script src="vendor/select2/select2.min.js"></script>
   <script>
+  <!-- TODO: remove all superfluous js in all js files -->
   $(".js-select2").each(function() {
     $(this).select2({
       minimumResultsForSearch : 20,
@@ -210,9 +130,7 @@ img.btc-symbol-thumb-center {
   <!--===============================================================================================-->
   <script src="js/main.js"></script>
 
-	<!-- Global site tag (gtag.js) - Google Analytics
-	
-	// TODO: when marketing ready, add back in google analytics 
+	<!-- Global site tag (gtag.js) - Google Analytics 
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
