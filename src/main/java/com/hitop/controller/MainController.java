@@ -57,8 +57,11 @@ public class MainController {
   }
 
   @PostMapping("/submit")
-  public String submitOrder(@RequestBody HitopOrder hitopOrder,
+  public String submitOrder(HitopOrder hitopOrder,
       BindingResult result, Model model) throws Exception {
+    System.out.println("11111111111");
+    System.out.println("11111111111");
+    System.out.println("11111111111");
     
     if (result.hasErrors()) {
       //TODO: originally per https://www.baeldung.com/spring-boot-crud-thymeleaf

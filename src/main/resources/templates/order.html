@@ -62,7 +62,7 @@ img.btc-symbol-thumb-center {
 <body>
   <div class="container-contact100">
     <div class="wrap-contact100">
-      <form class="contact100-form validate-form" action="#" th:action="@{/submit}" th:object="${hitopOrder}" method="post">
+      <form class="contact100-form validate-form" th:action="@{/submit}" th:object="${hitopOrder}" method="post">
         <img src="/images/can_bong.png" alt="EVERYBODY CAN" class="canbong-center">
 
         <span class="contact100-form-title">Hi-Top Order</span>
@@ -77,11 +77,12 @@ img.btc-symbol-thumb-center {
 		  <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 	    </div>
 				
-		<div class="wrap-input100 validate-input bg1" data-validate="Please Enter Your Email">
+	<!-- 	<div class="wrap-input100 validate-input bg1" data-validate="Please Enter Your Email">
 	      <span class="label-input100">Email</span>
 	      <input class="input100" type="text" th:field="*{email}" id="email" placeholder="Enter Your Email">
 		  <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
 	    </div>    		    
+	 -->
 
         <div class="wrap-input100 input100-select bg1">
           <span class="label-input100">Quantity</span>
@@ -106,8 +107,8 @@ img.btc-symbol-thumb-center {
           <div class="qrcode-opp">All fields required before bitcoin payment qr-code will display</div>
         </span>
 
-        <div class="container-contact100-form-btn">
-          <img th:src="${walletid}">
+        <div class="qrcode">
+          <input type="Submit" value="Display QR-Code" />
         </div>
 
 <!-- // TODO add back in rate calculation -->
