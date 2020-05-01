@@ -46,18 +46,18 @@ public class MainController {
   public MainController() throws Exception {
   }
 
-  @GetMapping("/orderform")
-  public String displayOrderForm (Model model) throws Exception {
+  @GetMapping("/orderdetails")
+  public String getOrderDetails(Model model) throws Exception {
     walletService.monitorReceiveEvent(coinReceivedService);
     model.addAttribute("hitopOrder", new HitopOrder());
     model.addAttribute("walletid", qrCodeService.getQRCodeUrl(walletService.getSendToAddress()));
     // TODO: add back in to display dollar conversion
     // modelAndView.addObject("rate", String.format("%.9f", rateService.getUsdtoBtc(rateService.getBtcRate())));
-    return "order";
+    return "orderdetails";
   }
 
-  @PostMapping("/submit")
-  public String submitOrder(HitopOrder hitopOrder,
+  @PostMapping("/ordersubmit")
+  public String displayQR(HitopOrder hitopOrder,
       BindingResult result, Model model) throws Exception {
     System.out.println("11111111111");
     System.out.println("11111111111");
@@ -66,19 +66,22 @@ public class MainController {
     System.out.println("11111111111");
     
     if (result.hasErrors()) {
-      //TODO: originally per https://www.baeldung.com/spring-boot-crud-thymeleaf
-//      return "add-user";  
-      return "order";
+      return "orderdetails";
     }
     
-   // TODO: move this into QR-code callback orderServiceImpl.addNewOrder(hitopOrder);
-    // TODO: originally per https://www.baeldung.com/spring-boot-crud-thymeleaf
-//  userRepository.save(user);
-//  model.addAttribute("users", userRepository.findAll());
-//  return "index";
-    
+   // TODO: move below into QR-code callback
+    // orderServiceImpl.addNewOrder(hitopOrder);
     model.addAttribute(hitopOrder);
-    return "qrcode";
+    // TODO: call appropriate qrcode.html file based on stub/test/etc
+    // TODO: future refactor to be pluggable qrcode or stub button
+    return "qrcode-stub";
+  }
+  
+  @PostMapping("/receipt")
+  public String displayReceipt(HitopOrder hitopOrder,
+      BindingResult result, Model model) throws Exception {
+    model.addAttribute(hitopOrder);
+    return "receipt";
   }
 
   //TODO keep this but wrap it in security so only admin can call it

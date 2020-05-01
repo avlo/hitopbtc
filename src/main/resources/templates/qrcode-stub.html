@@ -62,9 +62,10 @@ img.btc-symbol-thumb-center {
 <body>
   <div class="container-contact100">
     <div class="wrap-contact100">
+      <form class="contact100-form validate-form" th:action="@{/receipt}" th:object="${hitopOrder}" method="post">
         <img src="/images/can_bong.png" alt="EVERYBODY CAN" class="canbong-center">
 
-        <span class="contact100-form-title">Hi-Top Bitcoin Order</span>
+        <span class="contact100-form-title">Stub Order</span>
 
         <span class="contact50-form-title">
           Please ensure below information correct before scanning QR Code
@@ -72,25 +73,21 @@ img.btc-symbol-thumb-center {
 
         <span th:text="${hitopOrder?.name}" />
 
-        <div class="container-contact100-form-btn">
-          <img th:src="${walletid}">
-        </div>
-
+        <span class="contact50-form-title">
+          <input type="Submit" value="Stubmode- fake a QR Call" />
+        </span>
 <!-- // TODO add back in rate calculation -->
 <!--<div class="container-contact100-form-btn">
           <img class="btc-symbol-thumb-center" src="/images/btc-currency-thumb.png">
           <span class="input101">0.0222222</span>
         </div>
          -->
+      </form>
     </div>
   </div>
 
   <!--===============================================================================================-->
-
-  <script data-th-src="@{/js/sse.js}"></script>
-  
-  <!--===============================================================================================-->
-
+  <!--  TODO: remove unnecessary javascript -->
   <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
   <script>
   $(document).ready(function() {
