@@ -62,6 +62,8 @@ public class MainController {
     System.out.println("11111111111");
     System.out.println("11111111111");
     System.out.println("11111111111");
+    System.out.println(hitopOrder.getName());
+    System.out.println("11111111111");
     
     if (result.hasErrors()) {
       //TODO: originally per https://www.baeldung.com/spring-boot-crud-thymeleaf
@@ -69,15 +71,14 @@ public class MainController {
       return "order";
     }
     
-    orderServiceImpl.addNewOrder(hitopOrder);
+   // TODO: move this into QR-code callback orderServiceImpl.addNewOrder(hitopOrder);
     // TODO: originally per https://www.baeldung.com/spring-boot-crud-thymeleaf
 //  userRepository.save(user);
 //  model.addAttribute("users", userRepository.findAll());
 //  return "index";
     
-    // TODO: return populated hitopOrder object to receipt page
-    
-    return "receipt";
+    model.addAttribute(hitopOrder);
+    return "qrcode";
   }
 
   //TODO keep this but wrap it in security so only admin can call it
