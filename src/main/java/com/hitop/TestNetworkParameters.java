@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("dev")
-public class DevNetworkParameters implements com.hitop.NetworkParameters {
-  final Logger logger = LoggerFactory.getLogger(DevNetworkParameters.class);
+@Profile("test")
+public class TestNetworkParameters implements com.hitop.NetworkParameters {
+  final Logger logger = LoggerFactory.getLogger(TestNetworkParameters.class);
   @Override
   public NetworkParameters getNetworkParameters() {
     logger.info("using {} network.", TestNet3Params.ID_TESTNET);

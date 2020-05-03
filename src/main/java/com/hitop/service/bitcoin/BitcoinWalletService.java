@@ -30,9 +30,20 @@ public class BitcoinWalletService implements WalletService {
       final @Value("${wallet.filename.prefix}") String filePrefix) throws Exception {
 
     this.params = params;
+    
+    System.out.println("***********");
+    System.out.println("***********");
+    System.out.println(params);
+    System.out.println("-----------");
+    System.out.println(filePrefix);
+    System.out.println("***********");
+    System.out.println("***********");
 
     // log output more compact and easily read, especially when using the JDK log adapter.
     BriefLogFormatter.init();
+    
+    System.out.println("11111111111");
+    System.out.println("11111111111");
 
     // Start up a basic app using a class that automates some boilerplate.
     kit = new WalletAppKit(params.getNetworkParameters(), new File("."), filePrefix) {
@@ -41,12 +52,20 @@ public class BitcoinWalletService implements WalletService {
         // TODO: use unconfirmed for now for expediency
         kit.wallet().allowSpendingUnconfirmedTransactions();
         logger.info("walletAppKit setup complete.");
+        System.out.println("55555555555");
+        System.out.println("55555555555");
       }
     };
 
+    System.out.println("22222222222");
+    System.out.println("22222222222");
     // Download the block chain and wait until it's done.
     kit.startAsync();
+    System.out.println("33333333333");
+    System.out.println("33333333333");
     kit.awaitRunning();
+    System.out.println("44444444444");
+    System.out.println("44444444444");
   }
 
   @Override

@@ -1,20 +1,15 @@
-function loadComments () {
+function registerSSEvent() {
 
   this.source = null;
 
   this.start = function () {
-    var commentTable = document.getElementById("comments");
-    this.source = new EventSource("/comment/stream");
+    var result = document.getElementById("result");
+    this.source = new EventSource("/receipt-sse");
     this.source.addEventListener("message", function (event) {
 
-  	  var comment = JSON.parse(event.data);
-  	
-	  var row = commentTable.getElementsByTagName("tbody")[0].insertRow(0);
-	  var cell0 = row.insertCell(0);
-	
-	  cell0.className = "date";
-	  cell0.innerHTML = comment.timestamp;
-    });
+    // These events are JSON, so parsing and DOM fiddling are needed
+    var parsedJson = JSON.parse(event.data);
+    result.innerHTML = parsedJson.name;
 
     this.source.onerror = function () {
       this.close();
@@ -26,15 +21,15 @@ function loadComments () {
   }
 }
 
-comment = new loadComments();
+comment = new registerSSEvent();
 
 /*
  * Register callbacks for starting and stopping the SSE controller.
  */
 window.onload = function() {
-  comment.start();
+  parsedJson.start();
 };
 
 window.onbeforeunload = function() {
-  comment.stop();
+  parsedJson.stop();
 }

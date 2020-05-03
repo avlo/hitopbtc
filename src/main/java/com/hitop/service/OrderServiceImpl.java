@@ -12,21 +12,13 @@ public class OrderServiceImpl {
   Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
   
   private final HitopOrderRepository hitopOrderRepository;
-  private final RateService rateService;
   
   @Autowired
-  public OrderServiceImpl(
-      final HitopOrderRepository hitopOrderRepository,
-      final RateService rateService) {
-    
+  public OrderServiceImpl(final HitopOrderRepository hitopOrderRepository) {
     this.hitopOrderRepository = hitopOrderRepository;
-    this.rateService = rateService;
   }
   
-  public HitopOrder addNewOrder(HitopOrder hitopOrder) {
-    Double rate = rateService.getBtcRate();  // TODO: should use rate sent to page
-    hitopOrder.setBtcRate(rate);
-    hitopOrder.setBtcUsdAmount(rateService.getUsdtoBtc(rate));
+  public HitopOrder save(HitopOrder hitopOrder) {
 //    order.setStatus(status);
     HitopOrder savedOrder = hitopOrderRepository.save(hitopOrder);
     String out = String.format("order %s saved to db.", savedOrder);

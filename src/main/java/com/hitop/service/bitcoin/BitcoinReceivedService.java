@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.MoreExecutors;
+import com.hitop.controller.ReceiptListener;
 import com.hitop.service.CoinReceivedService;
 import com.hitop.service.OrderServiceImpl;
 
@@ -28,6 +29,7 @@ public class BitcoinReceivedService implements CoinReceivedService {
   final Logger logger = LoggerFactory.getLogger(BitcoinReceivedService.class);
 
   private final File file;
+  private ReceiptListener receiptListener;
 
   @Autowired
   public BitcoinReceivedService(
@@ -35,6 +37,10 @@ public class BitcoinReceivedService implements CoinReceivedService {
       final @Value("${wallet.filename.prefix}") String filePrefix) {
     
     this.file = new File(filePrefix);
+  }
+  
+  public void addReceivedListener(ReceiptListener receiptListener) {
+    this.receiptListener = receiptListener;
   }
   
   @Override
@@ -84,12 +90,14 @@ public class BitcoinReceivedService implements CoinReceivedService {
         logger.info(val);
         // send user email notification of first confirmation received
       }
-
+      
       @Override
       public void onFailure(Throwable t) {
         // This kind of future can't fail, just rethrow in case something weird happens.
         throw new RuntimeException(t);
       }
     }, MoreExecutors.directExecutor());
+    
+    receiptListener.displayReceiptSse();
   }
 }

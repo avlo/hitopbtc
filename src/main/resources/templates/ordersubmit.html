@@ -73,8 +73,11 @@ img.btc-symbol-thumb-center {
         <span th:text="${hitopOrder?.name}" />
 
         <div class="container-contact100-form-btn">
-          <img th:src="${walletid}">
+          <img th:src="${hitopOrder?.btcPublicKey}">
         </div>
+        
+        <h1 id="result">
+        </h1>
 
 <!-- // TODO add back in rate calculation -->
 <!--<div class="container-contact100-form-btn">
