@@ -10,7 +10,8 @@ function registerSSEvent() {
     // These events are JSON, so parsing and DOM fiddling are needed
     var parsedJson = JSON.parse(event.data);
     result.innerHTML = parsedJson.name;
-
+    });
+    
     this.source.onerror = function () {
       this.close();
     };
@@ -28,7 +29,7 @@ comment = new registerSSEvent();
  */
 window.onload = function() {
   parsedJson.start();
-};
+}
 
 window.onbeforeunload = function() {
   parsedJson.stop();
