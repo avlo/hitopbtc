@@ -49,6 +49,9 @@ public class MainController implements ReceiptListener {
   @Autowired
   private HitopOrder hitopOrder;
 
+  @Autowired
+  private SseEmitter emitter;
+
   public MainController() throws Exception {
   }
 
@@ -67,12 +70,8 @@ public class MainController implements ReceiptListener {
   public String displayQR(HitopOrder hitopOrder,
       BindingResult result, Model model) throws Exception {
     hitopOrder.setBtcPublicKey(qrCodeService.getQRCodeUrl(walletService.getSendToAddress()));
-    System.out.println("11111111111");
-    System.out.println("11111111111");
-    System.out.println("11111111111");
     System.out.println(hitopOrder.getName());
     System.out.println(hitopOrder.getBtcPublicKey());
-    System.out.println("11111111111");
     
     // TODO: uncomment when errors are implemented
 //    if (result.hasErrors()) {
@@ -104,26 +103,28 @@ public class MainController implements ReceiptListener {
   }
   
   @GetMapping("/receipt-sse")
-  public SseEmitter displayReceiptSse() {
+  public SseEmitter setupSSEEmitter() {
     logger.info("333333333333333");
     logger.info("333333333333333");
     logger.info("333333333333333");
 
-    SseEmitter emitter = new SseEmitter();
-
+    return emitter;
+  }
+  
+  public void displayReceiptSse() {
     ExecutorService executor = Executors.newSingleThreadExecutor();
     executor.execute(() -> {
       try {
         SseEventBuilder event = SseEmitter.event()
-//            .data("{\"name\":\"" + hitopOrder.getName() + "\"}");
-              .data(hitopOrder);
+            .data("{\"name\":\"" + hitopOrder.getName() + " XXXXXXXXX\"}");
+        // TODO: use hitopOrder instead of above getter call
+//              .data(hitopOrder);
         emitter.send(event);
       } catch (Exception e) {
         emitter.completeWithError(e);
       }
     });
     executor.shutdown();
-    return emitter;
   }
 
   //TODO keep this but wrap it in security so only admin can call it

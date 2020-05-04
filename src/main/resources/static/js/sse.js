@@ -1,15 +1,8 @@
 function registerSSEvent() {
-
-  this.source = null;
-
   this.start = function () {
-    var result = document.getElementById("result");
     this.source = new EventSource("/receipt-sse");
     this.source.addEventListener("message", function (event) {
-
-    // These events are JSON, so parsing and DOM fiddling are needed
-    var parsedJson = JSON.parse(event.data);
-    result.innerHTML = parsedJson.name;
+      document.getElementById("result").innerHTML = JSON.parse(event.data).name;
     });
     
     this.source.onerror = function () {
@@ -22,15 +15,12 @@ function registerSSEvent() {
   }
 }
 
-comment = new registerSSEvent();
+registerSSEvent = new registerSSEvent();
 
-/*
- * Register callbacks for starting and stopping the SSE controller.
- */
 window.onload = function() {
-  parsedJson.start();
+  registerSSEvent.start();
 }
 
 window.onbeforeunload = function() {
-  parsedJson.stop();
+  registerSSEvent.stop();
 }

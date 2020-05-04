@@ -17,13 +17,7 @@
 <!--===============================================================================================-->
 <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
 <!--===============================================================================================-->
-<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
-<!--===============================================================================================-->
 <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-<!--===============================================================================================-->
-<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
-<!--===============================================================================================-->
-<link rel="stylesheet" type="text/css" href="vendor/noui/nouislider.min.css">
 <!--===============================================================================================-->
 <link rel="stylesheet" type="text/css" href="css/util.css">
 <link rel="stylesheet" type="text/css" href="css/main.css">
@@ -151,34 +145,6 @@ img.btc-symbol-thumb-center {
   </script>
   <!--===============================================================================================-->
   <script src="vendor/daterangepicker/moment.min.js"></script>
-  <script src="vendor/daterangepicker/daterangepicker.js"></script>
-  <!--===============================================================================================-->
-  <script src="vendor/countdowntime/countdowntime.js"></script>
-  <!--===============================================================================================-->
-  <script src="vendor/noui/nouislider.min.js"></script>
-  <script>
-  var filterBar = document.getElementById('filter-bar');
-
-  noUiSlider.create(filterBar, {
-    start : [ 1500, 3900 ],
-    connect : true,
-    range : {
-      'min' : 1500,
-      'max' : 7500
-    }
-  });
-
-  var skipValues = [ document.getElementById('value-lower'),
-      document.getElementById('value-upper') ];
-
-  filterBar.noUiSlider.on('update', function(values, handle) {
-    skipValues[handle].innerHTML = Math.round(values[handle]);
-    $('.contact100-form-range-value input[name="from-value"]').val(
-            $('#value-lower').html());
-    $('.contact100-form-range-value input[name="to-value"]').val(
-            $('#value-upper').html());
-  });
-  </script>
   <!--===============================================================================================-->
   <script src="js/main.js"></script>
 
