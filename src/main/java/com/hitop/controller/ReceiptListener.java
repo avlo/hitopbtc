@@ -1,7 +1,7 @@
 package com.hitop.controller;
 
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import com.hitop.entity.HitopOrder;
 
 public interface ReceiptListener {
-  void displayReceiptSse();
+  HitopOrder displayReceiptSse();
 }

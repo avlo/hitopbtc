@@ -50,6 +50,8 @@ public class MainController implements ReceiptListener {
   private HitopOrder hitopOrder;
   
   private SseEmitter emitter;
+  
+  ExecutorService executor = Executors.newCachedThreadPool();
 
   public MainController() throws Exception {
   }
@@ -82,7 +84,7 @@ public class MainController implements ReceiptListener {
     model.addAttribute(hitopOrder);
     // TODO: call appropriate ordersubmit.html file based on stub/test/etc
     // TODO: future refactor to be pluggable qrcode or stub button
-    return "ordersubmit-stub";
+    return "ordersubmit";
   }
   
   @GetMapping("/receipt")
@@ -106,15 +108,14 @@ public class MainController implements ReceiptListener {
     logger.info("333333333333333");
     logger.info("333333333333333");
     
-    emitter = new SseEmitter();
-    return emitter;
+    this.emitter = new SseEmitter(60000l);
+    System.out.println(this.emitter.toString());
+    return this.emitter;
   }
 
-  @GetMapping("/fakeevent")
-  public void displayReceiptSse() {
+  public HitopOrder displayReceiptSse() {
     logger.info("444444444444444");
     logger.info("444444444444444");
-    ExecutorService executor = Executors.newSingleThreadExecutor();
     executor.execute(() -> {
       try {
         logger.info("aaaaaaaaaaaaaa");
@@ -123,15 +124,20 @@ public class MainController implements ReceiptListener {
         // TODO: use hitopOrder instead of above getter call
 //              .data(hitopOrder);
         logger.info("bbbbbbbbbbbbbbb");
-        emitter.send(event);
+        System.out.println("*** EMITTER" + this.emitter.toString());
+        this.emitter.send(event);
+        this.emitter.complete();
         logger.info("cccccccccccccc");
       } catch (Exception e) {
-        emitter.completeWithError(e);
+        logger.info("dddddddddddddd");
+        logger.info("##### STACK" + e.toString());
+        this.emitter.completeWithError(e);
       }
     });
     executor.shutdown();
     logger.info("555555555555555");
     logger.info("555555555555555");
+    return hitopOrder;
   }
 
   //TODO keep this but wrap it in security so only admin can call it
