@@ -18,11 +18,15 @@ public class StubReceivedService implements CoinReceivedService {
   
   @Override
   public void onCoinsReceived(Wallet wallet, Transaction tx, Coin prevBalance, Coin newBalance) {
+    System.out.println("CCCCCCCCCCCCC");
     receiptListener.displayReceiptSse();
+    System.out.println("DDDDDDDDDDDDD");
   }
   
   public void addReceivedListener(ReceiptListener receiptListener) {
+    System.out.println("AAAAAAAAAAAAAAA");
     this.receiptListener = receiptListener;
+    System.out.println("BBBBBBBBBBBBBB");
   }
 
 }

@@ -69,7 +69,7 @@ public class BitcoinWalletService implements WalletService {
   }
 
   @Override
-  public void monitorReceiveEvent(final WalletCoinsReceivedEventListener listener) throws Exception {
+  public void addCoinsReceivedEventListener(final WalletCoinsReceivedEventListener listener) throws Exception {
     kit.wallet().addCoinsReceivedEventListener(listener);
   }
 

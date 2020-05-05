@@ -30,16 +30,16 @@ public class MainController implements ReceiptListener {
   // TODO: enterprise version, refactor into OrderReposity and inject HitopOrderRepo on the fly
   @Autowired
   private HitopOrderRepository hitopOrderRepository;
-
+  
   @Autowired
   private WalletService walletService;
-
+  
   @Autowired
   private CoinReceivedService coinReceivedService;
-
+  
   @Autowired
   private QRCodeService qrCodeService;
-
+  
   @Autowired
   private RateService rateService;
   
@@ -48,8 +48,7 @@ public class MainController implements ReceiptListener {
   
   @Autowired
   private HitopOrder hitopOrder;
-
-  @Autowired
+  
   private SseEmitter emitter;
 
   public MainController() throws Exception {
@@ -57,8 +56,8 @@ public class MainController implements ReceiptListener {
 
   @GetMapping("/orderdetails")
   public String getOrderDetails(Model model) throws Exception {
+    walletService.addCoinsReceivedEventListener(coinReceivedService);
     coinReceivedService.addReceivedListener(this);
-    walletService.monitorReceiveEvent(coinReceivedService);
 //      hitopOrder.setRateService.getUsdtoBtc(rateService.getBtcRate())));
     model.addAttribute("hitopOrder", hitopOrder);
     // TODO: add above hitopOrder to html as formula to display dollar conversion
@@ -83,10 +82,9 @@ public class MainController implements ReceiptListener {
     model.addAttribute(hitopOrder);
     // TODO: call appropriate ordersubmit.html file based on stub/test/etc
     // TODO: future refactor to be pluggable qrcode or stub button
-    return "ordersubmit";
+    return "ordersubmit-stub";
   }
   
-  // SSE Callback method, to be setup in ordersubmit.html
   @GetMapping("/receipt")
   public String displayReceipt(Model model) throws Exception {
     model.addAttribute(hitopOrder);
@@ -107,24 +105,33 @@ public class MainController implements ReceiptListener {
     logger.info("333333333333333");
     logger.info("333333333333333");
     logger.info("333333333333333");
-
+    
+    emitter = new SseEmitter();
     return emitter;
   }
-  
+
+  @GetMapping("/fakeevent")
   public void displayReceiptSse() {
+    logger.info("444444444444444");
+    logger.info("444444444444444");
     ExecutorService executor = Executors.newSingleThreadExecutor();
     executor.execute(() -> {
       try {
+        logger.info("aaaaaaaaaaaaaa");
         SseEventBuilder event = SseEmitter.event()
             .data("{\"name\":\"" + hitopOrder.getName() + " XXXXXXXXX\"}");
         // TODO: use hitopOrder instead of above getter call
 //              .data(hitopOrder);
+        logger.info("bbbbbbbbbbbbbbb");
         emitter.send(event);
+        logger.info("cccccccccccccc");
       } catch (Exception e) {
         emitter.completeWithError(e);
       }
     });
     executor.shutdown();
+    logger.info("555555555555555");
+    logger.info("555555555555555");
   }
 
   //TODO keep this but wrap it in security so only admin can call it

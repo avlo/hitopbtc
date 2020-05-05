@@ -15,11 +15,13 @@ import com.hitop.service.WalletService;
 public class StubWalletService implements WalletService {
   final Logger logger = LoggerFactory.getLogger(StubWalletService.class);
   
+  private StubReceivedService stubReceivedService;
+  
   public StubWalletService()  { }
 
   @Override
-  public void monitorReceiveEvent(final WalletCoinsReceivedEventListener listener) throws Exception {
-    // do nothing
+  public void addCoinsReceivedEventListener(final WalletCoinsReceivedEventListener listener) throws Exception {
+    
   }
 
   @Override

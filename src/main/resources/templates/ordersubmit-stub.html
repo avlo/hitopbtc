@@ -62,7 +62,6 @@ img.btc-symbol-thumb-center {
 <body>
   <div class="container-contact100">
     <div class="wrap-contact100">
-      <form class="contact100-form validate-form" th:action="@{/receipt}" th:object="${hitopOrder}" method="post">
         <img src="/images/can_bong.png" alt="EVERYBODY CAN" class="canbong-center">
 
         <span class="contact100-form-title">Stub Order</span>
@@ -73,12 +72,12 @@ img.btc-symbol-thumb-center {
 
         <span th:text="${hitopOrder?.name}"></span>
 
-        <span class="contact50-form-title">
-          <input type="Submit" value="Stubmode - fake QR Call" />
-        </span>
-      </form>
+        <button onclick="window.location.href='http://localhost:8080/fakeevent';">Simulate QR Call</button>
     </div>
   </div>
+  <!--===============================================================================================-->
+
+  <script data-th-src="@{/js/sse.js}"></script>
 
   <!--===============================================================================================-->
   <!--  TODO: remove unnecessary javascript -->
