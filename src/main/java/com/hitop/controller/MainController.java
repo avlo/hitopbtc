@@ -66,13 +66,10 @@ public class MainController implements ReceiptListener {
     return "orderdetails";
   }
 
-  // just displays stuff for user before purchase
   @PostMapping("/ordersubmit")
   public String displayQR(HitopOrder hitopOrder,
       BindingResult result, Model model) throws Exception {
     hitopOrder.setBtcPublicKey(qrCodeService.getQRCodeUrl(walletService.getSendToAddress()));
-    System.out.println(hitopOrder.getName());
-    System.out.println(hitopOrder.getBtcPublicKey());
     
     // TODO: uncomment when errors are implemented
 //    if (result.hasErrors()) {
@@ -89,54 +86,31 @@ public class MainController implements ReceiptListener {
   
   @GetMapping("/receipt")
   public String displayReceipt(Model model) throws Exception {
-    model.addAttribute(hitopOrder);
-    
-    orderServiceImpl.save(hitopOrder);
-    
-    System.out.println("22222222222");
-    System.out.println("22222222222");
-    System.out.println("22222222222");
-    System.out.println(hitopOrder.getName());
-    System.out.println("22222222222");
-    
+    model.addAttribute(orderServiceImpl.save(hitopOrder));
     return "receipt";
   }
   
   @GetMapping("/receipt-sse")
   public SseEmitter setupSSEEmitter() {
-    logger.info("333333333333333");
-    logger.info("333333333333333");
-    logger.info("333333333333333");
-    
     this.emitter = new SseEmitter(60000l);
-    System.out.println(this.emitter.toString());
     return this.emitter;
   }
 
   public HitopOrder displayReceiptSse() {
-    logger.info("444444444444444");
-    logger.info("444444444444444");
     executor.execute(() -> {
       try {
-        logger.info("aaaaaaaaaaaaaa");
         SseEventBuilder event = SseEmitter.event()
             .data("{\"name\":\"" + hitopOrder.getName() + " XXXXXXXXX\"}");
         // TODO: use hitopOrder instead of above getter call
 //              .data(hitopOrder);
-        logger.info("bbbbbbbbbbbbbbb");
-        System.out.println("*** EMITTER" + this.emitter.toString());
         this.emitter.send(event);
         this.emitter.complete();
-        logger.info("cccccccccccccc");
       } catch (Exception e) {
-        logger.info("dddddddddddddd");
-        logger.info("##### STACK" + e.toString());
+        logger.info("##### EMITTER EXCEPTION: " + e.toString());
         this.emitter.completeWithError(e);
       }
     });
     executor.shutdown();
-    logger.info("555555555555555");
-    logger.info("555555555555555");
     return hitopOrder;
   }
 
