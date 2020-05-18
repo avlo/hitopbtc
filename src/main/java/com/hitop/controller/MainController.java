@@ -70,7 +70,10 @@ public class MainController implements ReceiptListener {
   public String displayQR(HitopOrder hitopOrder,
       BindingResult result, Model model) throws Exception {
     hitopOrder.setBtcPublicKey(qrCodeService.getQRCodeUrl(walletService.getSendToAddress()));
-    
+    this.hitopOrder = hitopOrder;
+    System.out.println("11111111111111");
+    System.out.println("11111111111111");
+    System.out.println(this.hitopOrder.getName() + "\n\n");
     // TODO: uncomment when errors are implemented
 //    if (result.hasErrors()) {
 //      return "orderdetails";

@@ -2,6 +2,7 @@ monitor-service-testnet
 monitor-service-testnet.spvchain
 monitor-service-testnet.wallet
 .gradle/
+.sts4-cache/
 hitop-001.pem
 mysqlpwd
 target/
