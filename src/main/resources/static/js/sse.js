@@ -2,6 +2,7 @@ function registerSSEvent() {
   this.start = function () {
     this.source = new EventSource("/receipt-sse");
     this.source.addEventListener("message", function (event) {
+      $(".container-contact100-form-btn").hide();
       document.getElementById("result").innerHTML = JSON.parse(event.data).name;
     });
     

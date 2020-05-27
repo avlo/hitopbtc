@@ -95,7 +95,7 @@ public class MainController implements ReceiptListener {
   
   @GetMapping("/receipt-sse")
   public SseEmitter setupSSEEmitter() {
-    this.emitter = new SseEmitter(60000l);
+    this.emitter = new SseEmitter(1200000l);
     return this.emitter;
   }
 
@@ -103,7 +103,7 @@ public class MainController implements ReceiptListener {
     executor.execute(() -> {
       try {
         SseEventBuilder event = SseEmitter.event()
-            .data("{\"name\":\"" + hitopOrder.getName() + " XXXXXXXXX\"}");
+            .data("{\"name\":\"" + hitopOrder.getName());
         // TODO: use hitopOrder instead of above getter call
 //              .data(hitopOrder);
         this.emitter.send(event);
