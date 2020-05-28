@@ -27,7 +27,7 @@ import com.hitop.service.WalletService;
 public class MainController implements ReceiptListener {
   final Logger logger = LoggerFactory.getLogger(MainController.class);
 
-  // TODO: enterprise version, refactor into OrderReposity and inject HitopOrderRepo on the fly
+  // TODO 85: enterprise version, refactor into OrderReposity and inject HitopOrderRepo on the fly
   @Autowired
   private HitopOrderRepository hitopOrderRepository;
   
@@ -62,7 +62,7 @@ public class MainController implements ReceiptListener {
     coinReceivedService.addReceivedListener(this);
 //      hitopOrder.setRateService.getUsdtoBtc(rateService.getBtcRate())));
     model.addAttribute("hitopOrder", hitopOrder);
-    // TODO: add above hitopOrder to html as formula to display dollar conversion
+    // TODO 30 : add above hitopOrder to html as formula to display dollar conversion
     return "orderdetails";
   }
 
@@ -74,16 +74,15 @@ public class MainController implements ReceiptListener {
     System.out.println("11111111111111");
     System.out.println("11111111111111");
     System.out.println(this.hitopOrder.getName() + "\n\n");
-    // TODO: uncomment when errors are implemented
+    // TODO 90: uncomment when errors are implemented
 //    if (result.hasErrors()) {
 //      return "orderdetails";
 //    }
     
-   // TODO: move below into QR-code callback
+   // TODO 20: move below into QR-code callback
     // orderServiceImpl.addNewOrder(hitopOrder);
     model.addAttribute(hitopOrder);
-    // TODO: call appropriate ordersubmit.html file based on stub/test/etc
-    // TODO: future refactor to be pluggable qrcode or stub button
+    // TODO 70 : call appropriate ordersubmit.html file based on stub/test/etc
     return "ordersubmit";
   }
   
@@ -104,8 +103,8 @@ public class MainController implements ReceiptListener {
       try {
         SseEventBuilder event = SseEmitter.event()
             .data("{\"name\":\"" + hitopOrder.getName());
-        // TODO: use hitopOrder instead of above getter call
-//              .data(hitopOrder);
+        // TODO 95: use hitopOrder instead of above getter call.  is this even doable when using SseEmitter?
+        //       .data(hitopOrder);
         this.emitter.send(event);
         this.emitter.complete();
       } catch (Exception e) {
@@ -117,7 +116,7 @@ public class MainController implements ReceiptListener {
     return hitopOrder;
   }
 
-  //TODO keep this but wrap it in security so only admin can call it
+  //TODO 50 keep this but wrap it in security so only admin can call it
   @GetMapping(path="/allordershitop")
   public @ResponseBody Iterable<HitopOrder> getAllOrders() {
     // This returns a JSON or XML with the users

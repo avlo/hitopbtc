@@ -59,7 +59,7 @@ public class BitcoinReceivedService implements CoinReceivedService {
       e.printStackTrace();
     }
 
-    // TODO: orderService here should probably be more generic (listener/etc) and
+    // TODO 20a: orderService here should probably be more generic (listener/etc) and
     // also transactional- relocated into callback, below or try/catch above
 //    orderServiceImpl.addNewOrder();
 
@@ -78,7 +78,7 @@ public class BitcoinReceivedService implements CoinReceivedService {
     Futures.addCallback(tx.getConfidence().getDepthFuture(1), new FutureCallback<TransactionConfidence>() {
       @Override
       public void onSuccess(TransactionConfidence result) {
-        // TODO: this notification arrives ~5min after above "onCoinsReceived" event arrives.
+        // TODO 40 : this notification arrives ~5min after above "onCoinsReceived" event arrives.
         // it's the equivalent of single block confirmation, we can use this to update it's DB state
         final String crlf = System.getProperty("line.separator");
         final String val = crlf + 

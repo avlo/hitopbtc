@@ -46,7 +46,7 @@ public class BitcoinWalletService implements WalletService {
     kit = new WalletAppKit(params.getNetworkParameters(), new File("."), filePrefix) {
       @Override
       protected void onSetupCompleted() {
-        // TODO: use unconfirmed for now for expediency
+        // TODO 60: use unconfirmed for now for expediency
         kit.wallet().allowSpendingUnconfirmedTransactions();
         logger.info("walletAppKit setup complete.");
       }
