@@ -49,6 +49,7 @@ public class MainController implements ReceiptListener {
   @Autowired
   private HitopOrder hitopOrder;
   
+  @Autowired
   private SseEmitter emitter;
   
   ExecutorService executor = Executors.newCachedThreadPool();
@@ -86,8 +87,6 @@ public class MainController implements ReceiptListener {
   
   @GetMapping("/receipt-sse")
   public SseEmitter setupSSEEmitter() {
-    // TODO: do bean
-    this.emitter = new SseEmitter(1200000l);
     return this.emitter;
   }
 
