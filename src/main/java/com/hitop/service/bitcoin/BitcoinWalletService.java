@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import com.hitop.NetworkParameters;
+import com.hitop.service.WalletFile;
 import com.hitop.service.WalletService;
 
 @Service
@@ -25,17 +26,16 @@ public class BitcoinWalletService implements WalletService {
   private final NetworkParameters params;
   
   @Autowired
-  public BitcoinWalletService(
-      final NetworkParameters params,
-      final @Value("${wallet.filename.prefix}") String filePrefix) throws Exception {
-
+  public BitcoinWalletService(final NetworkParameters params, WalletFile walletFile) throws Exception {
     this.params = params;
+    
+    logger.info(walletFile.toString());
     
     System.out.println("***********");
     System.out.println("***********");
     System.out.println(params);
     System.out.println("-----------");
-    System.out.println(filePrefix);
+    System.out.println(walletFile.getFilePrefix());
     System.out.println("***********");
     System.out.println("***********");
 
@@ -43,7 +43,7 @@ public class BitcoinWalletService implements WalletService {
     BriefLogFormatter.init();
     
     // Start up a basic app using a class that automates some boilerplate.
-    kit = new WalletAppKit(params.getNetworkParameters(), new File("."), filePrefix) {
+    kit = new WalletAppKit(params.getNetworkParameters(), new File("."), walletFile.getFilePrefix()) {
       @Override
       protected void onSetupCompleted() {
         // TODO 60: use unconfirmed for now for expediency

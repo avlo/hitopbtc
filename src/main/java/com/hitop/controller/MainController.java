@@ -59,7 +59,6 @@ public class MainController implements ReceiptListener {
   @GetMapping("/orderdetails")
   public String getOrderDetails(Model model) throws Exception {
     walletService.addCoinsReceivedEventListener(coinReceivedService);
-    coinReceivedService.addReceivedListener(this);
 //      hitopOrder.setRateService.getUsdtoBtc(rateService.getBtcRate())));
     model.addAttribute("hitopOrder", hitopOrder);
     // TODO 30 : add above hitopOrder to html as formula to display dollar conversion
@@ -71,7 +70,7 @@ public class MainController implements ReceiptListener {
       BindingResult result, Model model) throws Exception {
     // TODO: Move to service
     this.hitopOrder = hitopOrder;
-    this.hitopOrder.setBtcPublicKey(walletService.getSendToAddress());
+    this.hitopOrder.setBtcPublicKey(qrCodeService.getQRCodeUrl(walletService.getSendToAddress()));
     System.out.println("11111111111111");
     System.out.println("11111111111111");
     System.out.println(this.hitopOrder.getName() + "\n\n");

@@ -8,6 +8,5 @@ import com.hitop.controller.ReceiptListener;
 
 
 public interface CoinReceivedService extends WalletCoinsReceivedEventListener {
-
   void onCoinsReceived(Wallet wallet, Transaction tx, Coin prevBalance, Coin newBalance);
-  void addReceivedListener(ReceiptListener receiptListener);}
+}
