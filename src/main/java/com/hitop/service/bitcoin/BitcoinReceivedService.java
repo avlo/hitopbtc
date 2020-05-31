@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import com.hitop.controller.ReceiptListener;
 import com.hitop.service.CoinReceivedService;
-import com.hitop.service.WalletFile;
 
 @Service
 @ConditionalOnProperty(
