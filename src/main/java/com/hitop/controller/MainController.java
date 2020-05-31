@@ -52,8 +52,6 @@ public class MainController implements ReceiptListener {
   @Autowired
   private SseEmitter emitter;
   
-  ExecutorService executor = Executors.newCachedThreadPool();
-
   public MainController() throws Exception {
   }
 
@@ -69,7 +67,7 @@ public class MainController implements ReceiptListener {
   @PostMapping("/ordersubmit")
   public String displayQR(HitopOrder hitopOrder,
       BindingResult result, Model model) throws Exception {
-    // TODO: Move to service
+    // TODO: fix below, seems hacky
     this.hitopOrder = hitopOrder;
     this.hitopOrder.setBtcPublicKey(qrCodeService.getQRCodeUrl(walletService.getSendToAddress()));
     System.out.println("11111111111111");
@@ -92,12 +90,14 @@ public class MainController implements ReceiptListener {
 
   public HitopOrder displayReceiptSse() {
     HitopOrder order = orderServiceImpl.save(hitopOrder);
+    // TODO: is below newCachedThreadPool() the correct method to use?
+    ExecutorService executor = Executors.newCachedThreadPool();
     executor.execute(() -> {
       try {
         SseEventBuilder event = SseEmitter.event()
             .data("{\"name\":\"" + order.getName());
-        // TODO 95: use hitopOrder instead of above getter call.  is this even doable when using SseEmitter?
-        //       .data(hitopOrder);
+        //  .data("{\"email\":\"" + order.getEmail());
+        //   etc
         this.emitter.send(event);
         this.emitter.complete();
       } catch (Exception e) {
