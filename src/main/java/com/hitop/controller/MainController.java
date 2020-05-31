@@ -69,8 +69,9 @@ public class MainController implements ReceiptListener {
   @PostMapping("/ordersubmit")
   public String displayQR(HitopOrder hitopOrder,
       BindingResult result, Model model) throws Exception {
-    hitopOrder.setBtcPublicKey(qrCodeService.getQRCodeUrl(walletService.getSendToAddress()));
+    // TODO: Move to service
     this.hitopOrder = hitopOrder;
+    this.hitopOrder.setBtcPublicKey(walletService.getSendToAddress());
     System.out.println("11111111111111");
     System.out.println("11111111111111");
     System.out.println(this.hitopOrder.getName() + "\n\n");
@@ -79,30 +80,24 @@ public class MainController implements ReceiptListener {
 //      return "orderdetails";
 //    }
     
-   // TODO 20: move below into QR-code callback
-    // orderServiceImpl.addNewOrder(hitopOrder);
-    model.addAttribute(hitopOrder);
+    model.addAttribute(this.hitopOrder);
     // TODO 70 : call appropriate ordersubmit.html file based on stub/test/etc
     return "ordersubmit";
   }
   
-  @GetMapping("/receipt")
-  public String displayReceipt(Model model) throws Exception {
-    model.addAttribute(orderServiceImpl.save(hitopOrder));
-    return "receipt";
-  }
-  
   @GetMapping("/receipt-sse")
   public SseEmitter setupSSEEmitter() {
+    // TODO: do bean
     this.emitter = new SseEmitter(1200000l);
     return this.emitter;
   }
 
   public HitopOrder displayReceiptSse() {
+    HitopOrder order = orderServiceImpl.save(hitopOrder);
     executor.execute(() -> {
       try {
         SseEventBuilder event = SseEmitter.event()
-            .data("{\"name\":\"" + hitopOrder.getName());
+            .data("{\"name\":\"" + order.getName());
         // TODO 95: use hitopOrder instead of above getter call.  is this even doable when using SseEmitter?
         //       .data(hitopOrder);
         this.emitter.send(event);

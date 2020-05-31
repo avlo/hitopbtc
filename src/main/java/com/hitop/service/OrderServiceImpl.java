@@ -20,6 +20,9 @@ public class OrderServiceImpl {
   
   public HitopOrder save(HitopOrder hitopOrder) {
 //    order.setStatus(status);
+    System.out.println("222222222222222");
+    System.out.println("222222222222222");
+    System.out.println("222222222222222");
     HitopOrder savedOrder = hitopOrderRepository.save(hitopOrder);
     String out = String.format("order %s saved to db.", savedOrder);
     logger.info(out);
@@ -28,3 +31,4 @@ public class OrderServiceImpl {
     return savedOrder;
   }
 }
+

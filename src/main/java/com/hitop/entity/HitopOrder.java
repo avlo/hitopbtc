@@ -15,7 +15,7 @@ public class HitopOrder {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     private String name;
-    private String email;
+//    private String email;
 //    private String address;
 //    private String city;
 //    private String state;
@@ -26,8 +26,8 @@ public class HitopOrder {
     private String btcPublicKey;
     
 //    private String btcTransaction;
-    private Double btcRate;
-    private Double btcUsdAmount;
+//    private Double btcRate;
+//    private Double btcUsdAmount;
     
 //    private Integer status;
 }

@@ -48,6 +48,19 @@ public class BitcoinReceivedService implements CoinReceivedService {
       final Coin prevBalance, 
       final Coin newBalance) {
 
+    saveToFile(wallet);
+
+    logger.info("Received tx for {} : {}", tx.getValueSentToMe(wallet).toFriendlyString(), tx);
+    logger.info("new value: {}", wallet.getBalance().getValue());
+    logger.info("---");
+    logger.info("coin prev balance : {}", prevBalance.toFriendlyString());
+    logger.info("coin new balance : {}", newBalance.toFriendlyString());
+
+    addCallback(tx);
+    receiptListener.displayReceiptSse();
+  }
+  
+  private void saveToFile(final Wallet wallet) {
     // Runs in the dedicated "user thread" (see bitcoinj docs for more info on this).
     // The transaction "tx" can either be pending, or included into a block (we didn't see the broadcast).
     try {
@@ -58,17 +71,9 @@ public class BitcoinReceivedService implements CoinReceivedService {
       logger.info("{} save FAILED", file.toString());
       e.printStackTrace();
     }
+  }
 
-    // TODO 20a: orderService here should probably be more generic (listener/etc) and
-    // also transactional- relocated into callback, below or try/catch above
-//    orderServiceImpl.addNewOrder();
-
-    Coin value = tx.getValueSentToMe(wallet);
-    logger.info("Received tx for {} : {}", value.toFriendlyString(), tx);
-    logger.info("new value: {}", wallet.getBalance().getValue());
-    logger.info("---");
-    logger.info("coin prev balance : {}", prevBalance.toFriendlyString());
-    logger.info("coin new balance : {}", newBalance.toFriendlyString());
+  private void addCallback(final Transaction tx) {
     // Wait until it's made it into the block chain (may run immediately if it's already there).
     //
     // For this dummy app of course, we could just forward the unconfirmed transaction. If it were
@@ -95,7 +100,5 @@ public class BitcoinReceivedService implements CoinReceivedService {
         throw new RuntimeException(t);
       }
     }, MoreExecutors.directExecutor());
-    
-    receiptListener.displayReceiptSse();
   }
 }
