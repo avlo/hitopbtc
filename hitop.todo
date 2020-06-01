@@ -1,0 +1,144 @@
+steps:
+    1. user opens hitoplids.com
+    2. user clicks "bitcoin buy" button
+    3. form displays w/ qr code
+    4. user phone scans qr code and sends money
+    5. payment received page displays w/ all user data
+
+hitop:
+  ✔ upload hitop homepage image to aws index.html @done (19-07-22 10:25)
+  ✔ upload any version of webapp & test on aws @done (19-07-22 10:25)
+  ✔ write webapp with following functions: @done (19-07-22 10:25)
+    ✔ displays home page @done (19-07-22 10:24)
+    ✔ get homepage graphics & content setup @done (19-07-22 10:24)
+    ☐ database persistence
+      ☐ validate persistence
+  ☐ currency conversion to btc in properties file
+     ✔ ($7.99 + $1.25) / BTC-to-USD-API 
+ ☐ DB considerations
+   ☐ commit transaction
+     thymeleaf fragments
+     jquery document ready function
+   ☐ H2 for local
+   ☐ mysql for docker
+  ☐ BTC considerations:
+    ☐ QR amount validation
+      ✔ display HD-wallet pay-to address and BTC (&dollar) amount on our screen @done (19-08-02 16:09)
+      ☐ display HD-wallet pay-to address + copy to clipboard iconn
+        segwit a consideration?
+        xpub / ypub diff?
+          xpub = HD wallet's extended public key
+            view into wallet (transactions, addresses, balances)
+          ypub = same as xpub but including segwit
+        diff between xpub and public key and BTC address?
+          xpub/ypub pertains to wallet
+          wallets contain addresses
+          btc addresses and public key are same thing
+      ✔ client scans QR code w/ phone @done (19-08-02 16:09)
+      ✔ display HD-wallet pay-to address and BTC amount on user screen @done (19-06-04 18:52)
+      2N4w3eQNyy8aqEZvsGsiTHBnzqhMXknDnvo (segwit compatible P2SH)
+      tb1qnww6cve2pvk67tnnn69yl3ngkw3zmmpvurydl7 (segwit native bech32)
+      muY29NwHhvdiTM3Li9Zf9cayQE8P9U817e (legacy p2pkh)
+        // my trezor wallet pubid: 3CgPT2pkhNauj3MXGas8RbLmPqkyUVKSEr
+        https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=bitcoin:3CgPT2pkhNauj3MXGas8RbLmPqkyUVKSEr?amount=0.0008630
+        // working sample
+        https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=bitcoin:1ArmoryXcfq7TnCSuZa9fQjRYwJ4bkRKfv?amount=0.005
+      ✔ once callback occurs, validate amount & display "transaction completed" to user @done (19-08-02 16:09)
+    ☐ validate transaction
+      ☐ secure api transaction: https://code.tutsplus.com/tutorials/adding-bitcoin-payment-processing-to-your-website--net-33098
+      ☐ serious pre-validation/post-validation watching wallet checking
+    ✔ QR callback @done (20-05-31 12:09)
+      ✔ payment to QR code causes blockchain event to occur.  CoinReceivedService listens for that event then calls MainController sendEvent() which calls emitter.send(data @done (20-05-31 12:09)
+  ☐ Lightning network
+  ☐ UI & backend validate btc transaction completed
+    ✘ display btc amount & price math on screen for users & QR code embedding my address and btc value they'll need to send. @cancelled (19-06-04 18:57)
+    ☐ @started once snail mail form is completed, display receipt
+    ☐ once BTC code is scanned/copied/registered on blockchain
+      ☐ http post event is submitted to db
+      ☐ backend service makes call to USPS, buys stamp and generates shipping label, which itself is either:
+        ☐ emailed to me
+        ☐ pushed to db table
+        ☐ other?
+  ✔ sign up aws @done (19-06-04 19:38)
+  ✔ register domain @done (19-06-04 19:38)
+  ✔ register dns @done (19-06-04 19:38)
+  ☐ go through boxes and set shit up
+  ☐ SEO google
+  ☐ facebook/instagram ad campaign
+  ☐ on 3 confirmations, switch state to confirmed and send email to user
+  ☐ add timeout clock on buy screen
+  ☐ validate correct BTC amount sent (and properly saved in db)
+  ☐ for cellphone users, add BTC address under QRcode with copy/paste button
+
+~~~~~~~~~~~~~~~~ KNOWN DEFICIENCIES / NEEDS
+
+ ☐ testnet does not put coins back into testnet faucet
+ ☐ cannot do two orders back to back
+   might be issue w/ reusing hitopOrder object in mainController
+   browser console shows javascript errors:
+       DevTools failed to load SourceMap: Could not load content for http://localhost:8080/vendor/bootstrap/js/popper.js.map: HTTP error: status code 404, net::ERR_HTTP_RESPONSE_CODE_FAILURE
+
+       receipt-sse:1 GET http://localhost:8080/receipt-sse net::ERR_INCOMPLETE_CHUNKED_ENCODING 20
+ ☐ server console gets lots of stacktraces
+ ☐ dev mode can't hot deploy
+ ☐ needs TDD / unit tests
+ 
+ ☐ server errors occur, see what console displays after
+   1min
+     swallow typical/expected:
+     [ioClientManager] org.bitcoinj.net.NioClientManager        : Failed to connect with exception: java.nio.channels.ClosedChannelException: null
+     java.nio.channels.ClosedChannelException: null
+
+org.bitcoinj.net.NioClientManager Failed to connect with exception ClosedChannelException null
+
+   5min
+   10min
+   30min
+
+~~~~~~~~~~~~~~~~  REQUIRED OUTPUT
+
+2020-03-18 11:57:37.492  INFO 8660 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2020-03-18 11:57:38.277  INFO 8660 --- [  restartedMain] com.hitop.DevNetworkParameters           : using org.bitcoin.test network.
+2020-03-18 11:57:39.430  INFO 8660 --- [       STARTING] com.hitop.service.WalletService          : walletAppKit setup complete.
+
+
+2020-03-18 11:58:59.366  WARN 8660 --- [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-03-18 11:58:59.651  INFO 8660 --- [  restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-03-18 11:58:59.850  INFO 8660 --- [  restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
+2020-03-18 11:59:00.927  INFO 8660 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2020-03-18 11:59:00.938  INFO 8660 --- [  restartedMain] com.hitop.Application                    : Started Application in 96.466 seconds (JVM running for 98.827)
+2020-03-18 12:00:53.847  INFO 8660 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-03-18 12:00:53.849  INFO 8660 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-03-18 12:00:53.876  INFO 8660 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 27 ms
+
+
+
+2020-03-18 12:01:05.043  INFO 8660 --- [nio-8080-exec-5] com.hitop.service.QRCodeService          : Send coins to: mk3HU6pm5MQQZWRrB9Mwv862u8ekxHEK7s 
+2020-03-18 12:01:05.044  INFO 8660 --- [nio-8080-exec-5] com.hitop.service.QRCodeService          : QR-Code URL: https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=bitcoin:mk3HU6pm5MQQZWRrB9Mwv862u8ekxHEK7s?amount=0.000027732
+2020-03-18 12:01:05.044  INFO 8660 --- [nio-8080-exec-5] com.hitop.service.QRCodeService          : Waiting for coins to arrive. Press Ctrl-C to quit.
+
+~~~~~~~~~
+
+bitpay pass: ir0n.ma!d3N
+
+order:
+  ☐ id
+  ☐ firstname
+  ☐ lastname
+  ☐ street address & apt#, or PO box
+  ☐ city
+  ☐ state
+  ☐ zip
+  ☐ email address
+  ☐ btc HD public key that payment was sent to
+  ☐ btc xaction #
+  ☐ status
+
+status:
+  ☐ ordered
+  ☐ label printed
+  ☐ mailed
+  ☐ delivered
+  ☐ returned
+  ☐ failure
+  
