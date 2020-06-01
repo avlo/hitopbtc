@@ -49,7 +49,6 @@ public class MainController implements ReceiptListener {
   @Autowired
   private HitopOrder hitopOrder;
   
-  @Autowired
   private SseEmitter emitter;
   
   public MainController() throws Exception {
@@ -85,13 +84,17 @@ public class MainController implements ReceiptListener {
   
   @GetMapping("/receipt-sse")
   public SseEmitter setupSSEEmitter() {
+    this.emitter = new SseEmitter(1200000l);
+    System.out.println("55555555555");
+    System.out.println("55555555555");
+    System.out.println("NEW EMITTER");
     return this.emitter;
   }
 
   public HitopOrder displayReceiptSse() {
     HitopOrder order = orderServiceImpl.save(hitopOrder);
     // TODO: is below newCachedThreadPool() the correct method to use?
-    ExecutorService executor = Executors.newCachedThreadPool();
+    ExecutorService executor = Executors.newSingleThreadExecutor(); // Executors.newCachedThreadPool();
     executor.execute(() -> {
       try {
         SseEventBuilder event = SseEmitter.event()
