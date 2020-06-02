@@ -23,7 +23,7 @@ public class FuturesCallback {
     // case of waiting for a block.
     Futures.addCallback(tx.getConfidence().getDepthFuture(1), new FutureCallback<TransactionConfidence>() {
       @Override
-      public void onSuccess(TransactionConfidence result) {
+      public void onSuccess(final TransactionConfidence result) {
         // TODO 40 : this notification arrives ~5min after above "onCoinsReceived" event arrives.
         // it's the equivalent of single block confirmation, we can use this to update it's DB state
         final String crlf = System.getProperty("line.separator");

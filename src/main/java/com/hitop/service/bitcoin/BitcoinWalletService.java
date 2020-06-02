@@ -26,7 +26,7 @@ public class BitcoinWalletService implements WalletService {
   private final NetworkParameters params;
   
   @Autowired
-  public BitcoinWalletService(final NetworkParameters params, WalletFile walletFile) throws Exception {
+  public BitcoinWalletService(final NetworkParameters params, final WalletFile walletFile) throws Exception {
     this.params = params;
     
     logger.info(walletFile.toString());

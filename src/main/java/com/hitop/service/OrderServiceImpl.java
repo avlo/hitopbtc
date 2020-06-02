@@ -18,7 +18,7 @@ public class OrderServiceImpl {
     this.orderRepository = orderRepository;
   }
   
-  public PurchaseOrder save(PurchaseOrder order) {
+  public PurchaseOrder save(final PurchaseOrder order) {
     PurchaseOrder savedOrder = orderRepository.save(order);
     logger.info(String.format("order %s saved to db.", savedOrder));
     return savedOrder;

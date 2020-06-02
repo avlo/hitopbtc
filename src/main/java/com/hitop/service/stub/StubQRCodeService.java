@@ -11,7 +11,7 @@ import com.hitop.service.QRCodeService;
 public class StubQRCodeService implements QRCodeService {
 
   @Override
-  public String getQRCodeUrl(String sendToAddress) {
+  public String getQRCodeUrl(final String sendToAddress) {
     return "STUB QR CODE URL";
   }
 }
