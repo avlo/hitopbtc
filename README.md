@@ -1,7 +1,7 @@
-# hitopBPG (hitop Bitcoin Payment Gateway)
+# HiTopBPG (HiTop Bitcoin Payment Gateway)
 
 ### overview
-hitopBPG is a completely self-contained Bitcoin Payment Gateway web-application and framework.  it's completely self contained- uses *no custodial or third party wallet/blockchain services* (outside of exchange rate and QR code generation).  it has been specifically built with all business logic & wallet custodianship completely within the application itself.
+HiTopBPG is a completely self-contained Bitcoin Payment Gateway web-application and framework. It uses no custodial or third party wallet/blockchain services (excluding exchange rate conversion and QR code generation). It has been specifically built with all business logic, bitcoin transaction logic & wallet custodianship completely within the application itself.
 
 ### motivation
 after having been denied payment gateway services by paypal and others and not finding an existing, open-source, free, self-custodial bitcoin service with the features i wanted, i decided to build my own.  it's intended to be a simple (two page) webapplication with bitcoin transaction engine and user-custodian'd wallet underneath.  
@@ -57,7 +57,7 @@ indicating application is ready for use (by default, on bitcoin testnet).  any b
 
 ### eclipse/intellij developers
 
-hitopBPG uses project lombok annotations.  run the following command from project root prior to IDE startup to properly configure either IDE for lombok usage.
+HiTopBPG uses project lombok annotations.  run the following command from project root prior to IDE startup to properly configure either IDE for lombok usage.
 
 ```
 $ java -jar lib/lombok.jar
@@ -72,15 +72,15 @@ and follow steps as indicated
 
 ### application state
 ##### current functionality
-- as of this writing, hitop currently can complete a full bitcoin payment transaction on the bitcoin test network.  - configuration exists to run on bitcoin main network, but hasn't been run there (yet).
+- as of this writing, HiTopBPG currently can complete a full bitcoin payment transaction on the bitcoin test network.  - configuration exists to run on bitcoin main network, but hasn't been run there (yet).
 - uses HD wallet with newly generated child keys for each order
 - currency abstraction layer.  currently supports bitcoin, but API/interface exists for (any) currency extension.
 - graphic images completely customizable via application.properties file
 ##### known limitations / bugs
+- for ease of user testing, all but two entity bean fields (name and btcaddress) have been commented out.  users can uncomment remaining fields and include them in controller logic & html/thymeleaf template as needed
 - no unit tests, bad developer... but they're coming (i know, TDD...)
-- html/javascript ~50% culled to remove unneccary libs.  more cleanup there coming soon.
-- no javadoc yet, hopefully there's sufficiently good OO design here that nobody trips up on what's happening and where.
+- html/javascript/css ~50% culled to remove unneccary libs.  more cleanup there coming soon.
+- no javadoc yet, but in the meanwhile hopefully sufficient OO design of understanding what's going on and where.
 - non-show stopping TODO's annotated in various places throughout codebase. 
 - Dockerfile / modular framework pending (currently, docker isn't necessary to run application as-is)
-- various other "non-show-stopping" idiosyncrasies
-
+- various other "non-show-stopping" minutia, to be addressed moving forward
