@@ -70,6 +70,7 @@ hitop:
   ☐ validate correct BTC amount sent (and properly saved in db)
   ☐ for cellphone users, add BTC address under QRcode with copy/paste button
   ☐ deploy to DO and run (w/o transactoin) just to see if webserver is always up
+  ☐ make generic / not hitop specific
 
 ~~~~~~~~~~~~~~~~ KNOWN PROD DEFICIENCIES / NEEDS
  ☐ back to back orders work, however throws SseEmitterResponse emitter complete exception.

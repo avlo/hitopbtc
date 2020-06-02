@@ -1,7 +1,7 @@
 package com.hitop.controller;
 
-import com.hitop.entity.HitopOrder;
+import com.hitop.entity.PurchaseOrder;
 
 public interface ReceiptListener {
-  HitopOrder displayReceiptSse();
+  PurchaseOrder displayReceiptSse();
 }

@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 import lombok.Data;
 
 @Data
-@Entity // This tells Hibernate to make a table out of this class
+@Entity
 @Component
-public class HitopOrder {
+public class PurchaseOrder {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;

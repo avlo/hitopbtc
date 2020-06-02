@@ -64,10 +64,10 @@ img.btc-symbol-thumb-center {
           Please ensure below information correct before scanning QR Code
         </span>
 
-        <span th:text="${hitopOrder?.name}" />
+        <span th:text="${order?.name}" />
 
         <div class="container-contact100-form-btn">
-          <img th:src="${hitopOrder?.btcPublicKey}">
+          <img th:src="${order?.btcPublicKey}">
         </div>
         
         <p id="name"></p>

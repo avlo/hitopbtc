@@ -19,23 +19,23 @@ public class BitcoinQRCodeService implements QRCodeService {
   
   @Qualifier("bitcoinRateService")
   private RateService bitcoinRateService;
-  private final String bitcoinDigitFormat;
+  private final String decimalPrecision;
   private final String qrUrl;
   
   @Autowired
   public BitcoinQRCodeService(
       final RateService bitcoinRateService,
-      final @Value("${bitcoinformat}") String bitcoinDigitFormat,
+      final @Value("${decimalprecision}") String decimalPrecision,
       final @Value("${qrurl}") String qrUrl) {
     
     this.bitcoinRateService = bitcoinRateService;
-    this.bitcoinDigitFormat = bitcoinDigitFormat;
+    this.decimalPrecision = decimalPrecision;
     this.qrUrl = qrUrl;
   }
   
   @Override
   public String getQRCodeUrl(final String sendToAddress) {
-    String btcValue = String.format(bitcoinDigitFormat, bitcoinRateService.getUsdtoBtc(bitcoinRateService.getBtcRate()));
+    String btcValue = String.format(decimalPrecision, bitcoinRateService.getUsdtoBtc(bitcoinRateService.getBtcRate()));
     String qrCodeUrl = String.format(qrUrl, sendToAddress, btcValue);
 
     logger.info("Send coins to: {} ", sendToAddress);

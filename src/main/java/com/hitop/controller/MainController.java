@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter.SseEventBuilder;
-import com.hitop.entity.HitopOrder;
-import com.hitop.repository.HitopOrderRepository;
+import com.hitop.entity.PurchaseOrder;
+import com.hitop.repository.OrderRepository;
 import com.hitop.service.CoinReceivedService;
 import com.hitop.service.OrderServiceImpl;
 import com.hitop.service.QRCodeService;
@@ -27,9 +27,8 @@ import com.hitop.service.WalletService;
 public class MainController implements ReceiptListener {
   final Logger logger = LoggerFactory.getLogger(MainController.class);
 
-  // TODO 85: enterprise version, refactor into OrderReposity and inject HitopOrderRepo on the fly
   @Autowired
-  private HitopOrderRepository hitopOrderRepository;
+  private OrderRepository orderRepository;
   
   @Autowired
   private WalletService walletService;
@@ -47,37 +46,32 @@ public class MainController implements ReceiptListener {
   private OrderServiceImpl orderServiceImpl;
   
   @Autowired
-  private HitopOrder hitopOrder;
+  private PurchaseOrder purchaseOrder;
   
   private SseEmitter emitter;
   
-  public MainController() throws Exception {
-  }
-
   @GetMapping("/orderdetails")
-  public String getOrderDetails(Model model) throws Exception {
+  public String getOrderDetails(final Model model) throws Exception {
     walletService.addCoinsReceivedEventListener(coinReceivedService);
-//      hitopOrder.setRateService.getUsdtoBtc(rateService.getBtcRate())));
-    model.addAttribute("hitopOrder", hitopOrder);
-    // TODO 30 : add above hitopOrder to html as formula to display dollar conversion
+//      order.setRateService.getUsdtoBtc(rateService.getBtcRate())));
+    model.addAttribute("order", this.purchaseOrder);
+    // TODO 30 : add above order to html as formula to display dollar conversion
     return "orderdetails";
   }
 
   @PostMapping("/ordersubmit")
-  public String displayQR(HitopOrder hitopOrder,
-      BindingResult result, Model model) throws Exception {
+  public String displayQR(final PurchaseOrder order,
+      final BindingResult result, final Model model) throws Exception {
     // TODO: fix below, seems hacky
-    this.hitopOrder = hitopOrder;
-    this.hitopOrder.setBtcPublicKey(qrCodeService.getQRCodeUrl(walletService.getSendToAddress()));
-    System.out.println("11111111111111");
-    System.out.println("11111111111111");
-    System.out.println(this.hitopOrder.getName() + "\n\n");
+    this.purchaseOrder = order;
+    this.purchaseOrder.setBtcPublicKey(qrCodeService.getQRCodeUrl(walletService.getSendToAddress()));
+    System.out.println(this.purchaseOrder.getName() + "\n\n");
     // TODO 90: uncomment when errors are implemented
 //    if (result.hasErrors()) {
 //      return "orderdetails";
 //    }
     
-    model.addAttribute(this.hitopOrder);
+    model.addAttribute(this.purchaseOrder);
     // TODO 70 : call appropriate ordersubmit.html file based on stub/test/etc
     return "ordersubmit";
   }
@@ -85,15 +79,12 @@ public class MainController implements ReceiptListener {
   @GetMapping("/receipt-sse")
   public SseEmitter setupSSEEmitter() {
     this.emitter = new SseEmitter(1200000l);
-    System.out.println("55555555555");
-    System.out.println("55555555555");
-    System.out.println("NEW EMITTER");
     return this.emitter;
   }
 
-  public HitopOrder displayReceiptSse() {
-    HitopOrder order = orderServiceImpl.save(hitopOrder);
-    // TODO: is below newCachedThreadPool() the correct method to use?
+  public PurchaseOrder displayReceiptSse() {
+    PurchaseOrder order = orderServiceImpl.save(this.purchaseOrder);
+    // TODO: is below newSingleThreadExecutor() the correct method to use?
     ExecutorService executor = Executors.newSingleThreadExecutor(); // Executors.newCachedThreadPool();
     executor.execute(() -> {
       try {
@@ -109,13 +100,13 @@ public class MainController implements ReceiptListener {
       }
     });
     executor.shutdown();
-    return hitopOrder;
+    return order;
   }
 
   //TODO 50 keep this but wrap it in security so only admin can call it
   @GetMapping(path="/allordershitop")
-  public @ResponseBody Iterable<HitopOrder> getAllOrders() {
-    // This returns a JSON or XML with the users
-    return hitopOrderRepository.findAll();
+  public @ResponseBody Iterable<PurchaseOrder> getAllOrders() {
+    // This returns JSON w/ all orders
+    return orderRepository.findAll();
   }
 }
