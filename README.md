@@ -73,14 +73,14 @@ and follow steps as indicated
 ### application state
 ##### current functionality
 - as of this writing, HiTopBPG currently can complete a full bitcoin payment transaction on the bitcoin test network.  - configuration exists to run on bitcoin main network, but hasn't been run there (yet).
-- uses HD wallet with newly generated child keys for each order
+- uses HD wallet with newly generated child key for each order
 - currency abstraction layer.  currently supports bitcoin, but API/interface exists for (any) currency extension.
 - graphic images completely customizable via application.properties file
 ##### known limitations / bugs
 - for ease of user testing, all but two entity bean fields (name and btcaddress) have been commented out.  users can uncomment remaining fields and include them in controller logic & html/thymeleaf template as needed
 - no unit tests, bad developer... but they're coming (i know, TDD...)
 - html/javascript/css ~50% culled to remove unneccary libs.  more cleanup there coming soon.
-- no javadoc yet, but in the meanwhile hopefully sufficient OO design of understanding what's going on and where.
+- no javadoc yet, but in the meanwhile (hopefully sufficient) OO design for developer ease of understanding what's going on and where.
 - non-show stopping TODO's annotated in various places throughout codebase. 
 - Dockerfile / modular framework pending (currently, docker isn't necessary to run application as-is)
 - various other "non-show-stopping" minutia, to be addressed moving forward
