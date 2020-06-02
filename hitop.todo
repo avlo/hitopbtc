@@ -69,25 +69,28 @@ hitop:
   ☐ add timeout clock on buy screen
   ☐ validate correct BTC amount sent (and properly saved in db)
   ☐ for cellphone users, add BTC address under QRcode with copy/paste button
+  ☐ deploy to DO and run (w/o transactoin) just to see if webserver is always up
 
-~~~~~~~~~~~~~~~~ KNOWN DEFICIENCIES / NEEDS
-
- ☐ testnet does not put coins back into testnet faucet
- ☐ cannot do two orders back to back
-   might be issue w/ reusing hitopOrder object in mainController
+~~~~~~~~~~~~~~~~ KNOWN PROD DEFICIENCIES / NEEDS
+ ☐ back to back orders work, however throws SseEmitterResponse emitter complete exception.
+   have tried creating new SseEmitter each time, but that didn't work.  atm, not a show stopper
    browser console shows javascript errors:
        DevTools failed to load SourceMap: Could not load content for http://localhost:8080/vendor/bootstrap/js/popper.js.map: HTTP error: status code 404, net::ERR_HTTP_RESPONSE_CODE_FAILURE
 
        receipt-sse:1 GET http://localhost:8080/receipt-sse net::ERR_INCOMPLETE_CHUNKED_ENCODING 20
  ☐ server console gets lots of stacktraces
- ☐ dev mode can't hot deploy
- ☐ needs TDD / unit tests
- 
- ☐ server errors occur, see what console displays after
+ ☐ ongoing/continuous server error, not show stopper
    1min
      swallow typical/expected:
      [ioClientManager] org.bitcoinj.net.NioClientManager        : Failed to connect with exception: java.nio.channels.ClosedChannelException: null
      java.nio.channels.ClosedChannelException: null
+
+~~~~~~~~~~~~~~~~ KNOWN TEST DEFICIENCIES / NEEDS
+ ☐ no unit tests (bad dev, not doing TDD)
+ ☐ testnet does not put coins back into testnet faucet
+
+~~~~~~~~~~~~~~~~ KNOWN DEV DEFICIENCIES / NEEDS
+☐ dev mode hot deploy throwing stacktrace on walletService
 
 org.bitcoinj.net.NioClientManager Failed to connect with exception ClosedChannelException null
 
