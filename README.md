@@ -68,7 +68,7 @@ and follow steps as indicated
 ### ethos
 - open source to download, modify, customize, fork and deploy as you like.
 - encourage usage and contribution by others in the community, new features & PR's (pull requests) very much welcome and appreciated.
-- seeking those interested to help grow, improve framework  in the usual/celebrated open source spirit.
+- seeking those interested to help grow, improve framework  in the usual/celebrated open source (GPL 2.0) spirit.
 
 ### application state
 ##### current functionality
