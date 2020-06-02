@@ -66,9 +66,9 @@ $ java -jar lib/lombok.jar
 and follow steps as indicated
 
 ### ethos
-- open source to download, modify, customize, fork and deploy as you like.
-- encourage usage and contribution by others in the community, new features & PR's (pull requests) very much welcome and appreciated.
-- seeking those interested to help grow, improve framework  in the usual/celebrated open source (GPL 2.0) spirit.
+- open source to download, modify, customize, fork and deploy as you like.  licenced under Apache Software Foundation LICENSE-2.0
+- i encourage usage and contribution by others in the community, new features & PR's (pull requests) very much welcome and appreciated.
+- seeking those interested to help grow, improve framework in the usual/celebrated open source ASF/2.0 spirit.
 
 ### application state
 ##### current functionality
@@ -84,3 +84,7 @@ and follow steps as indicated
 - non-show stopping TODO's annotated in various places throughout codebase. 
 - Dockerfile / modular framework pending (currently, docker isn't necessary to run application as-is)
 - various other "non-show-stopping" minutia, to be addressed moving forward
+##### next items on deck, in order:
+1. unit tests / functional test
+2. general cleanup
+3. lightning network support
