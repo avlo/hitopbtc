@@ -3,6 +3,9 @@
 ### overview
 hitopBPG is a completely self-contained Bitcoin Payment Gateway web-application and framework.  it's completely self contained- uses *no custodial or third party wallet/blockchain services* (outside of exchange rate and QR code generation).  it has been specifically built with all business logic & wallet custodianship completely within the application itself.
 
+### motivation
+after having been denied payment gateway services by paypal and others and not finding an existing, open-source, free, self-custodial bitcoin service with the features i wanted, i decided to build my own.  it's intended to be a simple (two page) webapplication with bitcoin transaction engine and user-custodian'd wallet underneath.  
+
 ### tools used
 as of this writing: 
 - JAVA 1.9
@@ -71,11 +74,13 @@ and follow steps as indicated
 ##### current functionality
 - as of this writing, hitop currently can complete a full bitcoin payment transaction on the bitcoin test network.  - configuration exists to run on bitcoin main network, but hasn't been run there (yet).
 - uses HD wallet with newly generated child keys for each order
+- currency abstraction layer.  currently supports bitcoin, but API/interface exists for (any) currency extension.
 - graphic images completely customizable via application.properties file
 ##### known limitations / bugs
 - no unit tests, bad developer... but they're coming (i know, TDD...)
 - html/javascript ~50% culled to remove unneccary libs.  more cleanup there coming soon.
 - no javadoc yet, hopefully there's sufficiently good OO design here that nobody trips up on what's happening and where.
+- non-show stopping TODO's annotated in various places throughout codebase. 
 - Dockerfile / modular framework pending (currently, docker isn't necessary to run application as-is)
 - various other "non-show-stopping" idiosyncrasies
 
