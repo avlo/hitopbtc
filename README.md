@@ -23,6 +23,7 @@ to install certificate into your application.
 
 ### customization instructions
 * in file `src/main/resources/application.properties`, update  ```productname``` value to be your product name.
+* in file `src/main/resources/application.properties`, update  ```unit.price.usd``` value to be your product price in USD.
 * save your index page image as `src/main/resources/public/images/index.jpg`
 * save your order page image as `src/main/resources/public/images/order.jpg`
 ### build instructions
