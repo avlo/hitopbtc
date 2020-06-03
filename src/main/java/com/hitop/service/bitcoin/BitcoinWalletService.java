@@ -27,7 +27,6 @@ import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import com.hitop.NetworkParameters;
@@ -50,13 +49,13 @@ public class BitcoinWalletService implements WalletService {
     
     logger.info(walletFile.toString());
     
-    System.out.println("***********");
-    System.out.println("***********");
-    System.out.println(params);
-    System.out.println("-----------");
-    System.out.println(walletFile.getFilePrefix());
-    System.out.println("***********");
-    System.out.println("***********");
+    logger.debug("***********");
+    logger.debug("***********");
+    logger.debug(params.toString());
+    logger.debug("-----------");
+    logger.debug(walletFile.getFilePrefix());
+    logger.debug("***********");
+    logger.debug("***********");
 
     // log output more compact and easily read, especially when using the JDK log adapter.
     BriefLogFormatter.init();
