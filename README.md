@@ -20,6 +20,11 @@ uses 3rd party service to fetch current exchange rate.  currently configured (vi
 $ keytool -import -trustcacerts -file </location/of/downloaded/bitpay.cer> -alias <any_alias> -keystore </location/of/java/lib/security/cacerts>
 ```
 to install certificate into your application.
+
+### customization instructions
+* in file `src/main/resources/application.properties`, update  ```productname``` value to be your product name.
+* save your index page image as `src/main/resources/public/images/index.jpg`
+* save your order page image as `src/main/resources/public/images/order.jpg`
 ### build instructions
 to build web-app, run command:
 ```
