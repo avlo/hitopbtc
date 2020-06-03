@@ -24,6 +24,7 @@ import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -71,12 +72,19 @@ public class MainController implements ReceiptListener {
   
   private SseEmitter emitter;
   
+  private final String productName;
+  
+  public MainController(final @Value("${productname}") String productName) {
+    this.productName = productName;
+  }
+  
   @GetMapping("/orderdetails")
   public String getOrderDetails(final Model model) throws Exception {
     walletService.addCoinsReceivedEventListener(coinReceivedService);
     //TODO: add below for displaying current bitcoin rate to UI
 //    order.setRateService.getUsdtoBtc(rateService.getBtcRate())));
     model.addAttribute("order", this.purchaseOrder);
+    model.addAttribute("productname", this.productName);
     return "orderdetails";
   }
 
@@ -93,6 +101,7 @@ public class MainController implements ReceiptListener {
 //    }
     
     model.addAttribute("order", this.purchaseOrder);
+    model.addAttribute("productname", this.productName);
     // TODO 70 : call appropriate ordersubmit.html file based on stub/test/etc
     return "ordersubmit";
   }

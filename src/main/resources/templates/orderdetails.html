@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-<title>Hi-Top Order</title>
+<title th:text="${productname}"> Order</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->
@@ -65,7 +65,7 @@ img.btc-symbol-thumb-center {
       <form class="contact100-form validate-form" th:action="@{/ordersubmit}" th:object="${order}" method="post">
         <img src="/images/can_bong.png" alt="EVERYBODY CAN" class="canbong-center">
 
-        <span class="contact100-form-title">Hi-Top Order</span>
+        <span class="contact100-form-title"><label th:text="${productname}"></label> Order</span>
 
         <span class="contact50-form-title">
           <div class="qrcode-opp">All fields required before bitcoin payment qr-code will display</div>
