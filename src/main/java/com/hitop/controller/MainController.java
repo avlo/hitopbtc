@@ -78,6 +78,12 @@ public class MainController implements ReceiptListener {
     this.productName = productName;
   }
   
+  @GetMapping("/")
+  public String getIndexHtml(final Model model) throws Exception {
+    model.addAttribute("productname", this.productName);
+    return "index";
+  }
+  
   @GetMapping("/orderdetails")
   public String getOrderDetails(final Model model) throws Exception {
     walletService.addCoinsReceivedEventListener(coinReceivedService);
