@@ -45,6 +45,8 @@ import com.hitop.service.WalletService;
 @RequestMapping(path="/")
 public class MainController implements ReceiptListener {
   final Logger logger = LoggerFactory.getLogger(MainController.class);
+  
+  final static long SSE_EMITTER_TIMEOUT = 1200000l;
 
   @Autowired
   private OrderRepository orderRepository;
@@ -72,19 +74,17 @@ public class MainController implements ReceiptListener {
   @GetMapping("/orderdetails")
   public String getOrderDetails(final Model model) throws Exception {
     walletService.addCoinsReceivedEventListener(coinReceivedService);
-//      order.setRateService.getUsdtoBtc(rateService.getBtcRate())));
     model.addAttribute("order", this.purchaseOrder);
-    // TODO 30 : add above order to html as formula to display dollar conversion
     return "orderdetails";
   }
 
   @PostMapping("/ordersubmit")
   public String displayQR(final PurchaseOrder order,
       final BindingResult result, final Model model) throws Exception {
-    // TODO: fix below, seems hacky
+    // TODO: fix below two lines, seems hacky
     this.purchaseOrder = order;
     this.purchaseOrder.setBtcPublicKey(qrCodeService.getQRCodeUrl(walletService.getSendToAddress()));
-    System.out.println(this.purchaseOrder.getName() + "\n\n");
+    logger.debug(this.purchaseOrder.getName());
     // TODO 90: uncomment when errors are implemented
 //    if (result.hasErrors()) {
 //      return "orderdetails";
@@ -97,7 +97,7 @@ public class MainController implements ReceiptListener {
   
   @GetMapping("/receipt-sse")
   public SseEmitter setupSSEEmitter() {
-    this.emitter = new SseEmitter(1200000l);
+    this.emitter = new SseEmitter(SSE_EMITTER_TIMEOUT);
     return this.emitter;
   }
 
@@ -125,7 +125,6 @@ public class MainController implements ReceiptListener {
   //TODO 50 keep this but wrap it in security so only admin can call it
   @GetMapping(path="/allordershitop")
   public @ResponseBody Iterable<PurchaseOrder> getAllOrders() {
-    // This returns JSON w/ all orders
     return orderRepository.findAll();
   }
 }
