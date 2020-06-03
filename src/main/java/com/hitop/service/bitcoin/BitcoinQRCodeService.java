@@ -34,10 +34,10 @@ import com.hitop.service.RateService;
     name = "spring.profiles.active", 
     havingValue = "test")
 public class BitcoinQRCodeService implements QRCodeService {
-  final Logger logger = LoggerFactory.getLogger(BitcoinQRCodeService.class);
+  private final static Logger log = LoggerFactory.getLogger(BitcoinQRCodeService.class);
   
   @Qualifier("bitcoinRateService")
-  private RateService bitcoinRateService;
+  private final RateService bitcoinRateService;
   private final String decimalPrecision;
   private final String qrUrl;
   
@@ -57,9 +57,9 @@ public class BitcoinQRCodeService implements QRCodeService {
     String btcValue = String.format(decimalPrecision, bitcoinRateService.getUsdtoBtc(bitcoinRateService.getBtcRate()));
     String qrCodeUrl = String.format(qrUrl, sendToAddress, btcValue);
 
-    logger.info("Send coins to: {} ", sendToAddress);
-    logger.info("QR-Code URL: {}", qrCodeUrl);
-    logger.info("Waiting for coins to arrive. Press Ctrl-C to quit.");
+    log.info("Send coins to: {} ", sendToAddress);
+    log.info("QR-Code URL: {}", qrCodeUrl);
+    log.info("Waiting for coins to arrive. Press Ctrl-C to quit.");
 
     return qrCodeUrl;
   }

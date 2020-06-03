@@ -35,7 +35,7 @@ import com.hitop.service.CoinReceivedService;
     name = "spring.profiles.active", 
     havingValue = "test")
 public class BitcoinReceivedService implements CoinReceivedService {
-  final Logger logger = LoggerFactory.getLogger(BitcoinReceivedService.class);
+  private final static Logger log = LoggerFactory.getLogger(BitcoinReceivedService.class);
 
   private final BitcoinWalletFile walletFile;
   private final ReceiptListener receiptListener;
@@ -57,11 +57,11 @@ public class BitcoinReceivedService implements CoinReceivedService {
 
     walletFile.saveToFile(wallet);
 
-    logger.info("Received tx for {} : {}", tx.getValueSentToMe(wallet).toFriendlyString(), tx);
-    logger.info("new value: {}", wallet.getBalance().getValue());
-    logger.info("---");
-    logger.info("coin prev balance : {}", prevBalance.toFriendlyString());
-    logger.info("coin new balance : {}", newBalance.toFriendlyString());
+    log.info("Received tx for {} : {}", tx.getValueSentToMe(wallet).toFriendlyString(), tx);
+    log.info("new value: {}", wallet.getBalance().getValue());
+    log.info("---");
+    log.info("coin prev balance : {}", prevBalance.toFriendlyString());
+    log.info("coin new balance : {}", newBalance.toFriendlyString());
 
     futuresCallback.addCallback(tx);
     receiptListener.displayReceiptSse();

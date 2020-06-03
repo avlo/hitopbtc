@@ -44,7 +44,7 @@ import com.hitop.service.WalletService;
 @Controller
 @RequestMapping(path="/")
 public class MainController implements ReceiptListener {
-  final Logger logger = LoggerFactory.getLogger(MainController.class);
+  private final static Logger log = LoggerFactory.getLogger(MainController.class);
   
   final static long SSE_EMITTER_TIMEOUT = 1200000l;
 
@@ -74,6 +74,8 @@ public class MainController implements ReceiptListener {
   @GetMapping("/orderdetails")
   public String getOrderDetails(final Model model) throws Exception {
     walletService.addCoinsReceivedEventListener(coinReceivedService);
+    //TODO: add below for displaying current bitcoin rate to UI
+//    order.setRateService.getUsdtoBtc(rateService.getBtcRate())));
     model.addAttribute("order", this.purchaseOrder);
     return "orderdetails";
   }
@@ -84,13 +86,13 @@ public class MainController implements ReceiptListener {
     // TODO: fix below two lines, seems hacky
     this.purchaseOrder = order;
     this.purchaseOrder.setBtcPublicKey(qrCodeService.getQRCodeUrl(walletService.getSendToAddress()));
-    logger.debug(this.purchaseOrder.getName());
+    log.debug(this.purchaseOrder.getName());
     // TODO 90: uncomment when errors are implemented
 //    if (result.hasErrors()) {
 //      return "orderdetails";
 //    }
     
-    model.addAttribute(this.purchaseOrder);
+    model.addAttribute("order", this.purchaseOrder);
     // TODO 70 : call appropriate ordersubmit.html file based on stub/test/etc
     return "ordersubmit";
   }
@@ -114,7 +116,7 @@ public class MainController implements ReceiptListener {
         this.emitter.send(event);
         this.emitter.complete();
       } catch (Exception e) {
-        logger.info("##### EMITTER EXCEPTION: " + e.toString());
+        log.info("##### EMITTER EXCEPTION: " + e.toString());
         this.emitter.completeWithError(e);
       }
     });

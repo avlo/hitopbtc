@@ -28,7 +28,7 @@ import com.hitop.repository.OrderRepository;
 
 @Service
 public class OrderServiceImpl {
-  Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
+  Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
   
   private final OrderRepository orderRepository;
   
@@ -39,7 +39,7 @@ public class OrderServiceImpl {
   
   public PurchaseOrder save(final PurchaseOrder order) {
     PurchaseOrder savedOrder = orderRepository.save(order);
-    logger.info(String.format("order %s saved to db.", savedOrder));
+    log.info(String.format("order %s saved to db.", savedOrder));
     return savedOrder;
   }
 }

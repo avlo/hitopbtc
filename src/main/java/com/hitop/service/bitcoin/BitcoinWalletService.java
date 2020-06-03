@@ -38,7 +38,7 @@ import com.hitop.service.WalletService;
     name = "spring.profiles.active", 
     havingValue = "test")
 public class BitcoinWalletService implements WalletService {
-  final Logger logger = LoggerFactory.getLogger(BitcoinWalletService.class);
+  private final static Logger log = LoggerFactory.getLogger(BitcoinWalletService.class);
   
   private final WalletAppKit kit;
   private final NetworkParameters params;
@@ -47,15 +47,15 @@ public class BitcoinWalletService implements WalletService {
   public BitcoinWalletService(final NetworkParameters params, final WalletFile walletFile) throws Exception {
     this.params = params;
     
-    logger.info(walletFile.toString());
+    log.info(walletFile.toString());
     
-    logger.debug("***********");
-    logger.debug("***********");
-    logger.debug(params.toString());
-    logger.debug("-----------");
-    logger.debug(walletFile.getFilePrefix());
-    logger.debug("***********");
-    logger.debug("***********");
+    log.debug("***********");
+    log.debug("***********");
+    log.debug(params.toString());
+    log.debug("-----------");
+    log.debug(walletFile.getFilePrefix());
+    log.debug("***********");
+    log.debug("***********");
 
     // log output more compact and easily read, especially when using the JDK log adapter.
     BriefLogFormatter.init();
@@ -66,7 +66,7 @@ public class BitcoinWalletService implements WalletService {
       protected void onSetupCompleted() {
         // TODO 60: use unconfirmed for now for expediency
         kit.wallet().allowSpendingUnconfirmedTransactions();
-        logger.info("walletAppKit setup complete.");
+        log.info("walletAppKit setup complete.");
       }
     };
 

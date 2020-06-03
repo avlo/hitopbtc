@@ -31,7 +31,7 @@ import com.hitop.service.WalletService;
     name = "spring.profiles.active", 
     havingValue = "dev")
 public class StubWalletService implements WalletService {
-  final Logger logger = LoggerFactory.getLogger(StubWalletService.class);
+  private final static Logger log = LoggerFactory.getLogger(StubWalletService.class);
   
   private StubReceivedService stubReceivedService;
   

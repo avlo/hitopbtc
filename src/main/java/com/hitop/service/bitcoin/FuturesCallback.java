@@ -30,10 +30,10 @@ import com.google.common.util.concurrent.MoreExecutors;
 
 @Component
 public class FuturesCallback {
-  final Logger logger = LoggerFactory.getLogger(FuturesCallback.class);
+  private final static Logger log = LoggerFactory.getLogger(FuturesCallback.class);
 
   public void addCallback(final Transaction tx) {
-    logger.info("entered FuturesCallback");
+    log.info("entered FuturesCallback");
     // Wait until it's made it into the block chain (may run immediately if it's already there).
     //
     // For this dummy app of course, we could just forward the unconfirmed transaction. If it were
@@ -50,7 +50,7 @@ public class FuturesCallback {
             "*********************" + crlf +
             "Confirmation received" + crlf +
             "*********************"; 
-        logger.info(val);
+        log.info(val);
         // send user email notification of first confirmation received
       }
       

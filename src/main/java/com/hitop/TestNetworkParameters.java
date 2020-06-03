@@ -29,10 +29,10 @@ import org.springframework.stereotype.Component;
 @Component
 @Profile("test")
 public class TestNetworkParameters implements com.hitop.NetworkParameters {
-  final Logger logger = LoggerFactory.getLogger(TestNetworkParameters.class);
+  private final static Logger log = LoggerFactory.getLogger(TestNetworkParameters.class);
   @Override
   public NetworkParameters getNetworkParameters() {
-    logger.info("using {} network.", TestNet3Params.ID_TESTNET);
+    log.info("using {} network.", TestNet3Params.ID_TESTNET);
     return TestNet3Params.get();
   }
 }

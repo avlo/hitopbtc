@@ -34,7 +34,7 @@ import com.hitop.service.WalletFile;
     name = "spring.profiles.active", 
     havingValue = "test")
 public class BitcoinWalletFile implements WalletFile {
-  final Logger logger = LoggerFactory.getLogger(BitcoinWalletFile.class);
+  private final static Logger log = LoggerFactory.getLogger(BitcoinWalletFile.class);
   
   private final File file;
   
@@ -46,11 +46,11 @@ public class BitcoinWalletFile implements WalletFile {
     // Runs in the dedicated "user thread" (see bitcoinj docs for more info on this).
     // The transaction "tx" can either be pending, or included into a block (we didn't see the broadcast).
     try {
-      logger.info("saving file {}...", file.toString());
+      log.info("saving file {}...", file.toString());
       wallet.saveToFile(file);
-      logger.info("{} saved.", file.toString());
+      log.info("{} saved.", file.toString());
     } catch (IOException e) {
-      logger.info("{} save FAILED", file.toString());
+      log.info("{} save FAILED", file.toString());
       e.printStackTrace();
     }
   }
