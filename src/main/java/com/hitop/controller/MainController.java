@@ -106,6 +106,8 @@ public class MainController implements ReceiptListener {
 //      return "orderdetails";
 //    }
     
+    this.purchaseOrder.setBtcPublicKey(walletService.getSendToAddress());
+    model.addAttribute("qrurl", qrCodeService.getQRCodeUrl(walletService.getSendToAddress()));
     model.addAttribute("order", this.purchaseOrder);
     model.addAttribute("productname", this.productName);
     // TODO 70 : call appropriate ordersubmit.html file based on stub/test/etc
