@@ -40,6 +40,7 @@ public class BitcoinWalletFile implements WalletFile {
   
   public BitcoinWalletFile(final @Value("${wallet.filename.prefix}") String filePrefix) {
     this.file = new File(filePrefix);
+    log.info("wallet filename: {}", filePrefix);
   }
   
   public void saveToFile(final Wallet wallet) {
@@ -53,6 +54,10 @@ public class BitcoinWalletFile implements WalletFile {
       log.info("{} save FAILED", file.toString());
       e.printStackTrace();
     }
+  }
+  
+  public File getFile() {
+    return file;
   }
   
   public String getFilePrefix() {
