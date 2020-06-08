@@ -35,31 +35,22 @@ import com.hitop.service.WalletFile;
     havingValue = "test")
 public class BitcoinWalletFile implements WalletFile {
   private final static Logger log = LoggerFactory.getLogger(BitcoinWalletFile.class);
-  
+
   private final File file;
-  
+
   public BitcoinWalletFile(final @Value("${wallet.filename.prefix}") String filePrefix) {
     this.file = new File(filePrefix);
     log.info("wallet filename: {}", filePrefix);
   }
-  
-  public void saveToFile(final Wallet wallet) {
+
+  public void saveToFile(final Wallet wallet) throws IOException {
     // Runs in the dedicated "user thread" (see bitcoinj docs for more info on this).
     // The transaction "tx" can either be pending, or included into a block (we didn't see the broadcast).
-    try {
-      log.info("saving file {}...", file.toString());
-      wallet.saveToFile(file);
-      log.info("{} saved.", file.toString());
-    } catch (IOException e) {
-      log.info("{} save FAILED", file.toString());
-      e.printStackTrace();
-    }
+    log.info("saving file {}...", file.toString());
+    wallet.saveToFile(file);
+    log.info("{} saved.", file.toString());
   }
-  
-  public File getFile() {
-    return file;
-  }
-  
+
   public String getFilePrefix() {
     return this.file.getName();
   }

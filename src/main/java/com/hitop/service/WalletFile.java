@@ -1,5 +1,7 @@
 package com.hitop.service;
 
+import java.io.IOException;
+
 /*
  *  Copyright 2020 Nick Avlonitis
  *
@@ -22,6 +24,6 @@ package com.hitop.service;
 import org.bitcoinj.wallet.Wallet;
 
 public interface WalletFile {
-  void saveToFile(final Wallet wallet);
+  void saveToFile(final Wallet wallet) throws IOException;
   String getFilePrefix();
 }
