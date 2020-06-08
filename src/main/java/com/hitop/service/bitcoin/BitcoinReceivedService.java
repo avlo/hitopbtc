@@ -1,5 +1,7 @@
 package com.hitop.service.bitcoin;
 
+import java.io.IOException;
+
 /*
  *  Copyright 2020 Nick Avlonitis
  *
@@ -55,7 +57,13 @@ public class BitcoinReceivedService implements CoinReceivedService {
       final Coin prevBalance, 
       final Coin newBalance) {
 
-    walletFile.saveToFile(wallet);
+    try {
+      walletFile.saveToFile(wallet);
+    } catch (IOException e) {
+      e.printStackTrace();
+      log.info("{} save FAILED.", walletFile.getFilePrefix());
+
+    }
 
     log.info("Received tx for {} : {}", tx.getValueSentToMe(wallet).toFriendlyString(), tx);
     log.info("new value: {}", wallet.getBalance().getValue());

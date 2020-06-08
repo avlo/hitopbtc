@@ -22,7 +22,6 @@ package com.hitop.service.bitcoin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
@@ -36,7 +35,6 @@ import com.hitop.service.RateService;
 public class BitcoinQRCodeService implements QRCodeService {
   private final static Logger log = LoggerFactory.getLogger(BitcoinQRCodeService.class);
   
-  @Qualifier("bitcoinRateService")
   private final RateService bitcoinRateService;
   private final String decimalPrecision;
   private final String qrUrl;
