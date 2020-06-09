@@ -1,5 +1,7 @@
 package com.hitop.controller;
 
+import org.bitcoinj.core.Transaction;
+
 /*
  *  Copyright 2020 Nick Avlonitis
  *
@@ -22,5 +24,6 @@ package com.hitop.controller;
 import com.hitop.entity.PurchaseOrder;
 
 public interface ReceiptListener {
-  PurchaseOrder displayReceiptSse();
+  // TODO: Refactor Transaction to be non-bitcoin specific (replace w/ interface & impls w/ currency-specific wrapper)
+  PurchaseOrder displayReceiptSse(Transaction tx);
 }

@@ -21,6 +21,7 @@ package com.hitop.controller;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import org.bitcoinj.core.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,9 @@ import com.hitop.service.WalletService;
 public class MainController implements ReceiptListener {
   private final static Logger log = LoggerFactory.getLogger(MainController.class);
   
-  final static long SSE_EMITTER_TIMEOUT = 1200000l;
+  private final static long SSE_EMITTER_TIMEOUT = 1200000l;  // hard-code 2min for now.  can add to application.properties if/when ready
+  private final String productName;
+  private SseEmitter emitter;
 
   @Autowired
   private OrderRepository orderRepository;
@@ -67,13 +70,6 @@ public class MainController implements ReceiptListener {
   @Autowired
   private OrderServiceImpl orderServiceImpl;
   
-  @Autowired
-  private PurchaseOrder purchaseOrder;
-  
-  private SseEmitter emitter;
-  
-  private final String productName;
-  
   public MainController(final @Value("${productname}") String productName) {
     this.productName = productName;
   }
@@ -89,24 +85,22 @@ public class MainController implements ReceiptListener {
     walletService.addCoinsReceivedEventListener(coinReceivedService);
     //TODO: add below for displaying current bitcoin rate to UI
 //    order.setRateService.getUsdtoBtc(rateService.getBtcRate())));
-    model.addAttribute("order", this.purchaseOrder);
+    model.addAttribute("order", new PurchaseOrder());
     model.addAttribute("productname", this.productName);
     return "orderdetails";
   }
 
   @PostMapping("/ordersubmit")
-  public String displayQR(final PurchaseOrder order,
-      final BindingResult result, final Model model) throws Exception {
-    // TODO: fix below two lines, seems hacky
-    this.purchaseOrder = order;
-    this.purchaseOrder.setBtcPublicKey(qrCodeService.getQRCodeUrl(walletService.getSendToAddress()));
-    log.debug(this.purchaseOrder.getName());
+  public String displayQR(final PurchaseOrder order, final BindingResult result, final Model model) throws Exception {
+    order.setBtcPublicKey(walletService.getSendToAddress());
+    log.debug(order.getName());
     // TODO 90: uncomment when errors are implemented
 //    if (result.hasErrors()) {
 //      return "orderdetails";
 //    }
     
-    model.addAttribute("order", this.purchaseOrder);
+    model.addAttribute("btcpublickey", qrCodeService.getQRCodeUrl(walletService.getSendToAddress()));
+    model.addAttribute("order", orderServiceImpl.save(order));
     model.addAttribute("productname", this.productName);
     // TODO 70 : call appropriate ordersubmit.html file based on stub/test/etc
     return "ordersubmit";
@@ -118,8 +112,8 @@ public class MainController implements ReceiptListener {
     return this.emitter;
   }
 
-  public PurchaseOrder displayReceiptSse() {
-    PurchaseOrder order = orderServiceImpl.save(this.purchaseOrder);
+  public PurchaseOrder displayReceiptSse(final Transaction btcTransaction) {
+    PurchaseOrder order = orderServiceImpl.get(walletService.getTransactionReceiveAddress(btcTransaction));
     // TODO: is below newSingleThreadExecutor() the correct method to use?
     ExecutorService executor = Executors.newSingleThreadExecutor(); // Executors.newCachedThreadPool();
     executor.execute(() -> {

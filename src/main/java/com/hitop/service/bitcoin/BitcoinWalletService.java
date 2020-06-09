@@ -21,6 +21,8 @@ package com.hitop.service.bitcoin;
 
 import java.io.File;
 import org.bitcoinj.core.LegacyAddress;
+import org.bitcoinj.core.Transaction;
+import org.bitcoinj.core.TransactionOutput;
 import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.utils.BriefLogFormatter;
 import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
@@ -39,16 +41,16 @@ import com.hitop.service.WalletService;
     havingValue = "test")
 public class BitcoinWalletService implements WalletService {
   private final static Logger log = LoggerFactory.getLogger(BitcoinWalletService.class);
-  
+
   private final WalletAppKit kit;
   private final NetworkParameters params;
-  
+
   @Autowired
   public BitcoinWalletService(final NetworkParameters params, final WalletFile walletFile) throws Exception {
     this.params = params;
-    
+
     log.info(walletFile.toString());
-    
+
     log.debug("***********");
     log.debug("***********");
     log.debug(params.toString());
@@ -59,7 +61,7 @@ public class BitcoinWalletService implements WalletService {
 
     // log output more compact and easily read, especially when using the JDK log adapter.
     BriefLogFormatter.init();
-    
+
     // Start up a basic app using a class that automates some boilerplate.
     kit = new WalletAppKit(params.getNetworkParameters(), new File("."), walletFile.getFilePrefix()) {
       @Override
@@ -75,6 +77,18 @@ public class BitcoinWalletService implements WalletService {
     kit.awaitRunning();
   }
 
+  public String getTransactionReceiveAddress(final Transaction tx) {
+    for(TransactionOutput txo : tx.getOutputs()){
+      if (txo.isMine(kit.wallet())) {
+        String walletTxo = txo.getScriptPubKey().getToAddress(params.getNetworkParameters(), true).toString();
+        log.info("wallet txo: {}", walletTxo);
+        return walletTxo;
+      }
+    }
+    log.error("TXO not found in our wallet");
+    return "****** REPLACE THIS STRING WITH \"TXO NOT IN OUR WALLET\" EXCEPTION ************";
+  }
+
   @Override
   public void addCoinsReceivedEventListener(final WalletCoinsReceivedEventListener listener) throws Exception {
     kit.wallet().addCoinsReceivedEventListener(listener);
@@ -82,6 +96,6 @@ public class BitcoinWalletService implements WalletService {
 
   @Override
   public String getSendToAddress() {
-    return LegacyAddress.fromKey(params.getNetworkParameters(), kit.wallet().currentReceiveKey()).toString();
+    return LegacyAddress.fromKey(params.getNetworkParameters(), kit.wallet().freshReceiveKey()).toString();
   }
 }

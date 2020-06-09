@@ -1,5 +1,7 @@
 package com.hitop.service.stub;
 
+import org.bitcoinj.core.Transaction;
+
 /*
  *  Copyright 2020 Nick Avlonitis
  *
@@ -39,7 +41,12 @@ public class StubWalletService implements WalletService {
 
   @Override
   public void addCoinsReceivedEventListener(final WalletCoinsReceivedEventListener listener) throws Exception {
-    
+  }
+  
+  @Override
+  // TODO: Refactor Transaction to be non-bitcoin specific (replace w/ interface & currency-specific wrapper impl)
+  public String getTransactionReceiveAddress(Transaction tx) {
+    return "STUB ADDRESS";
   }
 
   @Override

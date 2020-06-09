@@ -39,8 +39,13 @@ public class OrderServiceImpl {
   
   public PurchaseOrder save(final PurchaseOrder order) {
     PurchaseOrder savedOrder = orderRepository.save(order);
-    log.info(String.format("order %s saved to db.", savedOrder));
+    log.info("order {} saved to db.", savedOrder);
     return savedOrder;
   }
+  
+  public PurchaseOrder get(final String btcPublicKey) {
+    PurchaseOrder returnOrder = orderRepository.getOne(Integer.valueOf(btcPublicKey));
+    log.info("order {} retrieved from db.", returnOrder);
+    return returnOrder;
+  }
 }
-

@@ -1,5 +1,7 @@
 package com.hitop.service;
 
+import org.bitcoinj.core.Transaction;
+
 /*
  *  Copyright 2020 Nick Avlonitis
  *
@@ -23,5 +25,7 @@ import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
 
 public interface WalletService {
   void addCoinsReceivedEventListener(WalletCoinsReceivedEventListener listener) throws Exception;
+  // TODO: Refactor Transaction to be non-bitcoin specific (replace w/ interface & impls w/ currency-specific wrapper)
+  String getTransactionReceiveAddress(Transaction tx);
   String getSendToAddress();
 }

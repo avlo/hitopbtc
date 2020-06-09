@@ -72,6 +72,6 @@ public class BitcoinReceivedService implements CoinReceivedService {
     log.info("coin new balance : {}", newBalance.toFriendlyString());
 
     futuresCallback.addCallback(tx);
-    receiptListener.displayReceiptSse();
+    receiptListener.displayReceiptSse(tx);
   }
 }

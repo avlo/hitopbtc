@@ -1,6 +1,7 @@
 monitor-service-testnet
 monitor-service-testnet.spvchain
 monitor-service-testnet.wallet
+hitop.todo
 .gradle/
 .sts4-cache/
 hitop-001.pem
