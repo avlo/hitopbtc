@@ -86,6 +86,7 @@ public class BitcoinWalletService implements WalletService {
       }
     }
     log.error("TXO not found in our wallet");
+    // TODO: needs exception handling/wrapper
     return "****** REPLACE THIS STRING WITH \"TXO NOT IN OUR WALLET\" EXCEPTION ************";
   }
 
