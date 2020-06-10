@@ -1,4 +1,4 @@
-package com.hitop.service;
+package com.hitop.integration;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -19,33 +19,38 @@ package com.hitop.service;
  *  limitations under the License.
  */    
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import com.hitop.entity.PurchaseOrder;
-import com.hitop.repository.OrderRepository;
+import com.hitop.service.OrderServiceImpl;
 
-@Service
-public class OrderServiceImpl {
-  Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
-  
-  private final OrderRepository orderRepository;
-  
+@DataJpaTest
+class OrderServiceImplIT {
+
   @Autowired
-  public OrderServiceImpl(final OrderRepository orderRepository) {
-    this.orderRepository = orderRepository;
+  private OrderServiceImpl orderServiceImpl;
+
+  private PurchaseOrder po;
+  
+  @BeforeEach
+  void beforeEach() {
+    po = new PurchaseOrder();
+    po.setName("test_name");
+    po.setBtcPublicKey("test_key");
   }
   
-  public PurchaseOrder save(final PurchaseOrder order) {
-    PurchaseOrder savedOrder = orderRepository.save(order);
-    log.info("order {} saved to db.", savedOrder);
-    return savedOrder;
+  @Test
+  void testSave() {
+    assertThat(orderServiceImpl.save(po)).isNotNull();
   }
-  
-  public PurchaseOrder findByBtcPublicKey(final String btcPublicKey) {
-    PurchaseOrder returnOrder = orderRepository.findByBtcPublicKey(btcPublicKey);
-    log.info("order {} retrieved from db.", returnOrder);
-    return returnOrder;
+
+  @Test
+  void testFindByBtcPublicKey() {
+    orderServiceImpl.save(po);
+    assertEquals(orderServiceImpl.findByBtcPublicKey(po.getBtcPublicKey()).getBtcPublicKey(), po.getBtcPublicKey());
   }
 }

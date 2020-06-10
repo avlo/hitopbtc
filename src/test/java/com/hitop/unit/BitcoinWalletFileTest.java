@@ -1,4 +1,4 @@
-package com.hitop.service.bitcoin;
+package com.hitop.unit;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -33,6 +33,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import com.hitop.service.bitcoin.BitcoinWalletFile;
 
 @RunWith(MockitoJUnitRunner.class)
 class BitcoinWalletFileTest {

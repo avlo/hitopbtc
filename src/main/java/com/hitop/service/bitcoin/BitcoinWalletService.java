@@ -77,7 +77,8 @@ public class BitcoinWalletService implements WalletService {
     kit.awaitRunning();
   }
 
-  public String getTransactionReceiveAddress(final Transaction tx) {
+  public String getTxReceiveAddress(final Transaction tx) {
+    // TODO: replace for/if with functional functionalIF / lambda
     for(TransactionOutput txo : tx.getOutputs()){
       if (txo.isMine(kit.wallet())) {
         String walletTxo = txo.getScriptPubKey().getToAddress(params.getNetworkParameters(), true).toString();
@@ -96,7 +97,7 @@ public class BitcoinWalletService implements WalletService {
   }
 
   @Override
-  public String getSendToAddress() {
+  public String getFreshSendToAddress() {
     return LegacyAddress.fromKey(params.getNetworkParameters(), kit.wallet().freshReceiveKey()).toString();
   }
 }

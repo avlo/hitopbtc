@@ -45,12 +45,12 @@ public class StubWalletService implements WalletService {
   
   @Override
   // TODO: Refactor Transaction to be non-bitcoin specific (replace w/ interface & currency-specific wrapper impl)
-  public String getTransactionReceiveAddress(Transaction tx) {
+  public String getTxReceiveAddress(Transaction tx) {
     return "STUB ADDRESS";
   }
 
   @Override
-  public String getSendToAddress() {
+  public String getFreshSendToAddress() {
     return "STUB WALLET";
   }
 }

@@ -92,16 +92,11 @@ public class MainController implements ReceiptListener {
 
   @PostMapping("/ordersubmit")
   public String displayQR(final PurchaseOrder order, final BindingResult result, final Model model) throws Exception {
-    order.setBtcPublicKey(walletService.getSendToAddress());
-    log.debug(order.getName());
-    // TODO 90: uncomment when errors are implemented
-//    if (result.hasErrors()) {
-//      return "orderdetails";
-//    }
-    
-    model.addAttribute("btcpublickey", qrCodeService.getQRCodeUrl(walletService.getSendToAddress()));
-    model.addAttribute("order", orderServiceImpl.save(order));
+    order.setBtcPublicKey(walletService.getFreshSendToAddress());
+    final PurchaseOrder po = orderServiceImpl.save(order);
+    model.addAttribute("order", po);
     model.addAttribute("productname", this.productName);
+    model.addAttribute("btcpublickey", qrCodeService.getQRCodeUrl(po.getBtcPublicKey()));
     // TODO 70 : call appropriate ordersubmit.html file based on stub/test/etc
     return "ordersubmit";
   }
@@ -113,7 +108,8 @@ public class MainController implements ReceiptListener {
   }
 
   public PurchaseOrder displayReceiptSse(final Transaction btcTransaction) {
-    PurchaseOrder order = orderServiceImpl.get(walletService.getTransactionReceiveAddress(btcTransaction));
+    final String btckey = walletService.getTxReceiveAddress(btcTransaction);
+    PurchaseOrder order = orderServiceImpl.findByBtcPublicKey(btckey);
     // TODO: is below newSingleThreadExecutor() the correct method to use?
     ExecutorService executor = Executors.newSingleThreadExecutor(); // Executors.newCachedThreadPool();
     executor.execute(() -> {
