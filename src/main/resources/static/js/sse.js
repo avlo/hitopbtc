@@ -1,7 +1,7 @@
 function registerSSEvent() {
   this.start = function () {
     document.getElementById("pagestate").innerHTML = "Order";
-    this.source = new EventSource("/receipt-sse");
+    this.source = new EventSource(`/receipt-sse/${sendToAddress}`);
     this.source.addEventListener("message", function (event) {
       $(".container-contact100-form-btn").hide();
       $(".contact50-form-title").hide();

@@ -42,7 +42,7 @@ public class PurchaseOrder {
 //    private String country;
     
     // HD wallet public key shown to user
-    private String btcPublicKey;
+    private String sendToAddress;
     
 //    private String btcTransaction;
 //    private Double btcRate;

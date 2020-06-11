@@ -53,6 +53,10 @@ img.btc-symbol-thumb-center {
 </style>
 </head>
 
+<script>
+    var sendToAddress = "[[${order.sendToAddress}]]";
+</script>
+
 <body>
   <div class="container-contact100">
     <div class="wrap-contact100">
@@ -67,7 +71,7 @@ img.btc-symbol-thumb-center {
         <span th:text="${order?.name}" />
 
         <div class="container-contact100-form-btn">
-          <img th:src="${btcpublickey}">
+          <img th:src="${qrcodeurl}">
         </div>
         
         <p id="name"></p>
