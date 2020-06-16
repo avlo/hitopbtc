@@ -40,13 +40,14 @@ public class BitcoinReceivedService implements CoinReceivedService {
   private final static Logger log = LoggerFactory.getLogger(BitcoinReceivedService.class);
 
   private final BitcoinWalletFile walletFile;
-  private final ReceiptListener receiptListener;
   private final FuturesCallback futuresCallback;
   
   @Autowired
-  public BitcoinReceivedService(final BitcoinWalletFile walletFile, final ReceiptListener receiptListener, final FuturesCallback futuresCallback) {
+  private ReceiptListener receiptListener;
+  
+  @Autowired
+  public BitcoinReceivedService(final BitcoinWalletFile walletFile, final FuturesCallback futuresCallback) {
     this.walletFile = walletFile;
-    this.receiptListener = receiptListener;
     this.futuresCallback = futuresCallback;
   }
 

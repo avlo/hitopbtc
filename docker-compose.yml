@@ -1,21 +1,33 @@
-version: '3'
+version: '3.3'
 services: 
-  hitop-mysql-02:
+  hitop-mysql:
     image: mysql:latest
     ports:
       - 3306
     environment:
-      - MYSQL_ROOT_PASSWORD=ThePassword
-      - MYSQL_DATABASE=hitop
-  spring-jpa-app:
-    image: hitop/hitop:latest
+      MYSQL_DATABASE: hitop
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: ThePassword
+    expose:
+      - 3306
+    volumes:
+      - hitop-db:/var/lib/mysql
+  hitop:
+    container_name: hitop
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    image: hitop:latest
     depends_on:
-      - hitop-mysql-02
+      - hitop-mysql
     ports:
       - 8080:8080
     environment:
-      - DATABASE_HOST=hitop-mysql-02
-      - DATABASE_USER=root
-      - DATABASE_PASSWORD=ThePassword
-      - DATABASE_NAME=hitop  
-      - DATABASE_PORT=3306
+      DATABASE_HOST: hitop
+      DATABASE_USER: user 
+      DATABASE_PASSWORD: password
+      DATABASE_NAME: hitop  
+      DATABASE_PORT: 3306
+volumes:
+  hitop-db:
