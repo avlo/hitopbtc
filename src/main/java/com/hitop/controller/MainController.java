@@ -21,6 +21,7 @@ package com.hitop.controller;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javax.annotation.PostConstruct;
 import org.bitcoinj.core.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,6 +74,11 @@ public class MainController implements ReceiptListener {
   public MainController(final @Value("${productname}") String productName) {
     this.productName = productName;
   }
+
+  @PostConstruct
+  private void postConstruct() {
+    walletService.addCoinsReceivedEventListener(coinReceivedService);
+  }
   
   @GetMapping("/")
   public String getIndexHtml(final Model model) throws Exception {
@@ -81,8 +87,7 @@ public class MainController implements ReceiptListener {
   }
   
   @GetMapping("/orderdetails")
-  public String getOrderDetails(final Model model) throws Exception {
-    walletService.addCoinsReceivedEventListener(coinReceivedService);
+  public String getOrderDetails(final Model model) {
     //TODO: add below for displaying current bitcoin rate to UI
 //    order.setRateService.getUsdtoBtc(rateService.getBtcRate())));
     model.addAttribute("order", new PurchaseOrder());

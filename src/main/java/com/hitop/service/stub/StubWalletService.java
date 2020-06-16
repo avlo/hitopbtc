@@ -40,7 +40,7 @@ public class StubWalletService implements WalletService {
   public StubWalletService()  { }
 
   @Override
-  public void addCoinsReceivedEventListener(final WalletCoinsReceivedEventListener listener) throws Exception {
+  public void addCoinsReceivedEventListener(final WalletCoinsReceivedEventListener listener) {
   }
   
   @Override
