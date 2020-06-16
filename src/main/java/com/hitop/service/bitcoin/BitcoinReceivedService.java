@@ -42,6 +42,8 @@ public class BitcoinReceivedService implements CoinReceivedService {
   private final BitcoinWalletFile walletFile;
   private final FuturesCallback futuresCallback;
   
+  // TODO: below receiptListener is field injected (instead of constructor injected) because
+  //       docker complains about circular dependency when using constructor injection
   @Autowired
   private ReceiptListener receiptListener;
   
