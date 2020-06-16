@@ -1,5 +1,8 @@
 package com.hitop.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /*
  *  Copyright 2020 Nick Avlonitis
  *
@@ -31,6 +34,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -51,7 +55,6 @@ public class MainController implements ReceiptListener {
   
   private final static long SSE_EMITTER_TIMEOUT = 1200000l;  // hard-code 2min for now.  can add to application.properties if/when ready
   private final String productName;
-  private SseEmitter emitter;
 
   @Autowired
   private OrderRepository orderRepository;
@@ -70,6 +73,8 @@ public class MainController implements ReceiptListener {
   
   @Autowired
   private OrderServiceImpl orderServiceImpl;
+  
+  Map<String, SseEmitter> sseEmitterMap = new HashMap<>();
   
   public MainController(final @Value("${productname}") String productName) {
     this.productName = productName;
@@ -97,24 +102,25 @@ public class MainController implements ReceiptListener {
 
   @PostMapping("/ordersubmit")
   public String displayQR(final PurchaseOrder order, final BindingResult result, final Model model) throws Exception {
-    order.setBtcPublicKey(walletService.getFreshSendToAddress());
-    final PurchaseOrder po = orderServiceImpl.save(order);
-    model.addAttribute("order", po);
+    order.setSendToAddress(walletService.getFreshSendToAddress());
+    final PurchaseOrder savedPurchaseOrder = orderServiceImpl.save(order);
+    model.addAttribute("order", savedPurchaseOrder);
     model.addAttribute("productname", this.productName);
-    model.addAttribute("btcpublickey", qrCodeService.getQRCodeUrl(po.getBtcPublicKey()));
+    model.addAttribute("qrcodeurl", qrCodeService.getQRCodeUrl(savedPurchaseOrder.getSendToAddress()));
     // TODO 70 : call appropriate ordersubmit.html file based on stub/test/etc
     return "ordersubmit";
   }
   
-  @GetMapping("/receipt-sse")
-  public SseEmitter setupSSEEmitter() {
-    this.emitter = new SseEmitter(SSE_EMITTER_TIMEOUT);
-    return this.emitter;
+  @GetMapping("/receipt-sse/{sendToAddress}")
+  public SseEmitter setupSseEmitter(@PathVariable String sendToAddress) {
+    SseEmitter emitter = new SseEmitter(SSE_EMITTER_TIMEOUT);
+    sseEmitterMap.put(sendToAddress, emitter);
+    return emitter;
   }
 
   public PurchaseOrder displayReceiptSse(final Transaction btcTransaction) {
-    final String btckey = walletService.getTxReceiveAddress(btcTransaction);
-    PurchaseOrder order = orderServiceImpl.findByBtcPublicKey(btckey);
+    final String sendToAddress = walletService.getTxReceiveAddress(btcTransaction);
+    PurchaseOrder order = orderServiceImpl.findBySendToAddress(sendToAddress);
     // TODO: is below newSingleThreadExecutor() the correct method to use?
     ExecutorService executor = Executors.newSingleThreadExecutor(); // Executors.newCachedThreadPool();
     executor.execute(() -> {
@@ -123,11 +129,13 @@ public class MainController implements ReceiptListener {
             .data("{\"name\":\"" + order.getName());
         //  .data("{\"email\":\"" + order.getEmail());
         //   etc
-        this.emitter.send(event);
-        this.emitter.complete();
+        this.sseEmitterMap.get(sendToAddress).send(event);
+        this.sseEmitterMap.get(sendToAddress).complete();
       } catch (Exception e) {
         log.info("##### EMITTER EXCEPTION: " + e.toString());
-        this.emitter.completeWithError(e);
+        this.sseEmitterMap.get(sendToAddress).completeWithError(e);
+      } finally {
+        this.sseEmitterMap.remove(sendToAddress);
       }
     });
     executor.shutdown();

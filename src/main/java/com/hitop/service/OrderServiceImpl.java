@@ -43,8 +43,8 @@ public class OrderServiceImpl {
     return savedOrder;
   }
   
-  public PurchaseOrder findByBtcPublicKey(final String btcPublicKey) {
-    PurchaseOrder returnOrder = orderRepository.findByBtcPublicKey(btcPublicKey);
+  public PurchaseOrder findBySendToAddress(final String sendToAddress) {
+    PurchaseOrder returnOrder = orderRepository.findBySendToAddress(sendToAddress);
     log.info("order {} retrieved from db.", returnOrder);
     return returnOrder;
   }

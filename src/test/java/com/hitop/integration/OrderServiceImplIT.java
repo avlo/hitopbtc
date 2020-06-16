@@ -40,7 +40,7 @@ class OrderServiceImplIT {
   void beforeEach() {
     po = new PurchaseOrder();
     po.setName("test_name");
-    po.setBtcPublicKey("test_key");
+    po.setSendToAddress("test_key");
   }
   
   @Test
@@ -51,6 +51,6 @@ class OrderServiceImplIT {
   @Test
   void testFindByBtcPublicKey() {
     orderServiceImpl.save(po);
-    assertEquals(orderServiceImpl.findByBtcPublicKey(po.getBtcPublicKey()).getBtcPublicKey(), po.getBtcPublicKey());
+    assertEquals(orderServiceImpl.findBySendToAddress(po.getSendToAddress()).getSendToAddress(), po.getSendToAddress());
   }
 }
