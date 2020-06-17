@@ -8,10 +8,14 @@ after having been denied payment gateway services by paypal and others and not f
 
 ### tools used
 as of this writing: 
-- JAVA 1.9
-- Spring 2.1.8
-- BitcoinJ 0.15.2
-- MySql 8.0.11
+|tool|version|
+|---:|---|
+|JAVA OpenJDK|[1.9](https://openjdk.java.net/install/)|
+|Spring Boot|[2.18](http:// "in pom.xml")|
+|BitcoinJ|[0.15.7](http:// "in pom.xml")|
+|MySql|[8.0.11](http:// "in docker-compose.yml")|
+|Docker (optional)|19.03.11|
+|Docker Compose (optional)|1.17.1|
 
 ### requirements
 uses 3rd party service to fetch current exchange rate.  currently configured (via application.properties) to use bitpay.com.  after downloading bitpay security certificate, run command:
@@ -26,7 +30,7 @@ to install certificate into your application.
 * in file `src/main/resources/application.properties`, update  ```unit.price.usd``` value to be your product price in USD.
 * save your index page image as `src/main/resources/public/images/index.jpg`
 * save your order page image as `src/main/resources/public/images/order.jpg`
-### build instructions
+### development build instructions
 to build web-app, run command:
 ```
 $ mvn clean install
@@ -71,10 +75,29 @@ $ java -jar lib/lombok.jar
 
 and follow steps as indicated
 
-### ethos
+### docker build (optional)
+to build an HiTopBPG docker image, use command:
+```
+$ docker build  -t <image_name>:<tag_name> dir
+```
+or
+```
+$ docker build  -t <image_repo>/<image_name>:<tag_name> dir
+```
+and can be customized via `Dockerfile` in project root directory
+### docker deployment (optional)
+to deplay an HiTopBPG container (along with a separate mysql volume container for data storage), use command:
+```
+$ docker-compose up
+```
+environment variables can be configured via `docker-compose.yml` in project root directory
+### intended audience
 - open source to download, modify, customize, fork and deploy as you like.  licenced under Apache Software Foundation LICENSE-2.0
 - i encourage usage and contribution by others in the community, new features & PR's (pull requests) very much welcome and appreciated.
 - seeking those interested to help grow, improve framework in the usual/celebrated open source ASF/2.0 spirit.
+
+### application use
+once you've started HiTopBPG (either via `mvn spring-boot:run` or `docker-compose up`), open a web browser to `http://localhost:8080`
 
 ### application state
 ##### current functionality
@@ -84,11 +107,10 @@ and follow steps as indicated
 - graphic images completely customizable via application.properties file
 ##### known limitations / bugs
 - for ease of user testing, all but two entity bean fields (name and btcaddress) have been commented out.  users can uncomment remaining fields and include them in controller logic & html/thymeleaf template as needed
-- no unit tests, bad developer... but they're coming (i know, TDD...)
+- more unit tests coming (TDD... yes, yes, i know 💩)
 - html/javascript/css ~50% culled to remove unneccary libs.  more cleanup there coming soon.
 - no javadoc yet, but in the meanwhile (hopefully sufficient) OO design for developer ease of understanding what's going on and where.
 - non-show stopping TODO's annotated in various places throughout codebase. 
-- Dockerfile / modular framework pending (currently, docker isn't necessary to run application as-is)
 - various other "non-show-stopping" minutia, to be addressed moving forward
 ##### next items on deck, in order:
 1. unit tests / functional test
