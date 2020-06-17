@@ -100,6 +100,11 @@ environment variables can be configured via `docker-compose.yml` in project root
 once you've started HiTopBPG (either via `mvn spring-boot:run` or `docker-compose up`), open a web browser to `http://localhost:8080`
 
 ### application state
+`note: *** DO NOT SENT REAL BITCOIN TO THE HiTopBPG DEMO/TEST APPLICATION!!!
+DOING SO WILL LOSE YOUR BITCOIN!!!***`
+
+HitopBPG ***BITCOIN TEST NETWORK*** demonstation version running at http://hitoplids.com:8080/ and will accept ***BITCOIN TEST NETWORK*** bitcoin as a demonstration of it's functionality
+
 ##### current functionality
 - as of this writing, HiTopBPG currently can complete a full bitcoin payment transaction on the bitcoin test network.  - configuration exists to run on bitcoin main network, but hasn't been run there (yet).
 - uses HD wallet with newly generated child key for each order
