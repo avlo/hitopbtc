@@ -15,10 +15,10 @@ services:
       - hitop-db:/var/lib/mysql
   hitop:
     container_name: hitop
-    build:
-      context: ./
-      dockerfile: ./Dockerfile
-    image: hitop:latest
+    #build:
+    #  context: ./
+    #  dockerfile: ./Dockerfile
+    image: avlo/hitop:latest
     depends_on:
       - hitop-mysql
     ports:
