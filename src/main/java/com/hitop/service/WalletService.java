@@ -1,6 +1,9 @@
 package com.hitop.service;
 
+import org.bitcoinj.core.InsufficientMoneyException;
 import org.bitcoinj.core.Transaction;
+import org.bitcoinj.wallet.SendRequest;
+import org.bitcoinj.wallet.Wallet;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -28,4 +31,5 @@ public interface WalletService {
   // TODO: Refactor Transaction to be non-bitcoin specific (replace w/ interface & impls w/ currency-specific wrapper)
   String getTxReceiveAddress(Transaction tx);
   String getFreshSendToAddress();
+  Wallet.SendResult sendBalanceTo(String address) throws InsufficientMoneyException;
 }

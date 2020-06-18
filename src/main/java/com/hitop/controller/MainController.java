@@ -26,6 +26,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.annotation.PostConstruct;
 import org.bitcoinj.core.Transaction;
+import org.bitcoinj.wallet.Wallet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter.SseEventBuilder;
 import com.hitop.entity.PurchaseOrder;
@@ -141,7 +144,16 @@ public class MainController implements ReceiptListener {
     executor.shutdown();
     return order;
   }
-
+  
+  @GetMapping("/sendbalance/{toAddress}")
+  @ResponseBody
+  public ModelAndView sendBalance(@PathVariable String toAddress) throws Exception {
+    Wallet.SendResult sendResult = walletService.sendBalanceTo(toAddress);
+    ModelAndView mv = new ModelAndView("balanceset");
+    mv.addObject("confirmation", sendResult.toString());
+    return mv;
+  }
+  
   //TODO 50 keep this but wrap it in security so only admin can call it
   @GetMapping(path="/allordershitop")
   public @ResponseBody Iterable<PurchaseOrder> getAllOrders() {

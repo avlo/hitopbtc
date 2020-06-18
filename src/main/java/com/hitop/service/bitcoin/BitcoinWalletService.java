@@ -20,11 +20,17 @@ package com.hitop.service.bitcoin;
  */    
 
 import java.io.File;
+import org.bitcoinj.core.Address;
+import org.bitcoinj.core.Coin;
+import org.bitcoinj.core.InsufficientMoneyException;
 import org.bitcoinj.core.LegacyAddress;
+import org.bitcoinj.core.PeerGroup;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.core.TransactionOutput;
 import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.utils.BriefLogFormatter;
+import org.bitcoinj.wallet.SendRequest;
+import org.bitcoinj.wallet.Wallet;
 import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,5 +105,21 @@ public class BitcoinWalletService implements WalletService {
   @Override
   public String getFreshSendToAddress() {
     return LegacyAddress.fromKey(params.getNetworkParameters(), kit.wallet().freshReceiveKey()).toString();
+  }
+
+  public Wallet.SendResult sendBalanceTo(String addressStr) throws InsufficientMoneyException {
+    final Coin value = kit.wallet().getBalance();
+    final Coin amountToSend = value.subtract(Transaction.REFERENCE_DEFAULT_MIN_TX_FEE);
+    
+    Address toAddress = LegacyAddress.fromBase58(params.getNetworkParameters(), addressStr);
+
+    Transaction transaction = new Transaction(this.params.getNetworkParameters());
+    transaction.addInput(kit.wallet().getUnspents().get(0));// important to add proper input
+    transaction.addOutput(amountToSend, toAddress);
+
+    SendRequest request = SendRequest.forTx(transaction);
+    request.feePerKb = Transaction.REFERENCE_DEFAULT_MIN_TX_FEE;
+    Wallet.SendResult sendResult = kit.wallet().sendCoins(kit.peerGroup(), request);
+    return sendResult;
   }
 }
