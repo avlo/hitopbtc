@@ -26,11 +26,11 @@ if you need test network bitcoin, you can obtain them [here](https://bitcoinfauc
 |Docker (optional)|19.03.11|
 |Docker Compose (optional)|1.17.1|
 
-### requirements
-uses 3rd party service to fetch current exchange rate.  currently configured (via application.properties) to use bitpay.com.  after [downloading](https://www.shellhacks.com/get-ssl-certificate-from-server-site-url-export-download/) bitpay security certificate, run command:
+### certificate requirements
+HiTopBPF uses bitpay to obtain current USD->BTC exchange rate.  after [downloading](https://www.shellhacks.com/get-ssl-certificate-from-server-site-url-export-download/) bitpay [SSL certificate](https://bitpay.com/) (or using your preferred exchange-rate service), run command:
 
 ```
-$ keytool -import -trustcacerts -file </location/of/downloaded/bitpay.cer> -alias <any_alias> -keystore </location/of/java/lib/security/cacerts>
+$ keytool -import -trustcacerts -file </location/of/downloaded/security.cer> -alias <any_alias> -keystore </location/of/java/lib/security/cacerts>
 ```
 to install certificate into your application.
 
