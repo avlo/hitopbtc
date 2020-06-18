@@ -99,7 +99,7 @@ environment variables can be configured via `docker-compose.yml` in project root
 ### application use (development mode)
 once you've started HiTopBPF (either via `mvn spring-boot:run` or `docker-compose up`), open a web browser to `http://localhost:8080`
 
-### application state (bitcoin test network)
+### example application (running on bitcoin test network)
 ***note:  DO NOT SENT REAL BITCOIN TO THE HiTopBPF DEMO/TEST APPLICATION!!!  DOING SO WILL LOSE YOUR REAL BITCOIN!!!***
 
 bitcoin ***TEST*** network demonstation version running at http://hitoplids.com:8080/ 
