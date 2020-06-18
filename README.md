@@ -9,7 +9,9 @@ after having been denied payment gateway services by paypal and others and not f
 ### sample application (running on bitcoin test network)
 ***note:  DO NOT SENT REAL BITCOIN TO THE HiTopBPF DEMO/TEST APPLICATION!!!  DOING SO WILL LOSE YOUR REAL BITCOIN!!!***
 
-bitcoin ***TEST*** network demonstation version running at http://hitoplids.com:8080/ 
+http://hitoplids.com:8080/ 
+
+---
 
 ### required development tools
 |tool|version|
