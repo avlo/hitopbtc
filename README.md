@@ -96,10 +96,10 @@ environment variables can be configured via `docker-compose.yml` in project root
 - i encourage usage and contribution by others in the community, new features & PR's (pull requests) very much welcome and appreciated.
 - seeking those interested to help grow, improve framework in the usual/celebrated open source ASF/2.0 spirit.
 
-### application use
+### application use (development mode)
 once you've started HiTopBPG (either via `mvn spring-boot:run` or `docker-compose up`), open a web browser to `http://localhost:8080`
 
-### application state
+### application state (bitcoin test network)
 ***note:  DO NOT SENT REAL BITCOIN TO THE HiTopBPG DEMO/TEST APPLICATION!!!  DOING SO WILL LOSE YOUR REAL BITCOIN!!!***
 
 bitcoin ***TEST*** network demonstation version running at http://hitoplids.com:8080/ 
