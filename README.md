@@ -1,10 +1,10 @@
 # HiTopBPG (HiTop Bitcoin Payment Gateway)
 
 ### overview
-HiTopBPG is a completely self-contained Bitcoin Payment Gateway web-application and framework. It uses no custodial or third party wallet/blockchain services (excluding exchange rate conversion and QR code generation). It has been specifically built with all business logic, bitcoin transaction logic & wallet custodianship completely within the application itself.
+HiTopBPG is a completely self-contained Bitcoin Payment Gateway framework and store-front web-application. It uses no custodial or third party wallet/blockchain services (excluding exchange rate conversion and QR code generation). It has been specifically built with all business logic, bitcoin transaction logic & wallet custodianship completely within the application itself.
 
 ### motivation
-after having been denied payment gateway services by paypal and others and not finding an existing, open-source, free, self-custodial bitcoin transaction/wallet service with the features i wanted, i decided to build my own.  it's intended to be a simple (two page) webapplication with bitcoin transaction engine and user-custodian'd wallet underneath.  
+after having been denied payment gateway services by paypal and others and not finding an existing, open-source, free, self-custodial bitcoin transaction/wallet service with the features i wanted, i decided to build my own.  it's intended to be a simple (two page) store-front web-application with self-contained bitcoin transaction engine and user-custodian'd wallet.
 
 ### tools used
 as of this writing: 
@@ -96,10 +96,10 @@ environment variables can be configured via `docker-compose.yml` in project root
 - i encourage usage and contribution by others in the community, new features & PR's (pull requests) very much welcome and appreciated.
 - seeking those interested to help grow, improve framework in the usual/celebrated open source ASF/2.0 spirit.
 
-### application use
+### application use (development mode)
 once you've started HiTopBPG (either via `mvn spring-boot:run` or `docker-compose up`), open a web browser to `http://localhost:8080`
 
-### application state
+### application state (bitcoin test network)
 ***note:  DO NOT SENT REAL BITCOIN TO THE HiTopBPG DEMO/TEST APPLICATION!!!  DOING SO WILL LOSE YOUR REAL BITCOIN!!!***
 
 bitcoin ***TEST*** network demonstation version running at http://hitoplids.com:8080/ 
