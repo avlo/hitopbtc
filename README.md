@@ -112,10 +112,10 @@ once you've started HiTopBPF (either via `mvn spring-boot:run` or `docker-compos
 
 ##### current functionality
 - as of this writing, HiTopBPF currently can complete a full bitcoin payment transaction on the bitcoin test network.  - configuration exists to run on bitcoin main network, but hasn't been run there (yet).
-- uses HD wallet with newly generated child key for each order
-- currency abstraction layer.  currently supports bitcoin, but API/interface exists for (any) currency extension.
+- uses HD wallet with newly generated HD child address for each order
+- currently supports bitcoin, but API/interface exists for (any) crypto-currency extension.
 - website images and product name completely customizable via application.properties file
-##### known limitations / bugs
+##### known limitations
 - for ease of user testing, all but two entity bean fields (name and btcaddress) have been commented out.  users can uncomment remaining fields and include them in controller logic & html/thymeleaf template as needed
 - more unit tests coming (TDD... yes, yes, i know 💩)
 - html/javascript/css ~80% culled to remove unneccary libs.  more cleanup coming soon.
