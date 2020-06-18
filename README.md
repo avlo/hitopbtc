@@ -1,7 +1,7 @@
-# HiTopBPG (HiTop Bitcoin Payment Gateway)
+# HiTopBPF (HiTop Bitcoin Payment Framework)
 
 ### overview
-HiTopBPG is a self-contained Bitcoin Payment Gateway framework and store-front web-application. It uses no custodial or third party wallet/blockchain services (excluding exchange rate conversion and QR code generation). It has been specifically built with all business logic, bitcoin transaction logic & wallet custodianship completely within the application itself.
+HiTopBPF is a self-contained bitcoin payment framework and store-front web-application. It uses no custodial or third party wallet/blockchain services (excluding exchange rate conversion and QR code generation). It has been specifically built with all business logic, bitcoin transaction logic & wallet custodianship completely within the application itself.
 
 ### motivation
 after having been denied payment gateway services by paypal and others and not finding an existing, open-source, free, self-custodial bitcoin transaction/wallet service with the features i wanted, i decided to build my own.  it's intended to be a simple (two page) store-front web-application with self-contained bitcoin transaction engine and user-custodian'd wallet.
@@ -68,7 +68,7 @@ indicating application is ready for use (by default, on bitcoin testnet).  any b
 
 ### eclipse/intellij developers
 
-HiTopBPG uses project lombok annotations.  run the following command from project root prior to IDE startup to properly configure either IDE for lombok usage.
+HiTopBPF uses project lombok annotations.  run the following command from project root prior to IDE startup to properly configure either IDE for lombok usage.
 
 ```
 $ java -jar lib/lombok.jar
@@ -77,7 +77,7 @@ $ java -jar lib/lombok.jar
 and follow steps as indicated
 
 ### docker image build (optional)
-to build an HiTopBPG docker image, use command:
+to build an HiTopBPF docker image, use command:
 ```
 $ docker build  -t <image_name>:<tag_name> dir
 ```
@@ -87,7 +87,7 @@ $ docker build  -t <image_repo>/<image_name>:<tag_name> dir
 ```
 and can be customized via `Dockerfile` in project root directory
 ### docker-compose container deployment (optional)
-to deplay an HiTopBPG container (along with a separate mysql volume container for data storage), use command:
+to deplay an HiTopBPF container (along with a separate mysql volume container for data storage), use command:
 ```
 $ docker-compose up
 ```
@@ -98,15 +98,15 @@ environment variables can be configured via `docker-compose.yml` in project root
 - seeking those interested to help grow, improve framework in the usual/celebrated open source ASF/2.0 spirit.
 
 ### application use (development mode)
-once you've started HiTopBPG (either via `mvn spring-boot:run` or `docker-compose up`), open a web browser to `http://localhost:8080`
+once you've started HiTopBPF (either via `mvn spring-boot:run` or `docker-compose up`), open a web browser to `http://localhost:8080`
 
 ### application state (bitcoin test network)
-***note:  DO NOT SENT REAL BITCOIN TO THE HiTopBPG DEMO/TEST APPLICATION!!!  DOING SO WILL LOSE YOUR REAL BITCOIN!!!***
+***note:  DO NOT SENT REAL BITCOIN TO THE HiTopBPF DEMO/TEST APPLICATION!!!  DOING SO WILL LOSE YOUR REAL BITCOIN!!!***
 
 bitcoin ***TEST*** network demonstation version running at http://hitoplids.com:8080/ 
 
 ##### current functionality
-- as of this writing, HiTopBPG currently can complete a full bitcoin payment transaction on the bitcoin test network.  - configuration exists to run on bitcoin main network, but hasn't been run there (yet).
+- as of this writing, HiTopBPF currently can complete a full bitcoin payment transaction on the bitcoin test network.  - configuration exists to run on bitcoin main network, but hasn't been run there (yet).
 - uses HD wallet with newly generated child key for each order
 - currency abstraction layer.  currently supports bitcoin, but API/interface exists for (any) currency extension.
 - graphic images completely customizable via application.properties file
