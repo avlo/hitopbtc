@@ -118,11 +118,6 @@ once you've started HiTopBPF (either via `mvn spring-boot:run` or `docker-compos
 ##### known limitations / bugs
 - for ease of user testing, all but two entity bean fields (name and btcaddress) have been commented out.  users can uncomment remaining fields and include them in controller logic & html/thymeleaf template as needed
 - more unit tests coming (TDD... yes, yes, i know 💩)
-- html/javascript/css ~50% culled to remove unneccary libs.  more cleanup there coming soon.
+- html/javascript/css ~80% culled to remove unneccary libs.  more cleanup coming soon.
 - no javadoc yet, but in the meanwhile (hopefully sufficient) OO design for developer ease of understanding what's going on and where.
-- non-show stopping TODO's annotated in various places throughout codebase. 
-- various other "non-show-stopping" minutia, to be addressed moving forward
-##### next items on deck, in order:
-1. unit tests / functional test
-2. general cleanup
-3. lightning network support
+- TODO's annotated in various places throughout codebase, none of which are show-stoppers.
