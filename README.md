@@ -11,6 +11,7 @@ as of this writing:
 |tool|version|
 |---:|---|
 |JAVA OpenJDK|[1.9](https://openjdk.java.net/install/)|
+|Maven|[3.6.1](http://maven.apache.org/docs/3.6.1/release-notes.html)|
 |Spring Boot|[2.18](http:// "in pom.xml")|
 |BitcoinJ|[0.15.7](http:// "in pom.xml")|
 |MySql|[8.0.11](http:// "in docker-compose.yml")|
