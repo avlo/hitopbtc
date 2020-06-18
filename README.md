@@ -75,7 +75,7 @@ $ java -jar lib/lombok.jar
 
 and follow steps as indicated
 
-### docker build (optional)
+### docker image build (optional)
 to build an HiTopBPG docker image, use command:
 ```
 $ docker build  -t <image_name>:<tag_name> dir
@@ -85,7 +85,7 @@ or
 $ docker build  -t <image_repo>/<image_name>:<tag_name> dir
 ```
 and can be customized via `Dockerfile` in project root directory
-### docker deployment (optional)
+### docker-compose container deployment (optional)
 to deplay an HiTopBPG container (along with a separate mysql volume container for data storage), use command:
 ```
 $ docker-compose up
