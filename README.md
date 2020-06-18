@@ -6,6 +6,11 @@ HiTopBPF is a self-contained bitcoin payment framework and store-front web-appli
 ### motivation
 after having been denied payment gateway services by paypal and others and not finding an existing, open-source, free, self-custodial bitcoin transaction/wallet service with the features i wanted, i decided to build my own.  it's intended to be a simple (two page) store-front web-application with self-contained bitcoin transaction engine and user-custodian'd wallet.
 
+### sample application (running on bitcoin test network)
+***note:  DO NOT SENT REAL BITCOIN TO THE HiTopBPF DEMO/TEST APPLICATION!!!  DOING SO WILL LOSE YOUR REAL BITCOIN!!!***
+
+bitcoin ***TEST*** network demonstation version running at http://hitoplids.com:8080/ 
+
 ### required development tools
 |tool|version|
 |---:|---|
@@ -98,11 +103,6 @@ environment variables can be configured via `docker-compose.yml` in project root
 
 ### application use (development mode)
 once you've started HiTopBPF (either via `mvn spring-boot:run` or `docker-compose up`), open a web browser to `http://localhost:8080`
-
-### example application (running on bitcoin test network)
-***note:  DO NOT SENT REAL BITCOIN TO THE HiTopBPF DEMO/TEST APPLICATION!!!  DOING SO WILL LOSE YOUR REAL BITCOIN!!!***
-
-bitcoin ***TEST*** network demonstation version running at http://hitoplids.com:8080/ 
 
 ##### current functionality
 - as of this writing, HiTopBPF currently can complete a full bitcoin payment transaction on the bitcoin test network.  - configuration exists to run on bitcoin main network, but hasn't been run there (yet).
