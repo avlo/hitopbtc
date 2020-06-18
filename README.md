@@ -1,7 +1,7 @@
 # HiTopBPG (HiTop Bitcoin Payment Gateway)
 
 ### overview
-HiTopBPG is a completely self-contained Bitcoin Payment Gateway framework and store-front web-application. It uses no custodial or third party wallet/blockchain services (excluding exchange rate conversion and QR code generation). It has been specifically built with all business logic, bitcoin transaction logic & wallet custodianship completely within the application itself.
+HiTopBPG is a self-contained Bitcoin Payment Gateway framework and store-front web-application. It uses no custodial or third party wallet/blockchain services (excluding exchange rate conversion and QR code generation). It has been specifically built with all business logic, bitcoin transaction logic & wallet custodianship completely within the application itself.
 
 ### motivation
 after having been denied payment gateway services by paypal and others and not finding an existing, open-source, free, self-custodial bitcoin transaction/wallet service with the features i wanted, i decided to build my own.  it's intended to be a simple (two page) store-front web-application with self-contained bitcoin transaction engine and user-custodian'd wallet.
@@ -18,7 +18,7 @@ as of this writing:
 |Docker Compose (optional)|1.17.1|
 
 ### requirements
-uses 3rd party service to fetch current exchange rate.  currently configured (via application.properties) to use bitpay.com.  after downloading bitpay security certificate, run command:
+uses 3rd party service to fetch current exchange rate.  currently configured (via application.properties) to use bitpay.com.  after [downloading](https://www.shellhacks.com/get-ssl-certificate-from-server-site-url-export-download/) bitpay security certificate, run command:
 
 ```
 $ keytool -import -trustcacerts -file </location/of/downloaded/bitpay.cer> -alias <any_alias> -keystore </location/of/java/lib/security/cacerts>
