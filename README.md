@@ -51,7 +51,7 @@ or build and execute directly using command:
 $ mvn spring-boot:run
 ```
 
-webserver on localhost:8080 will be started and both web-app & bitcoin testnet logs will echo to console.  
+webserver on localhost:8080 will start and both web-app & bitcoin testnet logs will echo to console.  
 
 
 bitcoinj and spvchain files: 
@@ -62,7 +62,7 @@ monitor-service-testnet.spvchain
 monitor-service-testnet.wallet
 ```
 
-will be created and once spvchain load is completed, console will display the following:
+will be created and once spvchain load is completed (which can take some time on slow connections), console will display the following:
 
 ```
 Chain download 100% done with 0 blocks to go, block date 2019-09-02T07:35:47Z
