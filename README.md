@@ -7,7 +7,7 @@ HiTopBPF is a self-contained bitcoin payment framework and store-front web-appli
 after having been denied payment gateway services by paypal and others and not finding an existing, open-source, free, self-custodial bitcoin transaction/wallet service with the features i wanted, i decided to build my own.  it's intended to be a simple (two page) store-front web-application with self-contained bitcoin transaction engine and user-custodian'd wallet.
 
 ### sample application (running on bitcoin test network)
-***note:  DO NOT SENT REAL BITCOIN TO THE HiTopBPF DEMO/TEST APPLICATION!!!  DOING SO WILL LOSE YOUR REAL BITCOIN!!!***
+***note:  DO NOT SEND REAL BITCOIN TO THE HiTopBPF DEMO/TEST APPLICATION!!!  DOING SO WILL LOSE YOUR REAL BITCOIN!!!  USE BITCOIN FROM THE [BITCOIN TEST NETWORK](https://bitcoinfaucet.uo1.net/send.php) INSTEAD!!!***
 
 http://hitoplids.com:8080/ 
 
