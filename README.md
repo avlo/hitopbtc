@@ -106,6 +106,8 @@ environment variables can be configured via `docker-compose.yml` in project root
 ### application use (development mode)
 once you've started HiTopBPF (either via `mvn spring-boot:run` or `docker-compose up`), open a web browser to `http://localhost:8080`
 
+---
+
 ##### current functionality
 - as of this writing, HiTopBPF currently can complete a full bitcoin payment transaction on the bitcoin test network.  - configuration exists to run on bitcoin main network, but hasn't been run there (yet).
 - uses HD wallet with newly generated child key for each order
