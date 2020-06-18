@@ -6,8 +6,7 @@ HiTopBPF is a self-contained bitcoin payment framework and store-front web-appli
 ### motivation
 after having been denied payment gateway services by paypal and others and not finding an existing, open-source, free, self-custodial bitcoin transaction/wallet service with the features i wanted, i decided to build my own.  it's intended to be a simple (two page) store-front web-application with self-contained bitcoin transaction engine and user-custodian'd wallet.
 
-### tools used
-as of this writing: 
+### required development tools
 |tool|version|
 |---:|---|
 |JAVA OpenJDK|[1.9](https://openjdk.java.net/install/)|
