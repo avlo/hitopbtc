@@ -1,8 +1,5 @@
 package com.hitop.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /*
  *  Copyright 2020 Nick Avlonitis
  *
@@ -22,6 +19,8 @@ import java.util.Map;
  *  limitations under the License.
  */    
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.annotation.PostConstruct;
@@ -38,7 +37,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -145,13 +144,20 @@ public class MainController implements ReceiptListener {
     return order;
   }
   
-  @GetMapping("/sendbalance/{toAddress}")
-  @ResponseBody
-  public ModelAndView sendBalance(@PathVariable String toAddress) throws Exception {
-    Wallet.SendResult sendResult = walletService.sendBalanceTo(toAddress);
-    ModelAndView mv = new ModelAndView("balanceset");
-    mv.addObject("confirmation", sendResult.toString());
-    return mv;
+  @GetMapping("/sendbalanceform")
+  public String getSendBalance(final Model model) throws Exception {
+    model.addAttribute("productname", this.productName);
+    return "sendbalance";
+  }
+  
+  @GetMapping("/sendbalance")
+  public String sendBalance(@PathVariable String toAddress) throws Exception {
+    System.out.println("****************");
+    System.out.println("****************");
+    System.out.println(toAddress);
+//    Wallet.SendResult sendResult = walletService.sendBalanceTo(toAddress);
+//    mv.addObject("confirmation", sendResult.toString());
+    return "balancesent";
   }
   
   //TODO 50 keep this but wrap it in security so only admin can call it
