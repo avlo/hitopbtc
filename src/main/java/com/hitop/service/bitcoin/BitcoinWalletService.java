@@ -20,8 +20,6 @@ package com.hitop.service.bitcoin;
  */    
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.concurrent.ExecutionException;
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.Context;
@@ -51,11 +49,11 @@ public class BitcoinWalletService implements WalletService {
   private final static Logger log = LoggerFactory.getLogger(BitcoinWalletService.class);
 
   private final WalletAppKit kit;
-  private final NetworkParameters params;
+  private final NetworkParameters parameters;
 
   @Autowired
   public BitcoinWalletService(final NetworkParameters params, final WalletFile walletFile) throws Exception {
-    this.params = params;
+    this.parameters = params;
 
     log.info(walletFile.toString());
 
@@ -74,6 +72,7 @@ public class BitcoinWalletService implements WalletService {
     kit = new WalletAppKit(params.getNetworkParameters(), new File("."), walletFile.getFilePrefix()) {
       @Override
       protected void onSetupCompleted() {
+        Context.propagate(new Context(parameters.getNetworkParameters()));
         // TODO 60: use unconfirmed for now for expediency
         kit.wallet().allowSpendingUnconfirmedTransactions();
         log.info("walletAppKit setup complete.");
@@ -89,7 +88,7 @@ public class BitcoinWalletService implements WalletService {
     // TODO: replace for/if with functional functionalIF / lambda
     for(TransactionOutput txo : tx.getOutputs()){
       if (txo.isMine(kit.wallet())) {
-        String walletTxo = txo.getScriptPubKey().getToAddress(params.getNetworkParameters(), true).toString();
+        String walletTxo = txo.getScriptPubKey().getToAddress(this.parameters.getNetworkParameters(), true).toString();
         log.info("wallet txo: {}", walletTxo);
         return walletTxo;
       }
@@ -106,45 +105,35 @@ public class BitcoinWalletService implements WalletService {
 
   @Override
   public String getFreshSendToAddress() {
-    return LegacyAddress.fromKey(params.getNetworkParameters(), kit.wallet().freshReceiveKey()).toString();
+    return LegacyAddress.fromKey(this.parameters.getNetworkParameters(), kit.wallet().freshReceiveKey()).toString();
   }
   
-  private Coin getSatoshis(Coin coin) {
-    return Coin.valueOf(coin.longValue());
-  }
-
   public Wallet.SendResult sendBalanceTo(final String addressStr) throws InsufficientMoneyException {
-    Context.propagate(new Context(params.getNetworkParameters()));
+    Context.propagate(new Context(this.parameters.getNetworkParameters()));
     final Coin walletBalanceAvailable = kit.wallet().getBalance(Wallet.BalanceType.AVAILABLE);
-    final Coin walletBalanceSpendable = kit.wallet().getBalance(Wallet.BalanceType.AVAILABLE_SPENDABLE);
+//    final Coin walletBalanceSpendable = kit.wallet().getBalance(Wallet.BalanceType.AVAILABLE_SPENDABLE);
+    final Coin walletBalanceSpendable = Coin.parseCoin(".00011");
     final Coin minTxFee = Transaction.REFERENCE_DEFAULT_MIN_TX_FEE;
     log.info("send to address {}", addressStr);
-    log.info("wallet balance {}", walletBalanceAvailable);
-    log.info("wallet spendable {}", walletBalanceSpendable);
-    log.info("min fee {}", minTxFee);
+    log.info("wallet balance {}", walletBalanceAvailable.toFriendlyString());
+    log.info("wallet spendable {}", walletBalanceSpendable.toFriendlyString());
+    log.info("min fee {}", minTxFee.toFriendlyString());
     
     Coin spendable = walletBalanceSpendable.minus(minTxFee);
-    log.info("spendable {}", spendable);
-    Address toAddress = LegacyAddress.fromBase58(params.getNetworkParameters(), addressStr);
+    log.info("spendable {}", spendable.toFriendlyString());
+    Address toAddress = LegacyAddress.fromBase58(this.parameters.getNetworkParameters(), addressStr);
     
     System.out.println("1111111111111111111");
     System.out.println("1111111111111111111");
        
-    SendRequest sendRequest = SendRequest.to(toAddress, spendable);
-    Wallet.SendResult sendResult = kit.wallet().sendCoins(sendRequest);
-    
-    try {
-      sendResult.broadcastComplete.get();
-    } catch (InterruptedException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    SendRequest req = SendRequest.to(toAddress, spendable);
+    req.feePerKb = minTxFee;
+    log.info("fee {}", req.feePerKb.toFriendlyString());
+    Wallet.SendResult result = kit.wallet().sendCoins(req);
+    Transaction createdTx = result.tx;
     
     System.out.println("2222222222222222222");
     System.out.println("2222222222222222222");
-    return sendResult;
+    return result;
   }
 }
