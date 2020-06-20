@@ -1,8 +1,6 @@
-package com.hitop.service;
+package com.hitop.repository;
 
-import org.bitcoinj.core.InsufficientMoneyException;
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.wallet.Wallet;
+import java.util.List;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -23,12 +21,12 @@ import org.bitcoinj.wallet.Wallet;
  *  limitations under the License.
  */    
 
-import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.hitop.entity.BalancePayment;
 
-public interface WalletService {
-  void addCoinsReceivedEventListener(WalletCoinsReceivedEventListener listener);
-  // TODO: Refactor Transaction to be non-bitcoin specific (replace w/ interface & impls w/ currency-specific wrapper)
-  String getTxReceiveAddress(Transaction tx);
-  String getFreshSendToAddress();
-  Wallet.SendResult sendBalanceTo(String address) throws InsufficientMoneyException;
+public interface BalancePaymentRepository extends JpaRepository<BalancePayment, Integer> {
+//  List<BalancePayment> findByFrom(String address);
+//  List<BalancePayment> findByTo(String address);
+//  Double getStartingBalance();
+//  Double getEndingBalance();
 }

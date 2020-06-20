@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-<title>Hi-Top Order</title>
+<title th:text="${productname}"> Wallet</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->
@@ -54,9 +54,10 @@ img.canbong-center {
 <body>
   <div class="container-contact100">
     <div class="wrap-contact100">
-      <img src="/images/can_bong.png" alt="EVERYBODY CAN" class="canbong-center">
-      <span class="contact100-form-title">Receipt</span>
-      <span th:text="${order?.name}"></span>
+      <img src="/images/order.png" alt="EVERYBODY CAN" class="canbong-center">
+      <span class="contact100-form-title">Balance sent to recipient wallet.</span>
+      <span th:text="${balancePayment?.toAddress}"> 1111 </span>
+      <span th:text="${confirmation}"> 222 </span>
     </div>
   </div>
 

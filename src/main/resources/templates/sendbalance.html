@@ -57,12 +57,12 @@ img.canbong-center {
 <body>
   <div class="container-contact100">
     <div class="wrap-contact100">
-      <form class="contact100-form validate-form" th:action="@{/sendbalance}" method="post">
+      <form class="contact100-form validate-form" th:action="@{/sendbalance}" th:object="${balancePayment}" method="post">
         <img src="/images/order.png" alt="EVERYBODY CAN" class="canbong-center">
 	
 	    <div class="wrap-input100 validate-input bg1" data-validate="Send-to Address">
 	      <span class="label-input100">Send-to Address</span>
-	      <input class="input100" type="text" id="toAddress" name="toAddress" placeholder="Send-to Address">
+	      <input class="input100" type="text" th:field="*{toAddress}" id="toAddress" placeholder="Send-to Address">
 	    </div>
 				
         <span class="contact50-form-title">

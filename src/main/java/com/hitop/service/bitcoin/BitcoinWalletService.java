@@ -20,11 +20,13 @@ package com.hitop.service.bitcoin;
  */    
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Coin;
+import org.bitcoinj.core.Context;
 import org.bitcoinj.core.InsufficientMoneyException;
 import org.bitcoinj.core.LegacyAddress;
-import org.bitcoinj.core.PeerGroup;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.core.TransactionOutput;
 import org.bitcoinj.kits.WalletAppKit;
@@ -106,20 +108,43 @@ public class BitcoinWalletService implements WalletService {
   public String getFreshSendToAddress() {
     return LegacyAddress.fromKey(params.getNetworkParameters(), kit.wallet().freshReceiveKey()).toString();
   }
+  
+  private Coin getSatoshis(Coin coin) {
+    return Coin.valueOf(coin.longValue());
+  }
 
-  public Wallet.SendResult sendBalanceTo(String addressStr) throws InsufficientMoneyException {
-    final Coin value = kit.wallet().getBalance();
-    final Coin amountToSend = value.subtract(Transaction.REFERENCE_DEFAULT_MIN_TX_FEE);
+  public Wallet.SendResult sendBalanceTo(final String addressStr) throws InsufficientMoneyException {
+    Context.propagate(new Context(params.getNetworkParameters()));
+    final Coin walletBalanceAvailable = kit.wallet().getBalance(Wallet.BalanceType.AVAILABLE);
+    final Coin walletBalanceSpendable = kit.wallet().getBalance(Wallet.BalanceType.AVAILABLE_SPENDABLE);
+    final Coin minTxFee = Transaction.REFERENCE_DEFAULT_MIN_TX_FEE;
+    log.info("send to address {}", addressStr);
+    log.info("wallet balance {}", walletBalanceAvailable);
+    log.info("wallet spendable {}", walletBalanceSpendable);
+    log.info("min fee {}", minTxFee);
     
+    Coin spendable = walletBalanceSpendable.minus(minTxFee);
+    log.info("spendable {}", spendable);
     Address toAddress = LegacyAddress.fromBase58(params.getNetworkParameters(), addressStr);
-
-    Transaction transaction = new Transaction(this.params.getNetworkParameters());
-    transaction.addInput(kit.wallet().getUnspents().get(0));// important to add proper input
-    transaction.addOutput(amountToSend, toAddress);
-
-    SendRequest request = SendRequest.forTx(transaction);
-    request.feePerKb = Transaction.REFERENCE_DEFAULT_MIN_TX_FEE;
-    Wallet.SendResult sendResult = kit.wallet().sendCoins(kit.peerGroup(), request);
+    
+    System.out.println("1111111111111111111");
+    System.out.println("1111111111111111111");
+       
+    SendRequest sendRequest = SendRequest.to(toAddress, spendable);
+    Wallet.SendResult sendResult = kit.wallet().sendCoins(sendRequest);
+    
+    try {
+      sendResult.broadcastComplete.get();
+    } catch (InterruptedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (ExecutionException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    
+    System.out.println("2222222222222222222");
+    System.out.println("2222222222222222222");
     return sendResult;
   }
 }

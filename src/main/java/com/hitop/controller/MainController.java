@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.annotation.PostConstruct;
+import org.bitcoinj.core.InsufficientMoneyException;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.wallet.Wallet;
 import org.slf4j.Logger;
@@ -42,10 +43,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter.SseEventBuilder;
+import com.hitop.entity.BalancePayment;
 import com.hitop.entity.PurchaseOrder;
-import com.hitop.repository.OrderRepository;
+import com.hitop.repository.PurchaseOrderRepository;
 import com.hitop.service.CoinReceivedService;
-import com.hitop.service.OrderServiceImpl;
+import com.hitop.service.PurchaseOrderService;
 import com.hitop.service.QRCodeService;
 import com.hitop.service.RateService;
 import com.hitop.service.WalletService;
@@ -59,7 +61,7 @@ public class MainController implements ReceiptListener {
   private final String productName;
 
   @Autowired
-  private OrderRepository orderRepository;
+  private PurchaseOrderRepository orderRepository;
   
   @Autowired
   private WalletService walletService;
@@ -74,7 +76,7 @@ public class MainController implements ReceiptListener {
   private RateService rateService;
   
   @Autowired
-  private OrderServiceImpl orderServiceImpl;
+  private PurchaseOrderService orderServiceImpl;
   
   Map<String, SseEmitter> sseEmitterMap = new HashMap<>();
   
@@ -146,17 +148,19 @@ public class MainController implements ReceiptListener {
   
   @GetMapping("/sendbalanceform")
   public String getSendBalance(final Model model) throws Exception {
+    model.addAttribute("balancePayment", new BalancePayment());
     model.addAttribute("productname", this.productName);
     return "sendbalance";
   }
   
-  @GetMapping("/sendbalance")
-  public String sendBalance(@PathVariable String toAddress) throws Exception {
+  @PostMapping("/sendbalance")
+  public String sendBalance(final BalancePayment balancePayment, final BindingResult result, final Model model) throws InsufficientMoneyException {
     System.out.println("****************");
     System.out.println("****************");
-    System.out.println(toAddress);
-//    Wallet.SendResult sendResult = walletService.sendBalanceTo(toAddress);
-//    mv.addObject("confirmation", sendResult.toString());
+    model.addAttribute("productname", this.productName);
+    System.out.println(balancePayment.getToAddress());
+    Wallet.SendResult sendResult = walletService.sendBalanceTo(balancePayment.getToAddress());
+    model.addAttribute("confirmation", sendResult.toString());
     return "balancesent";
   }
   

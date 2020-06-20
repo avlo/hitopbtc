@@ -26,13 +26,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import com.hitop.entity.PurchaseOrder;
-import com.hitop.service.OrderServiceImpl;
+import com.hitop.service.PurchaseOrderService;
 
 @DataJpaTest
 class OrderServiceImplIT {
 
   @Autowired
-  private OrderServiceImpl orderServiceImpl;
+  private PurchaseOrderService orderServiceImpl;
 
   private PurchaseOrder po;
   

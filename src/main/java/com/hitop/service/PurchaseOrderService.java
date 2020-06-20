@@ -24,27 +24,27 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hitop.entity.PurchaseOrder;
-import com.hitop.repository.OrderRepository;
+import com.hitop.repository.PurchaseOrderRepository;
 
 @Service
-public class OrderServiceImpl {
-  Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
+public class PurchaseOrderService {
+  Logger log = LoggerFactory.getLogger(PurchaseOrderService.class);
   
-  private final OrderRepository orderRepository;
+  private final PurchaseOrderRepository purchaseOrderRepository;
   
   @Autowired
-  public OrderServiceImpl(final OrderRepository orderRepository) {
-    this.orderRepository = orderRepository;
+  public PurchaseOrderService(final PurchaseOrderRepository purchaseOrderRepository) {
+    this.purchaseOrderRepository = purchaseOrderRepository;
   }
   
   public PurchaseOrder save(final PurchaseOrder order) {
-    PurchaseOrder savedOrder = orderRepository.save(order);
+    PurchaseOrder savedOrder = purchaseOrderRepository.save(order);
     log.info("order {} saved to db.", savedOrder);
     return savedOrder;
   }
   
   public PurchaseOrder findBySendToAddress(final String sendToAddress) {
-    PurchaseOrder returnOrder = orderRepository.findBySendToAddress(sendToAddress);
+    PurchaseOrder returnOrder = purchaseOrderRepository.findBySendToAddress(sendToAddress);
     log.info("order {} retrieved from db.", returnOrder);
     return returnOrder;
   }
