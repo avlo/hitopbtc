@@ -26,7 +26,6 @@ import java.util.concurrent.Executors;
 import javax.annotation.PostConstruct;
 import org.bitcoinj.core.InsufficientMoneyException;
 import org.bitcoinj.core.Transaction;
-import org.bitcoinj.wallet.Wallet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +37,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter.SseEventBuilder;
 import com.hitop.entity.BalancePayment;
@@ -62,7 +59,7 @@ public class MainController implements ReceiptListener {
 
   @Autowired
   private PurchaseOrderRepository orderRepository;
-  
+
   @Autowired
   private WalletService walletService;
   
@@ -150,17 +147,19 @@ public class MainController implements ReceiptListener {
   public String getSendBalance(final Model model) throws Exception {
     model.addAttribute("balancePayment", new BalancePayment());
     model.addAttribute("productname", this.productName);
+    model.addAttribute("balance", walletService.getBalance());
+    model.addAttribute("fee", walletService.getMinTxFee());
     return "sendbalance";
   }
   
   @PostMapping("/sendbalance")
   public String sendBalance(final BalancePayment balancePayment, final BindingResult result, final Model model) throws InsufficientMoneyException {
-    System.out.println("****************");
-    System.out.println("****************");
     model.addAttribute("productname", this.productName);
-    System.out.println(balancePayment.getToAddress());
-    Wallet.SendResult sendResult = walletService.sendBalanceTo(balancePayment.getToAddress());
-    model.addAttribute("confirmation", sendResult.toString());
+    model.addAttribute("balance", walletService.getBalance());
+
+    if (!walletService.sendBalanceTo(balancePayment.getToAddress()))
+      return "insufficentfunds";
+    
     return "balancesent";
   }
   

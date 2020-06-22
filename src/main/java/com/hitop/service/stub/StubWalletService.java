@@ -2,7 +2,6 @@ package com.hitop.service.stub;
 
 import org.bitcoinj.core.InsufficientMoneyException;
 import org.bitcoinj.core.Transaction;
-import org.bitcoinj.wallet.Wallet.SendResult;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -57,8 +56,20 @@ public class StubWalletService implements WalletService {
   }
   
   @Override
-  public SendResult sendBalanceTo(String address) throws InsufficientMoneyException {
+  public String getBalance() {
     // TODO Auto-generated method stub
-    return null;
+    return "STUB";
+  }
+  
+@Override
+  public String getMinTxFee() {
+    // TODO Auto-generated method stub
+    return "STUB";
+  }
+  
+  @Override
+  public boolean sendBalanceTo(String address) throws InsufficientMoneyException {
+    // TODO Auto-generated method stub
+    return true;
   }
 }

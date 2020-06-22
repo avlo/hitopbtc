@@ -55,7 +55,9 @@ img.canbong-center {
   <div class="container-contact100">
     <div class="wrap-contact100">
       <img src="/images/order.png" alt="EVERYBODY CAN" class="canbong-center">
-      <span class="contact100-form-title"><span th:text="${balance}" style="color:green"></span> sent to <span th:text="${balancePayment?.toAddress}" style="color:green"></span></span>
+      <span class="contact100-form-title">
+      Insufficient funds: <span th:text="${balance}" style="color:red">
+      </span>
     </div>
   </div>
 

@@ -60,6 +60,13 @@ img.canbong-center {
       <form class="contact100-form validate-form" th:action="@{/sendbalance}" th:object="${balancePayment}" method="post">
         <img src="/images/order.png" alt="EVERYBODY CAN" class="canbong-center">
 	
+		<span class="contact50-form-title">
+			Current balance: <span th:text="${balance}" style="color:green"></span>
+			<p style="font-size:14px">
+				<i>note: network transaction fee </i><span th:text="${fee}" style="color:red"></span>
+			</p> 
+		</span>
+		
 	    <div class="wrap-input100 validate-input bg1" data-validate="Send-to Address">
 	      <span class="label-input100">Send-to Address</span>
 	      <input class="input100" type="text" th:field="*{toAddress}" id="toAddress" placeholder="Send-to Address">

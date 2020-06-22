@@ -29,13 +29,13 @@ import com.hitop.entity.BalancePayment;
 import com.hitop.repository.BalancePaymentRepository;
 
 @Service
-public class BalancePaymentService {
-  Logger log = LoggerFactory.getLogger(BalancePaymentService.class);
+public class BalanceTransferService {
+  Logger log = LoggerFactory.getLogger(BalanceTransferService.class);
   
   private final BalancePaymentRepository balancePaymentRepository;
 
   @Autowired
-  public BalancePaymentService(final BalancePaymentRepository balancePaymentRepository) {
+  public BalanceTransferService(final BalancePaymentRepository balancePaymentRepository) {
     this.balancePaymentRepository = balancePaymentRepository;
   }
   
