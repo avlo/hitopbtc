@@ -66,7 +66,6 @@ public class BitcoinBalanceTransferService implements BalanceTransferService {
   @Override
   public boolean sendBalanceTo(final String addressStr) throws InsufficientMoneyException {
     final Coin walletBalanceSpendable = walletService.getCoinBalance();
-//    final Coin walletBalanceSpendable = Coin.parseCoin(".0011");
     final Coin minTxFee = getCoinMinTxFee();
 
     log.info("wallet spendable {}", walletBalanceSpendable.toFriendlyString());
@@ -99,7 +98,6 @@ public class BitcoinBalanceTransferService implements BalanceTransferService {
   }
   
   private Coin getCoinMinTxFee() {
-//    return Coin.parseCoin(".0001");
     return Transaction.REFERENCE_DEFAULT_MIN_TX_FEE;
   }
   

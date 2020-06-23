@@ -1,12 +1,5 @@
 package com.hitop;
 
-import java.io.File;
-import org.bitcoinj.kits.WalletAppKit;
-import org.bitcoinj.utils.BriefLogFormatter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Bean;
-
 /*
  *  Copyright 2020 Nick Avlonitis
  *
@@ -26,6 +19,12 @@ import org.springframework.context.annotation.Bean;
  *  limitations under the License.
  */    
 
+import java.io.File;
+import org.bitcoinj.kits.WalletAppKit;
+import org.bitcoinj.utils.BriefLogFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import com.hitop.service.WalletFile;
@@ -54,9 +53,6 @@ public class AppConfig {
     WalletAppKit kit = new WalletAppKit(params.getNetworkParameters(), new File("."), walletFile.getFilePrefix()) {
       @Override
       protected void onSetupCompleted() {
-//        Context.propagate(new Context(parameters.getNetworkParameters()));
-        // TODO 60: use unconfirmed for now for expediency
-//        kit.wallet().allowSpendingUnconfirmedTransactions();
         log.info("walletAppKit setup complete.");
       }
     };

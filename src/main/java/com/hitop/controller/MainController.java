@@ -146,7 +146,8 @@ public class MainController implements ReceiptListener {
     executor.shutdown();
     return order;
   }
-  
+
+  //TODO: wrap below in security so only admin can call it
   @GetMapping("/sendbalanceform")
   public String getSendBalance(final Model model) throws Exception {
     model.addAttribute("balancePayment", new BalancePayment());
@@ -156,6 +157,7 @@ public class MainController implements ReceiptListener {
     return "sendbalance";
   }
   
+  //TODO: wrap below in security so only admin can call it
   @PostMapping("/sendbalance")
   public String sendBalance(
       final BalancePayment balancePayment, 
@@ -170,7 +172,7 @@ public class MainController implements ReceiptListener {
     return "balancesent";
   }
   
-  //TODO 50 keep this but wrap it in security so only admin can call it
+  //TODO: wrap below in security so only admin can call it
   @GetMapping(path="/allordershitop")
   public @ResponseBody Iterable<PurchaseOrder> getAllOrders() {
     return orderRepository.findAll();
