@@ -68,6 +68,7 @@ public class BitcoinWalletService implements WalletService {
     log.debug("***********");
     log.debug("***********");
 
+    Context.propagate(new Context(this.parameters.getNetworkParameters()));
     // log output more compact and easily read, especially when using the JDK log adapter.
     BriefLogFormatter.init();
 
@@ -75,6 +76,7 @@ public class BitcoinWalletService implements WalletService {
     kit = new WalletAppKit(params.getNetworkParameters(), new File("."), walletFile.getFilePrefix()) {
       @Override
       protected void onSetupCompleted() {
+        Context.propagate(new Context(parameters.getNetworkParameters()));
         // TODO 60: use unconfirmed for now for expediency
         kit.wallet().allowSpendingUnconfirmedTransactions();
         log.info("walletAppKit setup complete.");
@@ -89,6 +91,7 @@ public class BitcoinWalletService implements WalletService {
   @Override
   public String getTxReceiveAddress(final Transaction tx) {
     // TODO: replace for/if with functional functionalIF / lambda
+    Context.propagate(new Context(this.parameters.getNetworkParameters()));
     for(TransactionOutput txo : tx.getOutputs()){
       if (txo.isMine(kit.wallet())) {
         String walletTxo = txo.getScriptPubKey().getToAddress(this.parameters.getNetworkParameters(), true).toString();

@@ -100,7 +100,7 @@ public class BitcoinBalanceTransferService implements BalanceTransferService {
   }
   
   private Coin getCoinMinTxFee() {
-    return Transaction.REFERENCE_DEFAULT_MIN_TX_FEE;
+    return Transaction.REFERENCE_DEFAULT_MIN_TX_FEE.add(Coin.MICROCOIN.shiftLeft(1).multiply(2));
   }
   
   private Coin convertBtcToSatoshis(final Double btc) {
