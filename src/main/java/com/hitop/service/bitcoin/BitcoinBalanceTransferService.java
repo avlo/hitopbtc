@@ -68,8 +68,8 @@ public class BitcoinBalanceTransferService implements BalanceTransferService {
   public boolean sendBalanceTo(final String addressStr) throws InsufficientMoneyException {
     Context.propagate(new Context(this.parameters.getNetworkParameters()));
     
-//    final Coin walletBalanceSpendable = walletService.getCoinBalance();
-    final Coin walletBalanceSpendable = Coin.parseCoin(".0011");
+    final Coin walletBalanceSpendable = walletService.getCoinBalance();
+//    final Coin walletBalanceSpendable = Coin.parseCoin(".0011");
     final Coin minTxFee = getCoinMinTxFee();
 
     log.info("wallet spendable {}", walletBalanceSpendable.toFriendlyString());
@@ -100,8 +100,8 @@ public class BitcoinBalanceTransferService implements BalanceTransferService {
   }
   
   private Coin getCoinMinTxFee() {
-    return Coin.parseCoin(".0001");
-//    return Transaction.REFERENCE_DEFAULT_MIN_TX_FEE;
+//    return Coin.parseCoin(".0001");
+    return Transaction.REFERENCE_DEFAULT_MIN_TX_FEE;
   }
   
   private Coin convertBtcToSatoshis(final Double btc) {

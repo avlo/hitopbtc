@@ -1,35 +1,13 @@
 package com.hitop.service.bitcoin;
 
-/*
- *  Copyright 2020 Nick Avlonitis
- *
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */    
-
-import java.io.File;
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Coin;
-import org.bitcoinj.core.Context;
 import org.bitcoinj.core.InsufficientMoneyException;
 import org.bitcoinj.core.LegacyAddress;
 import org.bitcoinj.core.SegwitAddress;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.core.TransactionOutput;
 import org.bitcoinj.kits.WalletAppKit;
-import org.bitcoinj.utils.BriefLogFormatter;
 import org.bitcoinj.wallet.SendRequest;
 import org.bitcoinj.wallet.Wallet;
 import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
@@ -39,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import com.hitop.NetworkParameters;
-import com.hitop.service.WalletFile;
 import com.hitop.service.WalletService;
 
 @Service
@@ -50,42 +27,14 @@ public class BitcoinWalletService implements WalletService {
   private final static Logger log = LoggerFactory.getLogger(BitcoinWalletService.class);
 
   private final NetworkParameters parameters;
-  private final WalletAppKit kit;
+  private final WalletAppKit walletAppKit;
 
   @Autowired
   public BitcoinWalletService(
-      final NetworkParameters params, 
-      final WalletFile walletFile) throws Exception {
+      final NetworkParameters params,
+      final WalletAppKit walletAppKit) throws Exception {
     this.parameters = params;
-
-    log.info(walletFile.toString());
-
-    log.debug("***********");
-    log.debug("***********");
-    log.debug(params.toString());
-    log.debug("-----------");
-    log.debug(walletFile.getFilePrefix());
-    log.debug("***********");
-    log.debug("***********");
-
-//    Context.propagate(new Context(this.parameters.getNetworkParameters()));
-    // log output more compact and easily read, especially when using the JDK log adapter.
-    BriefLogFormatter.init();
-
-    // Start up a basic app using a class that automates some boilerplate.
-    kit = new WalletAppKit(params.getNetworkParameters(), new File("."), walletFile.getFilePrefix()) {
-      @Override
-      protected void onSetupCompleted() {
-//        Context.propagate(new Context(parameters.getNetworkParameters()));
-        // TODO 60: use unconfirmed for now for expediency
-        kit.wallet().allowSpendingUnconfirmedTransactions();
-        log.info("walletAppKit setup complete.");
-      }
-    };
-
-    // Download the block chain and wait until it's done.
-    kit.startAsync();
-    kit.awaitRunning();
+    this.walletAppKit = walletAppKit;
   }
 
   @Override
@@ -93,7 +42,7 @@ public class BitcoinWalletService implements WalletService {
     // TODO: replace for/if with functional functionalIF / lambda
 //    Context.propagate(new Context(this.parameters.getNetworkParameters()));
     for(TransactionOutput txo : tx.getOutputs()){
-      if (txo.isMine(kit.wallet())) {
+      if (txo.isMine(walletAppKit.wallet())) {
         String walletTxo = txo.getScriptPubKey().getToAddress(this.parameters.getNetworkParameters(), true).toString();
         log.info("wallet txo: {}", walletTxo);
         return walletTxo;
@@ -106,7 +55,7 @@ public class BitcoinWalletService implements WalletService {
 
   @Override
   public void addCoinsReceivedEventListener(final WalletCoinsReceivedEventListener listener) {
-    kit.wallet().addCoinsReceivedEventListener(listener);
+    walletAppKit.wallet().addCoinsReceivedEventListener(listener);
   }
 
   @Override
@@ -115,7 +64,7 @@ public class BitcoinWalletService implements WalletService {
 //    Context.propagate(new Context(this.parameters.getNetworkParameters()));
     
     // TODO: issue w/ Segwit, replace when fixed
-    return LegacyAddress.fromKey(this.parameters.getNetworkParameters(), kit.wallet().freshReceiveKey()).toString();
+    return LegacyAddress.fromKey(this.parameters.getNetworkParameters(), walletAppKit.wallet().freshReceiveKey()).toString();
   }
   
   @Override
@@ -136,15 +85,15 @@ public class BitcoinWalletService implements WalletService {
 
   @Override
   public Coin getCoinBalance() {
-    kit.wallet().cleanup();
-    return kit.wallet().getBalance(Wallet.BalanceType.AVAILABLE_SPENDABLE);
+    walletAppKit.wallet().cleanup();
+    return walletAppKit.wallet().getBalance(Wallet.BalanceType.AVAILABLE_SPENDABLE);
   }
   
   @Override
   public boolean sendMoney(final SendRequest req) {
 //    Context.propagate(new Context(this.parameters.getNetworkParameters()));
     try {
-      kit.wallet().sendCoins(req);
+      walletAppKit.wallet().sendCoins(req);
       return true;
     } catch (InsufficientMoneyException e) {
       e.printStackTrace();

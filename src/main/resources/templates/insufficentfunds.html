@@ -39,15 +39,13 @@ img.canbong-center {
 }
 
 .input101 {
-  display: block;
-  width: 100%;
-  background: transparent;
-  font-family: Montserrat-SemiBold;
-  font-size: 18px;
-  color: #555555;
-  line-height: 1.4;
-  padding-right: 15px;
+  text-align: center;
 }
+
+.send-center {
+  text-align: center;
+}
+
 </style>
 </head>
 
@@ -55,9 +53,8 @@ img.canbong-center {
   <div class="container-contact100">
     <div class="wrap-contact100">
       <img src="/images/order.png" alt="EVERYBODY CAN" class="canbong-center">
-      <span class="contact100-form-title">
-      Insufficient funds: <span th:text="${balance}" style="color:red">
-      </span>
+      <div class="send-center">Insufficient profunds: <span th:text="${balance}" style="color:red">
+      </span></div>
     </div>
   </div>
 

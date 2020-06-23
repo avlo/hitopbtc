@@ -1,5 +1,12 @@
 package com.hitop;
 
+import java.io.File;
+import org.bitcoinj.kits.WalletAppKit;
+import org.bitcoinj.utils.BriefLogFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Bean;
+
 /*
  *  Copyright 2020 Nick Avlonitis
  *
@@ -21,8 +28,43 @@ package com.hitop;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import com.hitop.service.WalletFile;
 
 @Configuration
 @PropertySource("classpath:application.properties")
 public class AppConfig {
+  private final static Logger log = LoggerFactory.getLogger(AppConfig.class);
+  
+  @Bean
+  public WalletAppKit getWalletAppKit(final NetworkParameters params, final WalletFile walletFile) {
+
+    log.info("wallet file {}", walletFile.toString());
+    
+    log.debug("***********");
+    log.debug("***********");
+    log.debug(params.toString());
+    log.debug("-----------");
+    log.debug(walletFile.getFilePrefix());
+    log.debug("***********");
+    log.debug("***********");
+    
+    // log output more compact and easily read, especially when using the JDK log adapter.
+    BriefLogFormatter.init();
+
+    WalletAppKit kit = new WalletAppKit(params.getNetworkParameters(), new File("."), walletFile.getFilePrefix()) {
+      @Override
+      protected void onSetupCompleted() {
+//        Context.propagate(new Context(parameters.getNetworkParameters()));
+        // TODO 60: use unconfirmed for now for expediency
+//        kit.wallet().allowSpendingUnconfirmedTransactions();
+        log.info("walletAppKit setup complete.");
+      }
+    };
+
+    // Download the block chain and wait until it's done.
+    kit.startAsync();
+    kit.awaitRunning();
+    
+    return kit;
+  }
 }
