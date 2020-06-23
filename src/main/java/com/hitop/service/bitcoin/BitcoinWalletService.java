@@ -57,7 +57,6 @@ public class BitcoinWalletService implements WalletService {
       final NetworkParameters params, 
       final WalletFile walletFile) throws Exception {
     this.parameters = params;
-    Context.propagate(new Context(this.parameters.getNetworkParameters()));
 
     log.info(walletFile.toString());
 
@@ -76,7 +75,6 @@ public class BitcoinWalletService implements WalletService {
     kit = new WalletAppKit(params.getNetworkParameters(), new File("."), walletFile.getFilePrefix()) {
       @Override
       protected void onSetupCompleted() {
-        Context.propagate(new Context(parameters.getNetworkParameters()));
         // TODO 60: use unconfirmed for now for expediency
         kit.wallet().allowSpendingUnconfirmedTransactions();
         log.info("walletAppKit setup complete.");
@@ -90,8 +88,6 @@ public class BitcoinWalletService implements WalletService {
 
   @Override
   public String getTxReceiveAddress(final Transaction tx) {
-    Context.propagate(new Context(this.parameters.getNetworkParameters()));
-    
     // TODO: replace for/if with functional functionalIF / lambda
     for(TransactionOutput txo : tx.getOutputs()){
       if (txo.isMine(kit.wallet())) {
@@ -107,12 +103,12 @@ public class BitcoinWalletService implements WalletService {
 
   @Override
   public void addCoinsReceivedEventListener(final WalletCoinsReceivedEventListener listener) {
-    Context.propagate(new Context(this.parameters.getNetworkParameters()));
     kit.wallet().addCoinsReceivedEventListener(listener);
   }
 
   @Override
   public String getFreshSendToAddress() {
+    // below line needed or else throws context exception 
     Context.propagate(new Context(this.parameters.getNetworkParameters()));
     
     // TODO: issue w/ Segwit, replace when fixed
@@ -121,8 +117,6 @@ public class BitcoinWalletService implements WalletService {
   
   @Override
   public Address getLegacySendToAddress(final String address) {
-    Context.propagate(new Context(this.parameters.getNetworkParameters()));
-    
     return LegacyAddress.fromString(this.parameters.getNetworkParameters(), address);
   }
   
@@ -138,8 +132,6 @@ public class BitcoinWalletService implements WalletService {
 
   @Override
   public Coin getCoinBalance() {
-    Context.propagate(new Context(this.parameters.getNetworkParameters()));
-    
     return kit.wallet().getBalance(Wallet.BalanceType.AVAILABLE_SPENDABLE);
   }
   
