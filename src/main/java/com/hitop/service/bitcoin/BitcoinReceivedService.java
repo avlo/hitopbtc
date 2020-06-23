@@ -1,7 +1,5 @@
 package com.hitop.service.bitcoin;
 
-import java.io.IOException;
-
 /*
  *  Copyright 2020 Nick Avlonitis
  *
@@ -21,6 +19,7 @@ import java.io.IOException;
  *  limitations under the License.
  */    
 
+import java.io.IOException;
 import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.wallet.Wallet;

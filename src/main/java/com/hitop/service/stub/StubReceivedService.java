@@ -37,11 +37,11 @@ public class StubReceivedService implements CoinReceivedService {
   
   @Override
   // TODO: Refactor Transaction to be non-bitcoin specific (replace w/ interface & impls w/ currency-specific wrapper)
-  public void onCoinsReceived(Wallet wallet, Transaction tx, Coin prevBalance, Coin newBalance) {
+  public void onCoinsReceived(final Wallet wallet, final Transaction tx, final Coin prevBalance, final Coin newBalance) {
     receiptListener.displayReceiptSse(tx);
   }
   
-  public void addReceivedListener(ReceiptListener receiptListener) {
+  public void addReceivedListener(final ReceiptListener receiptListener) {
     this.receiptListener = receiptListener;
   }
 

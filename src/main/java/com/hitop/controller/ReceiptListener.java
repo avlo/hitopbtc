@@ -1,7 +1,5 @@
 package com.hitop.controller;
 
-import org.bitcoinj.core.Transaction;
-
 /*
  *  Copyright 2020 Nick Avlonitis
  *
@@ -21,6 +19,7 @@ import org.bitcoinj.core.Transaction;
  *  limitations under the License.
  */    
 
+import org.bitcoinj.core.Transaction;
 import com.hitop.entity.PurchaseOrder;
 
 public interface ReceiptListener {

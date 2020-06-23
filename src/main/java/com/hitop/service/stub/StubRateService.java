@@ -35,7 +35,7 @@ public class StubRateService implements RateService {
   }
 
   @Override
-  public Double getUsdtoBtc(Double btcRate) {
+  public Double getUsdtoBtc(final Double btcRate) {
     return Double.valueOf(0.5678);
   }
 
