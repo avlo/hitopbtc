@@ -20,7 +20,6 @@ package com.hitop.service.bitcoin;
  */   
 
 import org.bitcoinj.core.Coin;
-import org.bitcoinj.core.Context;
 import org.bitcoinj.core.InsufficientMoneyException;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.wallet.SendRequest;
@@ -66,8 +65,6 @@ public class BitcoinBalanceTransferService implements BalanceTransferService {
   
   @Override
   public boolean sendBalanceTo(final String addressStr) throws InsufficientMoneyException {
-    Context.propagate(new Context(this.parameters.getNetworkParameters()));
-    
     final Coin walletBalanceSpendable = walletService.getCoinBalance();
 //    final Coin walletBalanceSpendable = Coin.parseCoin(".0011");
     final Coin minTxFee = getCoinMinTxFee();
@@ -75,7 +72,9 @@ public class BitcoinBalanceTransferService implements BalanceTransferService {
     log.info("wallet spendable {}", walletBalanceSpendable.toFriendlyString());
     log.info("min fee {}", minTxFee.toFriendlyString());
     
-    Coin spendable = walletBalanceSpendable.minus(minTxFee);
+    // on testnet seeing balance deficiency of .0000000xxx so accomodate for that by padding
+    // spendable by twice the transaction fee
+    Coin spendable = walletBalanceSpendable.minus(minTxFee.add(minTxFee));
     log.info("spendable - fee: {}", spendable.toFriendlyString());
     
     if (!confirmMinimumWalletAmount(spendable)) {

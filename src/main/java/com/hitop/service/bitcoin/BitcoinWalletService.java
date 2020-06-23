@@ -86,7 +86,7 @@ public class BitcoinWalletService implements WalletService {
   @Override
   public Coin getCoinBalance() {
     walletAppKit.wallet().cleanup();
-    return walletAppKit.wallet().getBalance(Wallet.BalanceType.AVAILABLE_SPENDABLE);
+    return walletAppKit.wallet().getBalance();
   }
   
   @Override
@@ -96,7 +96,16 @@ public class BitcoinWalletService implements WalletService {
       walletAppKit.wallet().sendCoins(req);
       return true;
     } catch (InsufficientMoneyException e) {
-      e.printStackTrace();
+      log.info("************************************************************************");
+      log.info("************* SHOULD NOT OCCUR SINGE WE'RE CHECKING FOR THIS ***********");
+      log.info("************************************************************************");
+      log.info("************************************************************************");
+      log.info("exception getMessage() {}", e.getMessage());
+      log.info("************************************************************************");
+      log.info("exception getLocalizedMessage() {}", e.getLocalizedMessage());
+      log.info("************************************************************************");
+      log.info("exception toFriendlyString() {}", e.missing.toFriendlyString());
+      log.info("************************************************************************");
       return false;
     }
   }
