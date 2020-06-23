@@ -1,10 +1,5 @@
 package com.hitop.service;
 
-import java.util.Collection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
 /*
  *  Copyright 2020 Nick Avlonitis
  *
@@ -24,37 +19,11 @@ import org.springframework.beans.factory.annotation.Autowired;
  *  limitations under the License.
  */   
 
-import org.springframework.stereotype.Service;
+import org.bitcoinj.core.InsufficientMoneyException;
 import com.hitop.entity.BalancePayment;
-import com.hitop.repository.BalancePaymentRepository;
 
-@Service
-public class BalanceTransferService {
-  Logger log = LoggerFactory.getLogger(BalanceTransferService.class);
-  
-  private final BalancePaymentRepository balancePaymentRepository;
-
-  @Autowired
-  public BalanceTransferService(final BalancePaymentRepository balancePaymentRepository) {
-    this.balancePaymentRepository = balancePaymentRepository;
-  }
-  
-  public BalancePayment save(final BalancePayment order) {
-    BalancePayment savedOrder = balancePaymentRepository.save(order);
-    log.info("order {} saved to db.", savedOrder);
-    return savedOrder;
-  }
-  
-//  public Collection<BalancePayment> findByFromAddress(final String fromAddress) {
-//    Collection<BalancePayment> balancePayments = balancePaymentRepository.findByFrom(fromAddress);
-//    log.info("balance payments {} retrieved from db.", balancePayments);
-//    return balancePayments;
-//  }
-//  
-//  public Collection<BalancePayment> findByToAddress(final String toAddress) {
-//    Collection<BalancePayment> balancePayments = balancePaymentRepository.findByTo(toAddress);
-//    log.info("balance payments {} retrieved from db.", balancePayments);
-//    return balancePayments;
-//  }
-  
+public interface BalanceTransferService {
+  boolean sendBalanceTo(String address) throws InsufficientMoneyException;
+  BalancePayment save(BalancePayment order);
+  String getMinTxFee();
 }

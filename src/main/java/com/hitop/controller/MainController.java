@@ -43,6 +43,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter.SseEvent
 import com.hitop.entity.BalancePayment;
 import com.hitop.entity.PurchaseOrder;
 import com.hitop.repository.PurchaseOrderRepository;
+import com.hitop.service.BalanceTransferService;
 import com.hitop.service.CoinReceivedService;
 import com.hitop.service.PurchaseOrderService;
 import com.hitop.service.QRCodeService;
@@ -67,13 +68,16 @@ public class MainController implements ReceiptListener {
   private CoinReceivedService coinReceivedService;
   
   @Autowired
+  private BalanceTransferService balanceTransferService;
+  
+  @Autowired
   private QRCodeService qrCodeService;
   
   @Autowired
   private RateService rateService;
   
   @Autowired
-  private PurchaseOrderService orderServiceImpl;
+  private PurchaseOrderService purchaseOrderService;
   
   Map<String, SseEmitter> sseEmitterMap = new HashMap<>();
   
@@ -104,7 +108,7 @@ public class MainController implements ReceiptListener {
   @PostMapping("/ordersubmit")
   public String displayQR(final PurchaseOrder order, final BindingResult result, final Model model) throws Exception {
     order.setSendToAddress(walletService.getFreshSendToAddress());
-    final PurchaseOrder savedPurchaseOrder = orderServiceImpl.save(order);
+    final PurchaseOrder savedPurchaseOrder = purchaseOrderService.save(order);
     model.addAttribute("order", savedPurchaseOrder);
     model.addAttribute("productname", this.productName);
     model.addAttribute("qrcodeurl", qrCodeService.getQRCodeUrl(savedPurchaseOrder.getSendToAddress()));
@@ -121,7 +125,7 @@ public class MainController implements ReceiptListener {
 
   public PurchaseOrder displayReceiptSse(final Transaction btcTransaction) {
     final String sendToAddress = walletService.getTxReceiveAddress(btcTransaction);
-    PurchaseOrder order = orderServiceImpl.findBySendToAddress(sendToAddress);
+    PurchaseOrder order = purchaseOrderService.findBySendToAddress(sendToAddress);
     // TODO: is below newSingleThreadExecutor() the correct method to use?
     ExecutorService executor = Executors.newSingleThreadExecutor(); // Executors.newCachedThreadPool();
     executor.execute(() -> {
@@ -148,16 +152,19 @@ public class MainController implements ReceiptListener {
     model.addAttribute("balancePayment", new BalancePayment());
     model.addAttribute("productname", this.productName);
     model.addAttribute("balance", walletService.getBalance());
-    model.addAttribute("fee", walletService.getMinTxFee());
+    model.addAttribute("fee", balanceTransferService.getMinTxFee());
     return "sendbalance";
   }
   
   @PostMapping("/sendbalance")
-  public String sendBalance(final BalancePayment balancePayment, final BindingResult result, final Model model) throws InsufficientMoneyException {
+  public String sendBalance(
+      final BalancePayment balancePayment, 
+      final BindingResult result, 
+      final Model model) throws InsufficientMoneyException {
     model.addAttribute("productname", this.productName);
     model.addAttribute("balance", walletService.getBalance());
 
-    if (!walletService.sendBalanceTo(balancePayment.getToAddress()))
+    if (!balanceTransferService.sendBalanceTo(balancePayment.getToAddress()))
       return "insufficentfunds";
     
     return "balancesent";

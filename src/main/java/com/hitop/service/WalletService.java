@@ -1,8 +1,5 @@
 package com.hitop.service;
 
-import org.bitcoinj.core.InsufficientMoneyException;
-import org.bitcoinj.core.Transaction;
-
 /*
  *  Copyright 2020 Nick Avlonitis
  *
@@ -23,13 +20,18 @@ import org.bitcoinj.core.Transaction;
  */    
 
 import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
+import org.bitcoinj.core.Address;
+import org.bitcoinj.core.Coin;
+import org.bitcoinj.core.Transaction;
+import org.bitcoinj.wallet.SendRequest;
 
 public interface WalletService {
   void addCoinsReceivedEventListener(WalletCoinsReceivedEventListener listener);
+  Address getLegacySendToAddress(final String address);
   // TODO: Refactor Transaction to be non-bitcoin specific (replace w/ interface & impls w/ currency-specific wrapper)
   String getTxReceiveAddress(Transaction tx);
+  boolean sendMoney(SendRequest req);
   String getFreshSendToAddress();
-  boolean sendBalanceTo(String address) throws InsufficientMoneyException;
+  Coin getCoinBalance();
   String getBalance();
-  String getMinTxFee();
 }

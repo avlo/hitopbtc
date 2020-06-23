@@ -1,7 +1,28 @@
 package com.hitop.service.stub;
 
-import org.bitcoinj.core.InsufficientMoneyException;
+/*
+ *  Copyright 2020 Nick Avlonitis
+ *
+ *  Licensed to the Apache Software Foundation (ASF) under one or more
+ *  contributor license agreements.  See the NOTICE file distributed with
+ *  this work for additional information regarding copyright ownership.
+ *  The ASF licenses this file to You under the Apache License, Version 2.0
+ *  (the "License"); you may not use this file except in compliance with
+ *  the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */    
+
+import org.bitcoinj.core.Address;
+import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.Transaction;
+import org.bitcoinj.wallet.SendRequest;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -36,10 +57,6 @@ import com.hitop.service.WalletService;
 public class StubWalletService implements WalletService {
   private final static Logger log = LoggerFactory.getLogger(StubWalletService.class);
   
-  private StubReceivedService stubReceivedService;
-  
-  public StubWalletService()  { }
-
   @Override
   public void addCoinsReceivedEventListener(final WalletCoinsReceivedEventListener listener) {
   }
@@ -60,16 +77,23 @@ public class StubWalletService implements WalletService {
     // TODO Auto-generated method stub
     return "STUB";
   }
-  
-@Override
-  public String getMinTxFee() {
-    // TODO Auto-generated method stub
-    return "STUB";
-  }
-  
+
   @Override
-  public boolean sendBalanceTo(String address) throws InsufficientMoneyException {
+  public boolean sendMoney(SendRequest req) {
     // TODO Auto-generated method stub
-    return true;
+    return false;
   }
+
+  @Override
+  public Address getLegacySendToAddress(String address) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Coin getCoinBalance() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+  
 }

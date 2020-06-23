@@ -75,6 +75,8 @@ public class BitcoinReceivedService implements CoinReceivedService {
     log.info("coin new balance : {}", newBalance.toFriendlyString());
 
     futuresCallback.addCallback(tx);
+    
+    // TODO: an outside payment to this address can cause this to fire, even though there's no UI listening for it
     receiptListener.displayReceiptSse(tx);
   }
 }

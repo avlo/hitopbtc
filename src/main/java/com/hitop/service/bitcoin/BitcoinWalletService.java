@@ -36,7 +36,6 @@ import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import com.hitop.NetworkParameters;
@@ -51,18 +50,14 @@ public class BitcoinWalletService implements WalletService {
   private final static Logger log = LoggerFactory.getLogger(BitcoinWalletService.class);
 
   private final NetworkParameters parameters;
-  private final BitcoinRateService bitcoinRateService;
   private final WalletAppKit kit;
-  private final Double minXferAmt;
 
   @Autowired
-  public BitcoinWalletService(final BitcoinRateService bitcoinRateService,
-      final @Value("${min.transfer.amount}") Double minXferAmt,
+  public BitcoinWalletService(
       final NetworkParameters params, 
       final WalletFile walletFile) throws Exception {
     this.parameters = params;
-    this.bitcoinRateService = bitcoinRateService;
-    this.minXferAmt = minXferAmt;
+    Context.propagate(new Context(this.parameters.getNetworkParameters()));
 
     log.info(walletFile.toString());
 
@@ -93,7 +88,10 @@ public class BitcoinWalletService implements WalletService {
     kit.awaitRunning();
   }
 
+  @Override
   public String getTxReceiveAddress(final Transaction tx) {
+    Context.propagate(new Context(this.parameters.getNetworkParameters()));
+    
     // TODO: replace for/if with functional functionalIF / lambda
     for(TransactionOutput txo : tx.getOutputs()){
       if (txo.isMine(kit.wallet())) {
@@ -109,13 +107,28 @@ public class BitcoinWalletService implements WalletService {
 
   @Override
   public void addCoinsReceivedEventListener(final WalletCoinsReceivedEventListener listener) {
+    Context.propagate(new Context(this.parameters.getNetworkParameters()));
     kit.wallet().addCoinsReceivedEventListener(listener);
   }
 
   @Override
   public String getFreshSendToAddress() {
+    Context.propagate(new Context(this.parameters.getNetworkParameters()));
+    
     // TODO: issue w/ Segwit, replace when fixed
     return LegacyAddress.fromKey(this.parameters.getNetworkParameters(), kit.wallet().freshReceiveKey()).toString();
+  }
+  
+  @Override
+  public Address getLegacySendToAddress(final String address) {
+    Context.propagate(new Context(this.parameters.getNetworkParameters()));
+    
+    return LegacyAddress.fromString(this.parameters.getNetworkParameters(), address);
+  }
+  
+  // TODO: issue w/ Segwit, replace when fixed
+  public Address getSegwitSendToAddress(final String address) {
+    return SegwitAddress.fromString(this.parameters.getNetworkParameters(), address);
   }
 
   @Override
@@ -124,65 +137,22 @@ public class BitcoinWalletService implements WalletService {
   }
 
   @Override
-  public String getMinTxFee() {
-    return getCoinMinTxFee().toFriendlyString();
-  }
-
-  private Coin getCoinBalance() {
+  public Coin getCoinBalance() {
+    Context.propagate(new Context(this.parameters.getNetworkParameters()));
+    
     return kit.wallet().getBalance(Wallet.BalanceType.AVAILABLE_SPENDABLE);
   }
-
-  private Coin getCoinMinTxFee() {
-    return Transaction.REFERENCE_DEFAULT_MIN_TX_FEE;
-  }
   
-  private Coin convertBtcToSatoshis(Double btc) {
-    return Coin.valueOf((long)Math.floor(btc * 100000000));
-  }
-
-  private Address getLegacySendToAddress(final String address) {
-    return LegacyAddress.fromString(this.parameters.getNetworkParameters(), address);
-  }
-  
-  public Double getMinWithdrawlInBtc(Double dollarAmount) {
-    Double amount = dollarAmount / this.bitcoinRateService.getBtcRate();
-    log.info("min btc {}", amount);
-    return amount;
-  }
-
-  // TODO: issue w/ Segwit, replace when fixed
-  private Address getSegwitSendToAddress(final String address) {
-    return SegwitAddress.fromString(this.parameters.getNetworkParameters(), address);
-  }
-
-  
-  private boolean confirmMinimumWalletAmount(final Coin spendable) {
-    return spendable.isLessThan(convertBtcToSatoshis(getMinWithdrawlInBtc(this.minXferAmt))) ? false : true;
-  }
-  
-  public boolean sendBalanceTo(final String addressStr) throws InsufficientMoneyException {
+  @Override
+  public boolean sendMoney(final SendRequest req) {
     Context.propagate(new Context(this.parameters.getNetworkParameters()));
-    final Coin walletBalanceSpendable = getCoinBalance();
-    final Coin minTxFee = getCoinMinTxFee();
-
-    Coin spendable = walletBalanceSpendable.minus(minTxFee);
     
-    log.info("wallet spendable {}", walletBalanceSpendable.toFriendlyString());
-    log.info("min fee {}", minTxFee.toFriendlyString());
-    log.info("spendable - fee: {}", spendable.toFriendlyString());
-    
-    if (!confirmMinimumWalletAmount(spendable)) {
-      log.info("insufficient funds: {}", spendable.toFriendlyString());
+    try {
+      kit.wallet().sendCoins(req);
+      return true;
+    } catch (InsufficientMoneyException e) {
+      e.printStackTrace();
       return false;
     }
-    
-    SendRequest req = SendRequest.to(getLegacySendToAddress(addressStr), spendable);
-    req.feePerKb = minTxFee;
-    
-    log.info("send to address {}", addressStr);
-    log.info("fee {}", req.feePerKb.toFriendlyString());
-
-    kit.wallet().sendCoins(req);
-    return true;
   }
 }
