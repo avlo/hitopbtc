@@ -72,7 +72,13 @@
 		<dependency>
 			<groupId>org.bitcoinj</groupId>
 			<artifactId>bitcoinj-core</artifactId>
-			<version>0.15.7</version>
+			<version>0.15.8</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.litecoinj</groupId>
+			<artifactId>litecoinj-core</artifactId>
+			<version>0.15.1.20190418</version>
 		</dependency>
 
 		<dependency>
