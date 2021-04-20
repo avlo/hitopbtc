@@ -44,7 +44,6 @@ import com.hitop.entity.BalancePayment;
 import com.hitop.entity.PurchaseOrder;
 import com.hitop.repository.PurchaseOrderRepository;
 import com.hitop.service.BalanceTransferService;
-import com.hitop.service.CoinReceivedService;
 import com.hitop.service.PurchaseOrderService;
 import com.hitop.service.QRCodeService;
 import com.hitop.service.RateService;
@@ -63,10 +62,7 @@ public class MainController implements ReceiptListener {
 
   @Autowired
   private WalletService walletService;
-  
-  @Autowired
-  private CoinReceivedService coinReceivedService;
-  
+    
   @Autowired
   private BalanceTransferService balanceTransferService;
   
@@ -85,11 +81,6 @@ public class MainController implements ReceiptListener {
     this.productName = productName;
   }
 
-  @PostConstruct
-  private void postConstruct() {
-    walletService.addCoinsReceivedEventListener(coinReceivedService);
-  }
-  
   @GetMapping("/")
   public String getIndexHtml(final Model model) throws Exception {
     model.addAttribute("productname", this.productName);

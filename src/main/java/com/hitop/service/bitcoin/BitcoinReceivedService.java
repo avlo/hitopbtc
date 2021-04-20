@@ -23,19 +23,19 @@ import java.io.IOException;
 import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.wallet.Wallet;
+import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import com.hitop.controller.ReceiptListener;
-import com.hitop.service.CoinReceivedService;
 
 @Service
 @ConditionalOnProperty(
     name = "spring.profiles.active", 
     havingValue = "test")
-public class BitcoinReceivedService implements CoinReceivedService {
+public class BitcoinReceivedService implements WalletCoinsReceivedEventListener {
   private final static Logger log = LoggerFactory.getLogger(BitcoinReceivedService.class);
 
   private final BitcoinWalletFile walletFile;

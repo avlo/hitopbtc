@@ -1,5 +1,6 @@
 package com.hitop.service.bitcoin;
 
+
 /*
  *  Copyright 2020 Nick Avlonitis
  *
@@ -19,6 +20,7 @@ package com.hitop.service.bitcoin;
  *  limitations under the License.
  */    
 
+import javax.annotation.PostConstruct;
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.InsufficientMoneyException;
@@ -28,7 +30,6 @@ import org.bitcoinj.core.Transaction;
 import org.bitcoinj.core.TransactionOutput;
 import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.wallet.SendRequest;
-import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,13 +47,21 @@ public class BitcoinWalletService implements WalletService {
 
   private final NetworkParameters parameters;
   private final WalletAppKit walletAppKit;
-
+  private final BitcoinReceivedService bitcoinReceivedService;
+  
   @Autowired
   public BitcoinWalletService(
       final NetworkParameters params,
-      final WalletAppKit walletAppKit) throws Exception {
+      final WalletAppKit walletAppKit,
+      final BitcoinReceivedService bitcoinReceivedService) throws Exception {
     this.parameters = params;
     this.walletAppKit = walletAppKit;
+    this.bitcoinReceivedService = bitcoinReceivedService;
+  }
+
+  @PostConstruct
+  private void postConstruct() {
+    this.walletAppKit.wallet().addCoinsReceivedEventListener(bitcoinReceivedService);
   }
 
   @Override
@@ -68,11 +77,6 @@ public class BitcoinWalletService implements WalletService {
     log.error("TXO not found in our wallet");
     // TODO: needs exception handling/wrapper
     return "****** REPLACE THIS STRING WITH \"TXO NOT IN OUR WALLET\" EXCEPTION ************";
-  }
-
-  @Override
-  public void addCoinsReceivedEventListener(final WalletCoinsReceivedEventListener listener) {
-    walletAppKit.wallet().addCoinsReceivedEventListener(listener);
   }
 
   @Override
