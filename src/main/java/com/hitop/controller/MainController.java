@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import javax.annotation.PostConstruct;
 import org.bitcoinj.core.InsufficientMoneyException;
 import org.bitcoinj.core.Transaction;
 import org.slf4j.Logger;
@@ -62,7 +61,7 @@ public class MainController implements ReceiptListener {
 
   @Autowired
   private WalletService walletService;
-    
+
   @Autowired
   private BalanceTransferService balanceTransferService;
   

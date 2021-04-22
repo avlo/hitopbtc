@@ -1,6 +1,5 @@
 package com.hitop.service.bitcoin;
 
-
 /*
  *  Copyright 2020 Nick Avlonitis
  *
@@ -48,7 +47,7 @@ public class BitcoinWalletService implements WalletService {
   private final NetworkParameters parameters;
   private final WalletAppKit walletAppKit;
   private final BitcoinReceivedService bitcoinReceivedService;
-  
+
   @Autowired
   public BitcoinWalletService(
       final NetworkParameters params,

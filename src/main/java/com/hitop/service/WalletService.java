@@ -23,10 +23,8 @@ import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.wallet.SendRequest;
-import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
 
 public interface WalletService {
-//  void addCoinsReceivedEventListener(WalletCoinsReceivedEventListener listener);
   Address getLegacySendToAddress(String address);
   // TODO: Refactor Transaction to be non-bitcoin specific (replace w/ interface & impls w/ currency-specific wrapper)
   String getTxReceiveAddress(Transaction tx);
