@@ -30,9 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import com.hitop.controller.ReceiptListener;
-import com.hitop.service.CoinReceivedService;
 import com.hitop.service.TransactionWrapper;
-import com.hitop.service.WalletService;
 
 @Service
 @ConditionalOnProperty(

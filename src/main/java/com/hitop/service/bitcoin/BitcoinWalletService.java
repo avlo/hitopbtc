@@ -44,8 +44,8 @@ import com.hitop.service.WalletService;
 public class BitcoinWalletService implements WalletService {
   private final static Logger log = LoggerFactory.getLogger(BitcoinWalletService.class);
 
-  private final NetworkParameters parameters;
   private final WalletAppKit walletAppKit;
+  private final NetworkParameters parameters;
   private final BitcoinReceivedService bitcoinReceivedService;
 
   @Autowired
