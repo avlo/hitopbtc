@@ -20,9 +20,9 @@ if you need test network bitcoin, you can obtain them [here](https://bitcoinfauc
 |---:|---|
 |JAVA OpenJDK|[1.9](https://openjdk.java.net/install/)|
 |Maven|[3.6.1](http://maven.apache.org/docs/3.6.1/release-notes.html)|
-|Spring Boot|[2.18](http:// "in pom.xml")|
-|BitcoinJ|[0.15.7](http:// "in pom.xml")|
-|MySql|[8.0.11](http:// "in docker-compose.yml")|
+|Spring Boot|[2.4.0](http:// "in pom.xml")|
+|BitcoinJ|[0.15.10](http:// "in pom.xml")|
+|MySql|[8.0.23](http:// "in docker-compose.yml")|
 |Docker (optional)|19.03.11|
 |Docker Compose (optional)|1.17.1|
 
