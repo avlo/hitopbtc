@@ -1,5 +1,7 @@
 package com.hitop.service.bitcoin;
 
+import org.bitcoinj.core.TransactionConfidence;
+
 /*
  *  Copyright 2020 Nick Avlonitis
  *
@@ -19,20 +21,19 @@ package com.hitop.service.bitcoin;
  *  limitations under the License.
  */    
 
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.core.TransactionConfidence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.MoreExecutors;
+import com.hitop.service.TransactionWrapper;
 
 @Component
 public class FuturesCallback {
   private final static Logger log = LoggerFactory.getLogger(FuturesCallback.class);
 
-  public void addCallback(final Transaction tx) {
+  public void addCallback(final TransactionWrapper tx) {
     log.info("entered FuturesCallback");
     // Wait until it's made it into the block chain (may run immediately if it's already there).
     //
@@ -40,7 +41,7 @@ public class FuturesCallback {
     // to be double spent, no harm done. Wallet.allowSpendingUnconfirmedTransactions() would have to
     // be called in onSetupCompleted() above. But we don't do that here to demonstrate the more common
     // case of waiting for a block.
-    Futures.addCallback(tx.getConfidence().getDepthFuture(1), new FutureCallback<TransactionConfidence>() {
+    Futures.addCallback(tx.getDepthFuture(), new FutureCallback<TransactionConfidence>() {
       @Override
       public void onSuccess(final TransactionConfidence result) {
         // TODO 40 : this notification arrives ~5min after above "onCoinsReceived" event arrives.

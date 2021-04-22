@@ -30,6 +30,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import com.hitop.controller.ReceiptListener;
+import com.hitop.service.CoinReceivedService;
+import com.hitop.service.TransactionWrapper;
+import com.hitop.service.WalletService;
 
 @Service
 @ConditionalOnProperty(
@@ -52,6 +55,11 @@ public class BitcoinReceivedService implements WalletCoinsReceivedEventListener 
     this.futuresCallback = futuresCallback;
   }
 
+  /**
+   * bitcoin specific listenener.  when this method is called by bitcoin network,
+   * 1) take incoming parameters and construct TransactionWrapper object
+   * 2) pass TransactionWrapper object to CompositionCoinReceived Service
+  **/
   @Override
   public void onCoinsReceived(
       final Wallet wallet, 
@@ -59,6 +67,8 @@ public class BitcoinReceivedService implements WalletCoinsReceivedEventListener 
       final Coin prevBalance, 
       final Coin newBalance) {
 
+    TransactionWrapper transactionWrapper = new BitcoinTransactionWrapper(tx);
+    
     try {
       walletFile.saveToFile(wallet);
     } catch (IOException e) {
@@ -73,7 +83,7 @@ public class BitcoinReceivedService implements WalletCoinsReceivedEventListener 
     log.info("coin prev balance : {}", prevBalance.toFriendlyString());
     log.info("coin new balance : {}", newBalance.toFriendlyString());
 
-    futuresCallback.addCallback(tx);
+    futuresCallback.addCallback(transactionWrapper);
     
     // TODO: an outside payment to this address can cause this to fire, even though there's no UI listening for it
     receiptListener.displayReceiptSse(tx);

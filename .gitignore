@@ -11,3 +11,4 @@ target/
 .factorypath
 .project
 .settings/
+.metadata/
