@@ -19,10 +19,9 @@ package com.hitop.controller;
  *  limitations under the License.
  */    
 
-import org.bitcoinj.core.Transaction;
 import com.hitop.entity.PurchaseOrder;
+import com.hitop.service.TransactionWrapper;
 
 public interface ReceiptListener {
-  // TODO: Refactor Transaction to be non-bitcoin specific (replace w/ interface & impls w/ currency-specific wrapper)
-  PurchaseOrder displayReceiptSse(Transaction tx);
+  PurchaseOrder displayReceiptSse(TransactionWrapper tx);
 }

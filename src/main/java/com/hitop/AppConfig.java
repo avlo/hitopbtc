@@ -35,7 +35,7 @@ public class AppConfig {
   private final static Logger log = LoggerFactory.getLogger(AppConfig.class);
   
   @Bean
-  public WalletAppKit getWalletAppKit(final NetworkParameters params, final WalletFile walletFile) {
+  public WalletAppKit walletAppKit(final NetworkParameters params, final WalletFile walletFile) {
 
     log.info("wallet file {}", walletFile.toString());
     

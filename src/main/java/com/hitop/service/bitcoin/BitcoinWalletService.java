@@ -25,8 +25,6 @@ import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.InsufficientMoneyException;
 import org.bitcoinj.core.LegacyAddress;
 import org.bitcoinj.core.SegwitAddress;
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.core.TransactionOutput;
 import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.wallet.SendRequest;
 import org.slf4j.Logger;
@@ -35,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import com.hitop.NetworkParameters;
+import com.hitop.service.TransactionWrapper;
 import com.hitop.service.WalletService;
 
 @Service
@@ -64,18 +63,8 @@ public class BitcoinWalletService implements WalletService {
   }
 
   @Override
-  public String getTxReceiveAddress(final Transaction tx) {
-    // TODO: replace for/if with functional functionalIF / lambda
-    for(TransactionOutput txo : tx.getOutputs()){
-      if (txo.isMine(walletAppKit.wallet())) {
-        String walletTxo = txo.getScriptPubKey().getToAddress(this.parameters.getNetworkParameters(), true).toString();
-        log.info("wallet txo: {}", walletTxo);
-        return walletTxo;
-      }
-    }
-    log.error("TXO not found in our wallet");
-    // TODO: needs exception handling/wrapper
-    return "****** REPLACE THIS STRING WITH \"TXO NOT IN OUR WALLET\" EXCEPTION ************";
+  public String getTxReceiveAddress(final TransactionWrapper tx) {
+    return tx.getTxReceiveAddress();
   }
 
   @Override

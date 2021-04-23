@@ -41,16 +41,22 @@ public class BitcoinReceivedService implements WalletCoinsReceivedEventListener 
 
   private final BitcoinWalletFile walletFile;
   private final FuturesCallback futuresCallback;
+  private final BitcoinTransactionWrapper bitcoinTransactionWrapper;
   
   // TODO: below receiptListener is field injected (instead of constructor injected) because
   //       docker complains about circular dependency when using constructor injection
   @Autowired
   private ReceiptListener receiptListener;
   
+  
   @Autowired
-  public BitcoinReceivedService(final BitcoinWalletFile walletFile, final FuturesCallback futuresCallback) {
+  public BitcoinReceivedService(
+      final BitcoinWalletFile walletFile,
+      final FuturesCallback futuresCallback,
+      final BitcoinTransactionWrapper bitcoinTransactionWrapper) {
     this.walletFile = walletFile;
     this.futuresCallback = futuresCallback;
+    this.bitcoinTransactionWrapper = bitcoinTransactionWrapper;
   }
 
   /**
@@ -65,8 +71,6 @@ public class BitcoinReceivedService implements WalletCoinsReceivedEventListener 
       final Coin prevBalance, 
       final Coin newBalance) {
 
-    TransactionWrapper transactionWrapper = new BitcoinTransactionWrapper(tx);
-    
     try {
       walletFile.saveToFile(wallet);
     } catch (IOException e) {
@@ -81,9 +85,10 @@ public class BitcoinReceivedService implements WalletCoinsReceivedEventListener 
     log.info("coin prev balance : {}", prevBalance.toFriendlyString());
     log.info("coin new balance : {}", newBalance.toFriendlyString());
 
-    futuresCallback.addCallback(transactionWrapper);
+    bitcoinTransactionWrapper.setTransaction(tx);
+    futuresCallback.addCallback(bitcoinTransactionWrapper);
     
     // TODO: an outside payment to this address can cause this to fire, even though there's no UI listening for it
-    receiptListener.displayReceiptSse(tx);
+    receiptListener.displayReceiptSse(bitcoinTransactionWrapper);
   }
 }

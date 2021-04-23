@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.bitcoinj.core.InsufficientMoneyException;
-import org.bitcoinj.core.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +45,7 @@ import com.hitop.service.BalanceTransferService;
 import com.hitop.service.PurchaseOrderService;
 import com.hitop.service.QRCodeService;
 import com.hitop.service.RateService;
+import com.hitop.service.TransactionWrapper;
 import com.hitop.service.WalletService;
 
 @Controller
@@ -113,8 +113,8 @@ public class MainController implements ReceiptListener {
     return emitter;
   }
 
-  public PurchaseOrder displayReceiptSse(final Transaction btcTransaction) {
-    final String sendToAddress = walletService.getTxReceiveAddress(btcTransaction);
+  public PurchaseOrder displayReceiptSse(final TransactionWrapper transaction) {
+    final String sendToAddress = walletService.getTxReceiveAddress(transaction);
     PurchaseOrder order = purchaseOrderService.findBySendToAddress(sendToAddress);
     // TODO: is below newSingleThreadExecutor() the correct method to use?
     ExecutorService executor = Executors.newSingleThreadExecutor(); // Executors.newCachedThreadPool();
