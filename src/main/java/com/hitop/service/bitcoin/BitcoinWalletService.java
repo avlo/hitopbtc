@@ -21,11 +21,9 @@ package com.hitop.service.bitcoin;
 
 import javax.annotation.PostConstruct;
 import org.bitcoinj.core.Address;
-import org.bitcoinj.core.InsufficientMoneyException;
 import org.bitcoinj.core.LegacyAddress;
 import org.bitcoinj.core.SegwitAddress;
 import org.bitcoinj.kits.WalletAppKit;
-import org.bitcoinj.wallet.SendRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,25 +78,5 @@ public class BitcoinWalletService implements WalletService {
   // TODO: issue w/ Segwit, replace when fixed
   public Address getSegwitSendToAddress(final String address) {
     return SegwitAddress.fromString(this.parameters.getNetworkParameters(), address);
-  }
-
-  @Override
-  public boolean sendMoney(final SendRequest req) {
-    try {
-      walletAppKit.wallet().sendCoins(req);
-      return true;
-    } catch (InsufficientMoneyException e) {
-      log.info("************************************************************************");
-      log.info("************* SHOULD NOT OCCUR SINGE WE'RE CHECKING FOR THIS ***********");
-      log.info("************************************************************************");
-      log.info("************************************************************************");
-      log.info("exception getMessage() {}", e.getMessage());
-      log.info("************************************************************************");
-      log.info("exception getLocalizedMessage() {}", e.getLocalizedMessage());
-      log.info("************************************************************************");
-      log.info("exception toFriendlyString() {}", e.missing.toFriendlyString());
-      log.info("************************************************************************");
-      return false;
-    }
   }
 }

@@ -20,11 +20,9 @@ package com.hitop.service;
  */    
 
 import org.bitcoinj.core.Address;
-import org.bitcoinj.wallet.SendRequest;
 
 public interface WalletService {
   Address getLegacySendToAddress(String address);
   String getTxReceiveAddress(TransactionWrapper tx);
-  boolean sendMoney(SendRequest req);
   String getFreshSendToAddress();
 }
