@@ -36,7 +36,6 @@ public class BitcoinTransactionWrapper implements TransactionWrapper {
     this.transaction = transaction;
   }
 
-  @Override
   public ListenableFuture<TransactionConfidence> getDepthFuture() {
     return transaction.getConfidence().getDepthFuture(1);
   }

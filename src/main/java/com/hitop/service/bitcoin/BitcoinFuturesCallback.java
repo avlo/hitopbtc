@@ -1,7 +1,5 @@
 package com.hitop.service.bitcoin;
 
-import org.bitcoinj.core.TransactionConfidence;
-
 /*
  *  Copyright 2020 Nick Avlonitis
  *
@@ -21,6 +19,7 @@ import org.bitcoinj.core.TransactionConfidence;
  *  limitations under the License.
  */    
 
+import org.bitcoinj.core.TransactionConfidence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -30,10 +29,10 @@ import com.google.common.util.concurrent.MoreExecutors;
 import com.hitop.service.TransactionWrapper;
 
 @Component
-public class FuturesCallback {
-  private final static Logger log = LoggerFactory.getLogger(FuturesCallback.class);
+public class BitcoinFuturesCallback {
+  private final static Logger log = LoggerFactory.getLogger(BitcoinFuturesCallback.class);
 
-  public void addCallback(final TransactionWrapper tx) {
+  public void addCallback(final BitcoinTransactionWrapper tx) {
     log.info("entered FuturesCallback");
     // Wait until it's made it into the block chain (may run immediately if it's already there).
     //

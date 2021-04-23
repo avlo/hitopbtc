@@ -40,7 +40,7 @@ public class BitcoinReceivedService implements WalletCoinsReceivedEventListener 
   private final static Logger log = LoggerFactory.getLogger(BitcoinReceivedService.class);
 
   private final BitcoinWalletFile walletFile;
-  private final FuturesCallback futuresCallback;
+  private final BitcoinFuturesCallback futuresCallback;
   private final BitcoinTransactionWrapper bitcoinTransactionWrapper;
   
   // TODO: below receiptListener is field injected (instead of constructor injected) because
@@ -52,7 +52,7 @@ public class BitcoinReceivedService implements WalletCoinsReceivedEventListener 
   @Autowired
   public BitcoinReceivedService(
       final BitcoinWalletFile walletFile,
-      final FuturesCallback futuresCallback,
+      final BitcoinFuturesCallback futuresCallback,
       final BitcoinTransactionWrapper bitcoinTransactionWrapper) {
     this.walletFile = walletFile;
     this.futuresCallback = futuresCallback;
