@@ -26,7 +26,6 @@ import org.springframework.stereotype.Component;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.MoreExecutors;
-import com.hitop.service.TransactionWrapper;
 
 @Component
 public class BitcoinFuturesCallback {

@@ -20,9 +20,7 @@ package com.hitop.service.bitcoin;
  */    
 
 import javax.annotation.PostConstruct;
-import org.bitcoinj.core.Address;
 import org.bitcoinj.core.LegacyAddress;
-import org.bitcoinj.core.SegwitAddress;
 import org.bitcoinj.kits.WalletAppKit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,15 +66,5 @@ public class BitcoinWalletService implements WalletService {
   public String getFreshSendToAddress() {
     // TODO: issue w/ Segwit, replace when fixed
     return LegacyAddress.fromKey(this.parameters.getNetworkParameters(), walletAppKit.wallet().freshReceiveKey()).toString();
-  }
-  
-  @Override
-  public Address getLegacySendToAddress(final String address) {
-    return LegacyAddress.fromString(this.parameters.getNetworkParameters(), address);
-  }
-  
-  // TODO: issue w/ Segwit, replace when fixed
-  public Address getSegwitSendToAddress(final String address) {
-    return SegwitAddress.fromString(this.parameters.getNetworkParameters(), address);
   }
 }

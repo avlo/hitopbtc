@@ -19,10 +19,7 @@ package com.hitop.service;
  *  limitations under the License.
  */    
 
-import org.bitcoinj.core.Address;
-
 public interface WalletService {
-  Address getLegacySendToAddress(String address);
   String getTxReceiveAddress(TransactionWrapper tx);
   String getFreshSendToAddress();
 }
