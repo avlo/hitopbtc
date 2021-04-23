@@ -21,7 +21,6 @@ package com.hitop.service.bitcoin;
 
 import javax.annotation.PostConstruct;
 import org.bitcoinj.core.Address;
-import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.InsufficientMoneyException;
 import org.bitcoinj.core.LegacyAddress;
 import org.bitcoinj.core.SegwitAddress;
@@ -83,17 +82,6 @@ public class BitcoinWalletService implements WalletService {
     return SegwitAddress.fromString(this.parameters.getNetworkParameters(), address);
   }
 
-  @Override
-  public String getBalance() {
-    return getCoinBalance().toFriendlyString();
-  }
-
-  @Override
-  public Coin getCoinBalance() {
-    walletAppKit.wallet().cleanup();
-    return walletAppKit.wallet().getBalance();
-  }
-  
   @Override
   public boolean sendMoney(final SendRequest req) {
     try {

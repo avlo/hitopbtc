@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import org.bitcoinj.core.InsufficientMoneyException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +37,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter.SseEventBuilder;
-import com.hitop.entity.BalancePayment;
 import com.hitop.entity.PurchaseOrder;
 import com.hitop.repository.PurchaseOrderRepository;
-import com.hitop.service.BalanceTransferService;
 import com.hitop.service.PurchaseOrderService;
 import com.hitop.service.QRCodeService;
 import com.hitop.service.RateService;
@@ -62,9 +59,6 @@ public class MainController implements ReceiptListener {
   @Autowired
   private WalletService walletService;
 
-  @Autowired
-  private BalanceTransferService balanceTransferService;
-  
   @Autowired
   private QRCodeService qrCodeService;
   
@@ -137,31 +131,6 @@ public class MainController implements ReceiptListener {
     return order;
   }
 
-  //TODO: wrap below in security so only admin can call it
-  @GetMapping("/sendbalanceform")
-  public String getSendBalance(final Model model) throws Exception {
-    model.addAttribute("balancePayment", new BalancePayment());
-    model.addAttribute("productname", this.productName);
-    model.addAttribute("balance", walletService.getBalance());
-    model.addAttribute("fee", balanceTransferService.getMinTxFee());
-    return "sendbalance";
-  }
-  
-  //TODO: wrap below in security so only admin can call it
-  @PostMapping("/sendbalance")
-  public String sendBalance(
-      final BalancePayment balancePayment, 
-      final BindingResult result, 
-      final Model model) throws InsufficientMoneyException {
-    model.addAttribute("productname", this.productName);
-    model.addAttribute("balance", walletService.getBalance());
-
-    if (!balanceTransferService.sendBalanceTo(balancePayment.getToAddress()))
-      return "insufficentfunds";
-    
-    return "balancesent";
-  }
-  
   //TODO: wrap below in security so only admin can call it
   @GetMapping(path="/allordershitop")
   public @ResponseBody Iterable<PurchaseOrder> getAllOrders() {

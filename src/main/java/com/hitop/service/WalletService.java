@@ -20,15 +20,11 @@ package com.hitop.service;
  */    
 
 import org.bitcoinj.core.Address;
-import org.bitcoinj.core.Coin;
 import org.bitcoinj.wallet.SendRequest;
 
 public interface WalletService {
   Address getLegacySendToAddress(String address);
-  // TODO: Refactor Transaction to be non-bitcoin specific (replace w/ interface & impls w/ currency-specific wrapper)
   String getTxReceiveAddress(TransactionWrapper tx);
   boolean sendMoney(SendRequest req);
   String getFreshSendToAddress();
-  Coin getCoinBalance();
-  String getBalance();
 }
