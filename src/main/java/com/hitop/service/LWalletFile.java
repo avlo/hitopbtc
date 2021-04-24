@@ -1,4 +1,4 @@
-package com.hitop;
+package com.hitop.service;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -19,6 +19,10 @@ package com.hitop;
  *  limitations under the License.
  */    
 
-public interface NetworkParameters {
-  org.bitcoinj.core.NetworkParameters getNetworkParameters();
+import java.io.IOException;
+import org.litecoinj.wallet.Wallet;
+
+public interface LWalletFile {
+  void saveToFile(Wallet wallet) throws IOException;
+  String getFilePrefix();
 }

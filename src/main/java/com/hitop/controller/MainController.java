@@ -57,13 +57,13 @@ public class MainController implements ReceiptListener {
   private PurchaseOrderRepository orderRepository;
 
   @Autowired
-  private WalletService walletService;
+  private WalletService bitcoinWalletService;
 
   @Autowired
-  private QRCodeService qrCodeService;
+  private QRCodeService bitcoinQRCodeService;
   
   @Autowired
-  private RateService rateService;
+  private RateService bitcoinRateService;
   
   @Autowired
   private PurchaseOrderService purchaseOrderService;
@@ -91,11 +91,11 @@ public class MainController implements ReceiptListener {
 
   @PostMapping("/ordersubmit")
   public String displayQR(final PurchaseOrder order, final BindingResult result, final Model model) throws Exception {
-    order.setSendToAddress(walletService.getFreshSendToAddress());
+    order.setSendToAddress(bitcoinWalletService.getFreshSendToAddress());
     final PurchaseOrder savedPurchaseOrder = purchaseOrderService.save(order);
     model.addAttribute("order", savedPurchaseOrder);
     model.addAttribute("productname", this.productName);
-    model.addAttribute("qrcodeurl", qrCodeService.getQRCodeUrl(savedPurchaseOrder.getSendToAddress()));
+    model.addAttribute("qrcodeurl", bitcoinQRCodeService.getQRCodeUrl(savedPurchaseOrder.getSendToAddress()));
     // TODO 70 : call appropriate ordersubmit.html file based on stub/test/etc
     return "ordersubmit";
   }
@@ -108,7 +108,7 @@ public class MainController implements ReceiptListener {
   }
 
   public PurchaseOrder displayReceiptSse(final TransactionWrapper transaction) {
-    final String sendToAddress = walletService.getTxReceiveAddress(transaction);
+    final String sendToAddress = bitcoinWalletService.getTxReceiveAddress(transaction);
     PurchaseOrder order = purchaseOrderService.findBySendToAddress(sendToAddress);
     // TODO: is below newSingleThreadExecutor() the correct method to use?
     ExecutorService executor = Executors.newSingleThreadExecutor(); // Executors.newCachedThreadPool();

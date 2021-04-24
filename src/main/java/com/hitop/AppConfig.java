@@ -19,15 +19,17 @@ package com.hitop;
  *  limitations under the License.
  */    
 
+
 import java.io.File;
-import org.bitcoinj.kits.WalletAppKit;
-import org.bitcoinj.utils.BriefLogFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import com.hitop.service.WalletFile;
+import com.hitop.service.BWalletFile;
+import com.hitop.service.LWalletFile;
+import com.hitop.service.bitcoin.BitcoinNetworkParameters;
+import com.hitop.service.litecoin.LitecoinNetworkParameters;
 
 @Configuration
 @PropertySource("classpath:application.properties")
@@ -35,25 +37,59 @@ public class AppConfig {
   private final static Logger log = LoggerFactory.getLogger(AppConfig.class);
   
   @Bean
-  public WalletAppKit walletAppKit(final NetworkParameters params, final WalletFile walletFile) {
+  public org.bitcoinj.kits.WalletAppKit bitcoinWalletAppKit(final BitcoinNetworkParameters params, final BWalletFile walletFile) {
 
     log.info("wallet file {}", walletFile.toString());
     
     log.debug("***********");
+    log.debug("BITCOIN");
     log.debug("***********");
     log.debug(params.toString());
     log.debug("-----------");
     log.debug(walletFile.getFilePrefix());
     log.debug("***********");
+    log.debug("BITCOIN");
     log.debug("***********");
     
     // log output more compact and easily read, especially when using the JDK log adapter.
-    BriefLogFormatter.init();
+    org.bitcoinj.utils.BriefLogFormatter.init();
 
-    WalletAppKit kit = new WalletAppKit(params.getNetworkParameters(), new File("."), walletFile.getFilePrefix()) {
+    org.bitcoinj.kits.WalletAppKit kit = new org.bitcoinj.kits.WalletAppKit(params.getNetworkParameters(), new File("."), walletFile.getFilePrefix()) {
       @Override
       protected void onSetupCompleted() {
-        log.info("walletAppKit setup complete.");
+        log.info("bitcoinWalletAppKit setup complete.");
+      }
+    };
+
+    // Download the block chain and wait until it's done.
+    kit.startAsync();
+    kit.awaitRunning();
+    
+    return kit;
+  }
+  
+  @Bean
+  public org.litecoinj.kits.WalletAppKit litecoinWalletAppKit(final LitecoinNetworkParameters params, final LWalletFile walletFile) {
+
+    log.info("wallet file {}", walletFile.toString());
+    
+    log.debug("***********");
+    log.debug("LITECOIN");
+    log.debug("***********");
+    log.debug(params.toString());
+    log.debug("-----------");
+    log.debug(walletFile.getFilePrefix());
+    log.debug("***********");
+    log.debug("LITECOIN");
+    log.debug("***********");
+    
+    // log output more compact and easily read, especially when using the JDK log adapter.
+    org.litecoinj.utils.BriefLogFormatter.init();
+
+    org.litecoinj.kits.WalletAppKit kit = new org.litecoinj.kits.WalletAppKit(params.getNetworkParameters(), new File("."), walletFile.getFilePrefix()) {
+      @Override
+      protected void onSetupCompleted() {
+        log.info("litecoinWalletAppKit setup complete.");
       }
     };
 

@@ -1,4 +1,4 @@
-package com.hitop;
+package com.hitop.service.bitcoin;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -19,20 +19,6 @@ package com.hitop;
  *  limitations under the License.
  */    
 
-import org.bitcoinj.core.NetworkParameters;
-import org.bitcoinj.params.TestNet3Params;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
-
-@Component
-@Profile("test")
-public class TestNetworkParameters implements com.hitop.NetworkParameters {
-  private final static Logger log = LoggerFactory.getLogger(TestNetworkParameters.class);
-  @Override
-  public NetworkParameters getNetworkParameters() {
-    log.info("using {} network.", TestNet3Params.ID_TESTNET);
-    return TestNet3Params.get();
-  }
+public interface BitcoinNetworkParameters {
+  org.bitcoinj.core.NetworkParameters getNetworkParameters();
 }

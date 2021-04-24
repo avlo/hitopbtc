@@ -1,4 +1,4 @@
-package com.hitop.service;
+package com.hitop.service.bitcoin;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -19,10 +19,20 @@ package com.hitop.service;
  *  limitations under the License.
  */    
 
-import java.io.IOException;
-import org.bitcoinj.wallet.Wallet;
+import org.bitcoinj.core.NetworkParameters;
+import org.bitcoinj.params.MainNetParams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
-public interface WalletFile {
-  void saveToFile(Wallet wallet) throws IOException;
-  String getFilePrefix();
+@Component
+@Profile("prod")
+public class ProdNetworkParameters implements BitcoinNetworkParameters {
+  private final static Logger log = LoggerFactory.getLogger(ProdNetworkParameters.class);
+  @Override
+  public NetworkParameters getNetworkParameters() {
+    log.info("using {} network.", MainNetParams.ID_MAINNET);
+    return MainNetParams.get();
+  }
 }

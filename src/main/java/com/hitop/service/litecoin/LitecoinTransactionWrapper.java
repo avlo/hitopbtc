@@ -1,35 +1,35 @@
-package com.hitop.service.bitcoin;
+package com.hitop.service.litecoin;
 
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.core.TransactionConfidence;
-import org.bitcoinj.core.TransactionOutput;
-import org.bitcoinj.kits.WalletAppKit;
+import org.litecoinj.core.Transaction;
+import org.litecoinj.core.TransactionConfidence;
+import org.litecoinj.core.TransactionOutput;
+import org.litecoinj.kits.WalletAppKit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.hitop.service.bitcoin.BitcoinNetworkParameters;
+import com.hitop.service.litecoin.LitecoinNetworkParameters;
 import com.hitop.service.TransactionWrapper;
 
 @Component
 @ConditionalOnProperty(
     name = "spring.profiles.active",
     havingValue = "test")
-public class BitcoinTransactionWrapper implements TransactionWrapper {
-  private final static Logger log = LoggerFactory.getLogger(BitcoinTransactionWrapper.class);
+public class LitecoinTransactionWrapper implements TransactionWrapper {
+  private final static Logger log = LoggerFactory.getLogger(LitecoinTransactionWrapper.class);
 
   private Transaction transaction;
-  private final WalletAppKit bitcoinWalletAppKit;
-  private final BitcoinNetworkParameters bitcoinNetworkParameters;
+  private final WalletAppKit litecoinWalletAppKit;
+  private final LitecoinNetworkParameters litecoinNetworkParameters;
 
   @Autowired
-  public BitcoinTransactionWrapper(
-      final BitcoinNetworkParameters bitcoinNetworkParameters,
-      final WalletAppKit bitcoinWalletAppKit) {
-    this.bitcoinNetworkParameters = bitcoinNetworkParameters;
-    this.bitcoinWalletAppKit = bitcoinWalletAppKit;
+  public LitecoinTransactionWrapper(
+      final LitecoinNetworkParameters litecoinNetworkParameters,
+      final WalletAppKit litecoinWalletAppKit) {
+    this.litecoinNetworkParameters = litecoinNetworkParameters;
+    this.litecoinWalletAppKit = litecoinWalletAppKit;
   }
   
   public void setTransaction(final Transaction transaction) {
@@ -44,8 +44,8 @@ public class BitcoinTransactionWrapper implements TransactionWrapper {
   public String getTxReceiveAddress() {
     // TODO: replace for/if with functional functionalIF / lambda
     for(TransactionOutput txo : transaction.getOutputs()){
-      if (txo.isMine(bitcoinWalletAppKit.wallet())) {
-        String walletTxo = txo.getScriptPubKey().getToAddress(bitcoinNetworkParameters.getNetworkParameters(), true).toString();
+      if (txo.isMine(litecoinWalletAppKit.wallet())) {
+        String walletTxo = txo.getScriptPubKey().getToAddress(litecoinNetworkParameters.getNetworkParameters(), true).toString();
         log.info("wallet txo: {}", walletTxo);
         return walletTxo;
       }

@@ -1,4 +1,4 @@
-package com.hitop.service.bitcoin;
+package com.hitop.service.litecoin;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -20,10 +20,10 @@ package com.hitop.service.bitcoin;
  */    
 
 import java.io.IOException;
-import org.bitcoinj.core.Coin;
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.wallet.Wallet;
-import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
+import org.litecoinj.core.Coin;
+import org.litecoinj.core.Transaction;
+import org.litecoinj.wallet.Wallet;
+import org.litecoinj.wallet.listeners.WalletCoinsReceivedEventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +35,12 @@ import com.hitop.controller.ReceiptListener;
 @ConditionalOnProperty(
     name = "spring.profiles.active", 
     havingValue = "test")
-public class BitcoinReceivedService implements WalletCoinsReceivedEventListener {
-  private final static Logger log = LoggerFactory.getLogger(BitcoinReceivedService.class);
+public class LitecoinReceivedService implements WalletCoinsReceivedEventListener {
+  private final static Logger log = LoggerFactory.getLogger(LitecoinReceivedService.class);
 
-  private final BitcoinWalletFile bitcoinWalletFile;
-  private final BitcoinFuturesCallback bitcoinFuturesCallback;
-  private final BitcoinTransactionWrapper bitcoinTransactionWrapper;
+  private final LitecoinWalletFile litecoinWalletFile;
+  private final LitecoinFuturesCallback litecoinFuturesCallback;
+  private final LitecoinTransactionWrapper litecoinTransactionWrapper;
   
   // TODO: below receiptListener is field injected (instead of constructor injected) because
   //       docker complains about circular dependency when using constructor injection
@@ -49,17 +49,17 @@ public class BitcoinReceivedService implements WalletCoinsReceivedEventListener 
   
   
   @Autowired
-  public BitcoinReceivedService(
-      final BitcoinWalletFile bitcoinWalletFile,
-      final BitcoinFuturesCallback bitcoinFuturesCallback,
-      final BitcoinTransactionWrapper bitcoinTransactionWrapper) {
-    this.bitcoinWalletFile = bitcoinWalletFile;
-    this.bitcoinFuturesCallback = bitcoinFuturesCallback;
-    this.bitcoinTransactionWrapper = bitcoinTransactionWrapper;
+  public LitecoinReceivedService(
+      final LitecoinWalletFile litecoinWalletFile,
+      final LitecoinFuturesCallback litecoinFuturesCallback,
+      final LitecoinTransactionWrapper litecoinTransactionWrapper) {
+    this.litecoinWalletFile = litecoinWalletFile;
+    this.litecoinFuturesCallback = litecoinFuturesCallback;
+    this.litecoinTransactionWrapper = litecoinTransactionWrapper;
   }
 
   /**
-   * bitcoin specific listenener.  when this method is called by bitcoin network,
+   * litecoin specific listenener.  when this method is called by litecoin network,
    * 1) take incoming parameters and construct TransactionWrapper object
    * 2) pass TransactionWrapper object to CompositionCoinReceived Service
   **/
@@ -71,10 +71,10 @@ public class BitcoinReceivedService implements WalletCoinsReceivedEventListener 
       final Coin newBalance) {
 
     try {
-      bitcoinWalletFile.saveToFile(wallet);
+      litecoinWalletFile.saveToFile(wallet);
     } catch (IOException e) {
       e.printStackTrace();
-      log.info("{} save FAILED.", bitcoinWalletFile.getFilePrefix());
+      log.info("{} save FAILED.", litecoinWalletFile.getFilePrefix());
 
     }
 
@@ -84,10 +84,10 @@ public class BitcoinReceivedService implements WalletCoinsReceivedEventListener 
     log.info("coin prev balance : {}", prevBalance.toFriendlyString());
     log.info("coin new balance : {}", newBalance.toFriendlyString());
 
-    bitcoinTransactionWrapper.setTransaction(tx);
-    bitcoinFuturesCallback.addCallback(bitcoinTransactionWrapper);
+    litecoinTransactionWrapper.setTransaction(tx);
+    litecoinFuturesCallback.addCallback(litecoinTransactionWrapper);
     
     // TODO: an outside payment to this address can cause this to fire, even though there's no UI listening for it
-    receiptListener.displayReceiptSse(bitcoinTransactionWrapper);
+    receiptListener.displayReceiptSse(litecoinTransactionWrapper);
   }
 }
