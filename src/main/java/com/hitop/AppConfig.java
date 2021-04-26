@@ -24,10 +24,12 @@ import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.utils.BriefLogFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import com.hitop.service.WalletFile;
+import com.hitop.service.bitcoin.BitcoinNetworkParameters;
+import com.hitop.service.bitcoin.BitcoinWalletFile;
 
 @Configuration
 @PropertySource("classpath:application.properties")
@@ -35,7 +37,8 @@ public class AppConfig {
   private final static Logger log = LoggerFactory.getLogger(AppConfig.class);
   
   @Bean
-  public WalletAppKit walletAppKit(final NetworkParameters params, final WalletFile walletFile) {
+  @ConditionalOnExpression("${bitcoin.bean:false}")
+  public WalletAppKit walletAppKit(final BitcoinNetworkParameters params, final BitcoinWalletFile walletFile) {
 
     log.info("wallet file {}", walletFile.toString());
     

@@ -1,4 +1,4 @@
-package com.hitop.service.bitcoin;
+package com.hitop.service.iota;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -21,7 +21,6 @@ package com.hitop.service.bitcoin;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -35,15 +34,14 @@ import com.hitop.service.RateService;
 @ConditionalOnProperty(
     name = "spring.profiles.active", 
     havingValue = "test")
-@ConditionalOnExpression("${bitcoin.bean:false}")
-public class BitcoinRateService implements RateService {
+public class IotaRateService implements RateService {
   
   private static final String CURRENCY = "USD";
   private final String rateUrl;
   private final Double shippingPriceUsd;
   private final Double unitPriceUsd;
   
-  public BitcoinRateService(
+  public IotaRateService(
       final @Value("${rateurl}") String rateUrl,
       final @Value("${shipping.price.usd}") Double shippingPriceUsd,
       final @Value("${unit.price.usd}") Double unitPriceUsd) {

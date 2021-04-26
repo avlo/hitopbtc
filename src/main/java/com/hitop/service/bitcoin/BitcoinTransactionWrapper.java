@@ -7,26 +7,27 @@ import org.bitcoinj.kits.WalletAppKit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.hitop.NetworkParameters;
 import com.hitop.service.TransactionWrapper;
 
 @Component
 @ConditionalOnProperty(
     name = "spring.profiles.active",
     havingValue = "test")
+@ConditionalOnExpression("${bitcoin.bean:false}")
 public class BitcoinTransactionWrapper implements TransactionWrapper {
   private final static Logger log = LoggerFactory.getLogger(BitcoinTransactionWrapper.class);
 
   private Transaction transaction;
   private final WalletAppKit walletAppKit;
-  private final NetworkParameters parameters;
+  private final BitcoinNetworkParameters parameters;
 
   @Autowired
   public BitcoinTransactionWrapper(
-      final NetworkParameters params,
+      final BitcoinNetworkParameters params,
       final WalletAppKit walletAppKit) {
     this.parameters = params;
     this.walletAppKit = walletAppKit;

@@ -44,6 +44,9 @@ import com.hitop.service.QRCodeService;
 import com.hitop.service.RateService;
 import com.hitop.service.TransactionWrapper;
 import com.hitop.service.WalletService;
+import com.hitop.service.iota.IotaQRCodeService;
+import com.hitop.service.iota.IotaRateService;
+import com.hitop.service.iota.IotaWalletService;
 
 @Controller
 @RequestMapping(path="/")
@@ -57,13 +60,13 @@ public class MainController implements ReceiptListener {
   private PurchaseOrderRepository orderRepository;
 
   @Autowired
-  private WalletService walletService;
+  private IotaWalletService walletService;
 
   @Autowired
-  private QRCodeService qrCodeService;
+  private IotaQRCodeService qrCodeService;
   
   @Autowired
-  private RateService rateService;
+  private IotaRateService rateService;
   
   @Autowired
   private PurchaseOrderService purchaseOrderService;

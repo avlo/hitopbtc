@@ -1,4 +1,4 @@
-package com.hitop.service.bitcoin;
+package com.hitop.service.iota;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -22,10 +22,13 @@ package com.hitop.service.bitcoin;
 import java.io.File;
 import java.io.IOException;
 import org.bitcoinj.wallet.Wallet;
+import org.iota.jota.IotaAccount;
+import org.iota.jota.account.AccountStore;
+import org.iota.jota.account.store.AccountFileStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import com.hitop.service.WalletFile;
@@ -34,15 +37,47 @@ import com.hitop.service.WalletFile;
 @ConditionalOnProperty(
     name = "spring.profiles.active", 
     havingValue = "test")
-@ConditionalOnExpression("${bitcoin.bean:false}")
-public class BitcoinWalletFile implements WalletFile {
-  private final static Logger log = LoggerFactory.getLogger(BitcoinWalletFile.class);
+public class IotaWalletFile implements WalletFile {
+  private final static Logger log = LoggerFactory.getLogger(IotaWalletFile.class);
 
   private final File file;
+  private final IotaNetworkParameters iotaNetworkParameters;
+  private final IotaAccount account;
+  private final IotaReceivedService iotaReceivedService;
+  
+  @Autowired
+  public IotaWalletFile(
+      final @Value("${iota.wallet.filename}") String fileName,
+      final IotaNetworkParameters iotaNetworkParameters,
+      final IotaReceivedService iotaReceivedService) {
+    this.file = new File(fileName);
+    this.iotaNetworkParameters = iotaNetworkParameters;
+    this.iotaReceivedService = iotaReceivedService;
+    AccountStore store = new AccountFileStore(this.file);
 
-  public BitcoinWalletFile(final @Value("${wallet.filename.prefix}") String filePrefix) {
-    this.file = new File(filePrefix);
-    log.info("wallet filename: {}", filePrefix);
+    log.info("IOTA wallet filename: {}", this.file);
+    
+    String mySeed = "PUETTSEITFEVEWCTBTSIZM9NKRGJEIMXTULBACGFRQK9IMGICLBKW9TTEVSDQMGWKBXPVCBMMCXWMNPDX";
+    
+    // Create an account, using your seed
+    account = new IotaAccount.Builder(mySeed)
+        // Connect to a node
+        .api(this.iotaNetworkParameters.getIotaAPI())
+        // Connect to the database
+        .store(store)
+        // Set the minimum weight magnitude for the Devnet (default is 14)
+        .mwm(9)
+        // Set a security level for CDAs (default is 3)
+        .securityLevel(2)
+        .plugin(this.iotaReceivedService)
+        .build();
+
+    // Start the account and any plugins
+    account.start();
+  }
+  
+  public IotaAccount getAccount() {
+    return account;
   }
 
   public void saveToFile(final Wallet wallet) throws IOException {

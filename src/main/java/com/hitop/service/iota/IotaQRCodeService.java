@@ -1,4 +1,4 @@
-package com.hitop.service.bitcoin;
+package com.hitop.service.iota;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import com.hitop.service.QRCodeService;
@@ -33,16 +32,15 @@ import com.hitop.service.RateService;
 @ConditionalOnProperty(
     name = "spring.profiles.active", 
     havingValue = "test")
-@ConditionalOnExpression("${bitcoin.bean:false}")
-public class BitcoinQRCodeService implements QRCodeService {
-  private final static Logger log = LoggerFactory.getLogger(BitcoinQRCodeService.class);
+public class IotaQRCodeService implements QRCodeService {
+  private final static Logger log = LoggerFactory.getLogger(IotaQRCodeService.class);
   
   private final RateService bitcoinRateService;
   private final String decimalPrecision;
   private final String qrUrl;
   
   @Autowired
-  public BitcoinQRCodeService(
+  public IotaQRCodeService(
       final RateService bitcoinRateService,
       final @Value("${decimalprecision}") String decimalPrecision,
       final @Value("${qrurl}") String qrUrl) {

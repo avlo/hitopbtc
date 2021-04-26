@@ -1,4 +1,4 @@
-package com.hitop.service.bitcoin;
+package com.hitop.service.iota;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -22,18 +22,16 @@ package com.hitop.service.bitcoin;
 import org.bitcoinj.core.TransactionConfidence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Component;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.MoreExecutors;
 
 @Component
-@ConditionalOnExpression("${bitcoin.bean:false}")
-public class BitcoinFuturesCallback {
-  private final static Logger log = LoggerFactory.getLogger(BitcoinFuturesCallback.class);
+public class IotaFuturesCallback {
+  private final static Logger log = LoggerFactory.getLogger(IotaFuturesCallback.class);
 
-  public void addCallback(final BitcoinTransactionWrapper tx) {
+  public void addCallback(final IotaTransactionWrapper tx) {
     log.info("entered FuturesCallback");
     // Wait until it's made it into the block chain (may run immediately if it's already there).
     //

@@ -1,4 +1,4 @@
-package com.hitop;
+package com.hitop.service.iota;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -19,6 +19,8 @@ package com.hitop;
  *  limitations under the License.
  */    
 
-public interface NetworkParameters {
-  org.bitcoinj.core.NetworkParameters getNetworkParameters();
+import org.iota.jota.IotaAPI;
+
+public interface IotaNetworkParameters {
+  IotaAPI getIotaAPI();
 }

@@ -25,9 +25,9 @@ import org.bitcoinj.kits.WalletAppKit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
-import com.hitop.NetworkParameters;
 import com.hitop.service.TransactionWrapper;
 import com.hitop.service.WalletService;
 
@@ -35,16 +35,17 @@ import com.hitop.service.WalletService;
 @ConditionalOnProperty(
     name = "spring.profiles.active", 
     havingValue = "test")
+@ConditionalOnExpression("${bitcoin.bean:false}")
 public class BitcoinWalletService implements WalletService {
   private final static Logger log = LoggerFactory.getLogger(BitcoinWalletService.class);
 
   private final WalletAppKit walletAppKit;
-  private final NetworkParameters parameters;
+  private final BitcoinNetworkParameters parameters;
   private final BitcoinReceivedService bitcoinReceivedService;
 
   @Autowired
   public BitcoinWalletService(
-      final NetworkParameters params,
+      final BitcoinNetworkParameters params,
       final WalletAppKit walletAppKit,
       final BitcoinReceivedService bitcoinReceivedService) throws Exception {
     this.parameters = params;

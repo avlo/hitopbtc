@@ -1,4 +1,4 @@
-package com.hitop;
+package com.hitop.service.bitcoin;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -20,19 +20,21 @@ package com.hitop;
  */    
 
 import org.bitcoinj.core.NetworkParameters;
-import org.bitcoinj.params.TestNet3Params;
+import org.bitcoinj.params.MainNetParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("test")
-public class TestNetworkParameters implements com.hitop.NetworkParameters {
-  private final static Logger log = LoggerFactory.getLogger(TestNetworkParameters.class);
+@ConditionalOnExpression("${bitcoin.bean:false}")
+@Profile("prod")
+public class BitcoinProdNetworkParameters implements BitcoinNetworkParameters {
+  private final static Logger log = LoggerFactory.getLogger(BitcoinProdNetworkParameters.class);
   @Override
   public NetworkParameters getNetworkParameters() {
-    log.info("using {} network.", TestNet3Params.ID_TESTNET);
-    return TestNet3Params.get();
+    log.info("using {} network.", MainNetParams.ID_MAINNET);
+    return MainNetParams.get();
   }
 }
