@@ -23,11 +23,13 @@ import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.params.MainNetParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
 @Profile("prod")
+@ConditionalOnExpression("${bitcoin.bean:false}")
 public class ProdNetworkParameters implements BitcoinNetworkParameters {
   private final static Logger log = LoggerFactory.getLogger(ProdNetworkParameters.class);
   @Override

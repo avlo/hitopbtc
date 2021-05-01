@@ -78,7 +78,7 @@
 		<dependency>
 			<groupId>org.litecoinj</groupId>
 			<artifactId>litecoinj-core</artifactId>
-			<version>0.15.1</version>
+			<version>0.2</version>
 		</dependency>
 
 		<dependency>

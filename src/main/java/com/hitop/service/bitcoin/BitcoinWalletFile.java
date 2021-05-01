@@ -25,6 +25,7 @@ import org.bitcoinj.wallet.Wallet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import com.hitop.service.BWalletFile;
@@ -33,6 +34,7 @@ import com.hitop.service.BWalletFile;
 @ConditionalOnProperty(
     name = "spring.profiles.active", 
     havingValue = "test")
+@ConditionalOnExpression("${bitcoin.bean:false}")
 public class BitcoinWalletFile implements BWalletFile {
   private final static Logger log = LoggerFactory.getLogger(BitcoinWalletFile.class);
 

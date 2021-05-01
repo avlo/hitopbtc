@@ -22,12 +22,14 @@ package com.hitop.service.bitcoin;
 import org.bitcoinj.core.TransactionConfidence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Component;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.MoreExecutors;
 
 @Component
+@ConditionalOnExpression("${bitcoin.bean:false}")
 public class BitcoinFuturesCallback {
   private final static Logger log = LoggerFactory.getLogger(BitcoinFuturesCallback.class);
 

@@ -20,14 +20,13 @@ package com.hitop.service.litecoin;
  */    
 
 import javax.annotation.PostConstruct;
-import org.litecoinj.core.LegacyAddress;
+import org.litecoinj.core.SegwitAddress;
 import org.litecoinj.kits.WalletAppKit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
-import com.hitop.service.litecoin.LitecoinNetworkParameters;
 import com.hitop.service.TransactionWrapper;
 import com.hitop.service.WalletService;
 
@@ -65,6 +64,6 @@ public class LitecoinWalletService implements WalletService {
   @Override
   public String getFreshSendToAddress() {
     // TODO: issue w/ Segwit, replace when fixed
-    return LegacyAddress.fromKey(this.litecoinNetworkParameters.getNetworkParameters(), litecoinWalletAppKit.wallet().freshReceiveKey()).toString();
+    return SegwitAddress.fromKey(this.litecoinNetworkParameters.getNetworkParameters(), litecoinWalletAppKit.wallet().freshReceiveKey()).toString();
   }
 }

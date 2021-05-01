@@ -23,6 +23,7 @@ package com.hitop;
 import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -37,6 +38,7 @@ public class AppConfig {
   private final static Logger log = LoggerFactory.getLogger(AppConfig.class);
   
   @Bean
+  @ConditionalOnExpression("${bitcoin.bean:false}")
   public org.bitcoinj.kits.WalletAppKit bitcoinWalletAppKit(final BitcoinNetworkParameters params, final BWalletFile walletFile) {
 
     log.info("wallet file {}", walletFile.toString());
