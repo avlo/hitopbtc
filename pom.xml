@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.0</version>
+		<version>2.4.5</version>
 	</parent>
 
 	<dependencies>
@@ -69,11 +69,32 @@
 			<version>1.4.200</version>
 		</dependency>
 
+<!--
 		<dependency>
 			<groupId>org.bitcoinj</groupId>
 			<artifactId>bitcoinj-core</artifactId>
 			<version>0.15.10</version>
 		</dependency>
+-->
+		<dependency>
+    	<groupId>org.bouncycastle</groupId>
+    	<artifactId>bcprov-jdk15on</artifactId>
+    	<version>1.68</version>
+		</dependency>
+
+		<dependency>
+    	<groupId>com.google.protobuf</groupId>
+    	<artifactId>protobuf-java</artifactId>
+    	<version>3.15.8</version>
+		</dependency>
+
+<!-- https://mvnrepository.com/artifact/com.lambdaworks/scrypt -->
+<dependency>
+    <groupId>com.lambdaworks</groupId>
+    <artifactId>scrypt</artifactId>
+    <version>1.4.0</version>
+</dependency>
+
 
 		<dependency>
 			<groupId>org.litecoinj</groupId>

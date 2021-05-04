@@ -20,9 +20,9 @@ package com.hitop.service;
  */    
 
 import java.io.IOException;
-import org.bitcoinj.wallet.Wallet;
+//import org.bitcoinj.wallet.Wallet;
 
 public interface BWalletFile {
-  void saveToFile(Wallet wallet) throws IOException;
+//  void saveToFile(Wallet wallet) throws IOException;
   String getFilePrefix();
 }

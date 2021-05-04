@@ -63,7 +63,6 @@ public class LitecoinWalletService implements WalletService {
 
   @Override
   public String getFreshSendToAddress() {
-    // TODO: issue w/ Segwit, replace when fixed
     return SegwitAddress.fromKey(this.litecoinNetworkParameters.getNetworkParameters(), litecoinWalletAppKit.wallet().freshReceiveKey()).toString();
   }
 }
