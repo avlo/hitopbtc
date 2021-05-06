@@ -70,6 +70,7 @@ public class AppConfig {
   }
   
   @Bean
+  @ConditionalOnExpression("${litecoin.bean:false}")
   public org.litecoinj.kits.WalletAppKit litecoinWalletAppKit(final LitecoinNetworkParameters params, final LWalletFile walletFile) {
 
     log.info("litecoin wallet file {}", walletFile.toString());
