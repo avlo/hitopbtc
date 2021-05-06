@@ -28,7 +28,7 @@ import com.hitop.repository.PurchaseOrderRepository;
 
 @Service
 public class PurchaseOrderService {
-  Logger log = LoggerFactory.getLogger(PurchaseOrderService.class);
+  private final static Logger log = LoggerFactory.getLogger(PurchaseOrderService.class);
   
   private final PurchaseOrderRepository purchaseOrderRepository;
   

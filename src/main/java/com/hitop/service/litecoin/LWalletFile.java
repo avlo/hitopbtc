@@ -1,4 +1,4 @@
-package com.hitop.service;
+package com.hitop.service.litecoin;
 
 /*
  *  Copyright 2020 Nick Avlonitis

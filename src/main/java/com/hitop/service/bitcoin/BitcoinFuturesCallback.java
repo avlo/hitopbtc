@@ -34,7 +34,7 @@ public class BitcoinFuturesCallback {
   private final static Logger log = LoggerFactory.getLogger(BitcoinFuturesCallback.class);
 
   public void addCallback(final BitcoinTransactionWrapper tx) {
-    log.info("entered FuturesCallback");
+    log.info("entered Bitcoin FuturesCallback");
     // Wait until it's made it into the block chain (may run immediately if it's already there).
     //
     // For this dummy app of course, we could just forward the unconfirmed transaction. If it were
@@ -49,7 +49,7 @@ public class BitcoinFuturesCallback {
         final String crlf = System.getProperty("line.separator");
         final String val = crlf + 
             "*********************" + crlf +
-            "Confirmation received" + crlf +
+            "BTC Confirmation received" + crlf +
             "*********************"; 
         log.info(val);
         // send user email notification of first confirmation received

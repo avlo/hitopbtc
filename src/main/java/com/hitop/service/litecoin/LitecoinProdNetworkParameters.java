@@ -23,18 +23,16 @@ import org.litecoinj.core.NetworkParameters;
 import org.litecoinj.params.MainNetParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
 @Profile("prod")
-@ConditionalOnExpression("${bitcoin.bean:false}")
 public class LitecoinProdNetworkParameters implements LitecoinNetworkParameters {
   private final static Logger log = LoggerFactory.getLogger(LitecoinProdNetworkParameters.class);
   @Override
   public NetworkParameters getNetworkParameters() {
-    log.info("using {} network.", MainNetParams.ID_MAINNET);
+    log.info("using LTC {} network.", MainNetParams.ID_MAINNET);
     return MainNetParams.get();
   }
 }

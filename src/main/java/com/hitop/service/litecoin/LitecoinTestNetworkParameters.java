@@ -32,7 +32,7 @@ public class LitecoinTestNetworkParameters implements LitecoinNetworkParameters 
   private final static Logger log = LoggerFactory.getLogger(LitecoinTestNetworkParameters.class);
   @Override
   public NetworkParameters getNetworkParameters() {
-    log.info("using {} network.", TestNet3Params.ID_TESTNET);
+    log.info("using LTC {} network.", TestNet3Params.ID_TESTNET);
     return TestNet3Params.get();
   }
 }

@@ -17,24 +17,9 @@ package com.hitop.service.bitcoin;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- */    
+ */
 
-import org.bitcoinj.core.NetworkParameters;
-import org.bitcoinj.params.MainNetParams;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
-
-@Component
-@Profile("prod")
-@ConditionalOnExpression("${bitcoin.bean:false}")
-public class BitcoinProdNetworkParameters implements BitcoinNetworkParameters {
-  private final static Logger log = LoggerFactory.getLogger(BitcoinProdNetworkParameters.class);
-  @Override
-  public NetworkParameters getNetworkParameters() {
-    log.info("using LTC {} network.", MainNetParams.ID_MAINNET);
-    return MainNetParams.get();
-  }
+public interface BWalletFile {
+//  void saveToFile(Wallet wallet) throws IOException;
+  String getFilePrefix();
 }

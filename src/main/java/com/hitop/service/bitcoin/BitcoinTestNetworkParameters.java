@@ -34,7 +34,7 @@ public class BitcoinTestNetworkParameters implements BitcoinNetworkParameters {
   private final static Logger log = LoggerFactory.getLogger(BitcoinTestNetworkParameters.class);
   @Override
   public NetworkParameters getNetworkParameters() {
-    log.info("using {} network.", TestNet3Params.ID_TESTNET);
+    log.info("using BTC {} network.", TestNet3Params.ID_TESTNET);
     return TestNet3Params.get();
   }
 }

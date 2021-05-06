@@ -50,6 +50,7 @@ public class BitcoinWalletService implements WalletService {
       final BitcoinNetworkParameters bitcoinNetworkParameters,
       final WalletAppKit bitcoinWalletAppKit,
       final BitcoinReceivedService bitcoinReceivedService) throws Exception {
+    log.debug("BitcoinWalletService ctor()");
     this.bitcoinNetworkParameters = bitcoinNetworkParameters;
     this.bitcoinWalletAppKit = bitcoinWalletAppKit;
     this.bitcoinReceivedService = bitcoinReceivedService;
@@ -57,6 +58,7 @@ public class BitcoinWalletService implements WalletService {
 
   @PostConstruct
   private void postConstruct() {
+    log.debug("postConstruct()");
     this.bitcoinWalletAppKit.wallet().addCoinsReceivedEventListener(bitcoinReceivedService);
   }
 
