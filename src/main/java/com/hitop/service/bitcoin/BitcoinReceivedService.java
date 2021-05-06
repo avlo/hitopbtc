@@ -48,8 +48,7 @@ public class BitcoinReceivedService implements WalletCoinsReceivedEventListener 
   //       docker complains about circular dependency when using constructor injection
   @Autowired
   private ReceiptListener receiptListener;
-  
-  
+
   @Autowired
   public BitcoinReceivedService(
       final BitcoinWalletFile bitcoinWalletFile,

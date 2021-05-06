@@ -31,7 +31,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @ConditionalOnProperty(
-    name = "spring.profiles.active", 
+    name = "spring.profiles.active",
     havingValue = "test")
 @ConditionalOnExpression("${litecoin.bean:false}")
 public class LitecoinWalletFile implements LWalletFile {

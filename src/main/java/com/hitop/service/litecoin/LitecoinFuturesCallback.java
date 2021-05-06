@@ -47,14 +47,14 @@ public class LitecoinFuturesCallback {
         // TODO 40 : this notification arrives ~5min after above "onCoinsReceived" event arrives.
         // it's the equivalent of single block confirmation, we can use this to update it's DB state
         final String crlf = System.getProperty("line.separator");
-        final String val = crlf + 
+        final String val = crlf +
             "*********************" + crlf +
             "LTC Confirmation received" + crlf +
-            "*********************"; 
+            "*********************";
         log.info(val);
         // send user email notification of first confirmation received
       }
-      
+
       @Override
       public void onFailure(Throwable t) {
         // This kind of future can't fail, just rethrow in case something weird happens.

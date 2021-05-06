@@ -34,7 +34,7 @@ import com.hitop.controller.ReceiptListener;
 
 @Service
 @ConditionalOnProperty(
-    name = "spring.profiles.active", 
+    name = "spring.profiles.active",
     havingValue = "test")
 @ConditionalOnExpression("${litecoin.bean:false}")
 public class LitecoinReceivedService implements WalletCoinsReceivedEventListener {
@@ -43,13 +43,12 @@ public class LitecoinReceivedService implements WalletCoinsReceivedEventListener
   private final LitecoinWalletFile litecoinWalletFile;
   private final LitecoinFuturesCallback litecoinFuturesCallback;
   private final LitecoinTransactionWrapper litecoinTransactionWrapper;
-  
+
   // TODO: below receiptListener is field injected (instead of constructor injected) because
   //       docker complains about circular dependency when using constructor injection
   @Autowired
   private ReceiptListener receiptListener;
-  
-  
+
   @Autowired
   public LitecoinReceivedService(
       final LitecoinWalletFile litecoinWalletFile,
@@ -67,9 +66,9 @@ public class LitecoinReceivedService implements WalletCoinsReceivedEventListener
   **/
   @Override
   public void onCoinsReceived(
-      final Wallet wallet, 
-      final Transaction tx, 
-      final Coin prevBalance, 
+      final Wallet wallet,
+      final Transaction tx,
+      final Coin prevBalance,
       final Coin newBalance) {
 
     try {
@@ -87,7 +86,7 @@ public class LitecoinReceivedService implements WalletCoinsReceivedEventListener
 
     litecoinTransactionWrapper.setTransaction(tx);
     litecoinFuturesCallback.addCallback(litecoinTransactionWrapper);
-    
+
     // TODO: an outside payment to this address can cause this to fire, even though there's no UI listening for it
     receiptListener.displayReceiptSse(litecoinTransactionWrapper);
   }

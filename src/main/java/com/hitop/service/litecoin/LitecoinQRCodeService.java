@@ -31,22 +31,22 @@ import com.hitop.service.RateService;
 
 @Service
 @ConditionalOnProperty(
-    name = "spring.profiles.active", 
+    name = "spring.profiles.active",
     havingValue = "test")
 @ConditionalOnExpression("${litecoin.bean:false}")
 public class LitecoinQRCodeService implements QRCodeService {
   private final static Logger log = LoggerFactory.getLogger(LitecoinQRCodeService.class);
-  
+
   private final RateService litecoinRateService;
   private final String decimalPrecision;
   private final String qrUrl;
-  
+
   @Autowired
   public LitecoinQRCodeService(
       final RateService litecoinRateService,
       final @Value("${decimalprecision}") String decimalPrecision,
       final @Value("${qrurl.litecoin}") String qrUrl) {
-    
+
     this.litecoinRateService = litecoinRateService;
     this.decimalPrecision = decimalPrecision;
     this.qrUrl = qrUrl;

@@ -51,7 +51,7 @@ public class LitecoinTransactionWrapper implements TransactionWrapper {
     this.litecoinNetworkParameters = litecoinNetworkParameters;
     this.litecoinWalletAppKit = litecoinWalletAppKit;
   }
-  
+
   public void setTransaction(final Transaction transaction) {
     this.transaction = transaction;
   }

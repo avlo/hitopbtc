@@ -51,7 +51,7 @@ public class BitcoinTransactionWrapper implements TransactionWrapper {
     this.bitcoinNetworkParameters = bitcoinNetworkParameters;
     this.bitcoinWalletAppKit = bitcoinWalletAppKit;
   }
-  
+
   public void setTransaction(final Transaction transaction) {
     this.transaction = transaction;
   }

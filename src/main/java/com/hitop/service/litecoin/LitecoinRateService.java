@@ -33,33 +33,33 @@ import com.hitop.service.RateService;
 
 @Service
 @ConditionalOnProperty(
-    name = "spring.profiles.active", 
+    name = "spring.profiles.active",
     havingValue = "test")
 @ConditionalOnExpression("${litecoin.bean:false}")
 public class LitecoinRateService implements RateService {
-  
+
   private static final String CURRENCY = "USD";
   private final String rateUrl;
   private final Double shippingPriceUsd;
   private final Double unitPriceUsd;
-  
+
   public LitecoinRateService(
       final @Value("${rateurl}") String rateUrl,
       final @Value("${shipping.price.usd}") Double shippingPriceUsd,
       final @Value("${unit.price.usd}") Double unitPriceUsd) {
-    
+
     this.rateUrl = rateUrl;
     this.shippingPriceUsd = shippingPriceUsd;
     this.unitPriceUsd = unitPriceUsd;
   }
-  
+
   @Override
   public Double getBtcRate() {
     ResponseEntity<List<ExchangeRate>> rateResponse =
         new RestTemplate().exchange(
             rateUrl,
             HttpMethod.GET,
-            null, 
+            null,
             new ParameterizedTypeReference<List<ExchangeRate>>() {}
             );
 
@@ -67,9 +67,9 @@ public class LitecoinRateService implements RateService {
     ExchangeRate exchangeRate = rates.stream().filter(currency -> CURRENCY.equals(currency.getCode())).findFirst().orElse(null);
     return exchangeRate.getRate();
   }
-  
+
   @Override
   public Double getUsdtoBtc(final Double btcRate) {
     return (unitPriceUsd + shippingPriceUsd) / btcRate;
-  }  
+  }
 }

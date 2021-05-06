@@ -65,16 +65,16 @@ public class AppConfig {
     // Download the block chain and wait until it's done.
     kit.startAsync();
     kit.awaitRunning();
-    
+
     return kit;
   }
-  
+
   @Bean
   @ConditionalOnExpression("${litecoin.bean:false}")
   public org.litecoinj.kits.WalletAppKit litecoinWalletAppKit(final LitecoinNetworkParameters params, final LWalletFile walletFile) {
 
     log.info("litecoin wallet file {}", walletFile.toString());
-    
+
     log.debug("***********");
     log.debug("LITECOIN");
     log.debug("***********");
@@ -84,7 +84,7 @@ public class AppConfig {
     log.debug("***********");
     log.debug("LITECOIN");
     log.debug("***********");
-    
+
     // log output more compact and easily read, especially when using the JDK log adapter.
     org.litecoinj.utils.BriefLogFormatter.init();
 

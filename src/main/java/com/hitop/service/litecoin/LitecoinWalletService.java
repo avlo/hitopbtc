@@ -33,7 +33,7 @@ import com.hitop.service.WalletService;
 
 @Service
 @ConditionalOnProperty(
-    name = "spring.profiles.active", 
+    name = "spring.profiles.active",
     havingValue = "test")
 @ConditionalOnExpression("${litecoin.bean:false}")
 public class LitecoinWalletService implements WalletService {
