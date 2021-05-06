@@ -1,4 +1,4 @@
-package com.hitop.service.litecoin;
+package com.hitop.service.bitcoin;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import com.hitop.service.QRCodeService;
@@ -32,27 +33,28 @@ import com.hitop.service.RateService;
 @ConditionalOnProperty(
     name = "spring.profiles.active", 
     havingValue = "test")
-public class LitecoinQRCodeService implements QRCodeService {
-  private final static Logger log = LoggerFactory.getLogger(LitecoinQRCodeService.class);
+@ConditionalOnExpression("${bitcoin.bean:false}")
+public class BitcoinQRCodeService implements QRCodeService {
+  private final static Logger log = LoggerFactory.getLogger(BitcoinQRCodeService.class);
   
-  private final RateService litecoinRateService;
+  private final RateService bitcoinRateService;
   private final String decimalPrecision;
   private final String qrUrl;
   
   @Autowired
-  public LitecoinQRCodeService(
-      final RateService litecoinRateService,
+  public BitcoinQRCodeService(
+      final RateService bitcoinRateService,
       final @Value("${decimalprecision}") String decimalPrecision,
-      final @Value("${qrurl.litecoin}") String qrUrl) {
+      final @Value("${qrurl.bitcoin}") String qrUrl) {
     
-    this.litecoinRateService = litecoinRateService;
+    this.bitcoinRateService = bitcoinRateService;
     this.decimalPrecision = decimalPrecision;
     this.qrUrl = qrUrl;
   }
   
   @Override
   public String getQRCodeUrl(final String sendToAddress) {
-    String btcValue = String.format(decimalPrecision, litecoinRateService.getUsdtoBtc(litecoinRateService.getBtcRate()));
+    String btcValue = String.format(decimalPrecision, bitcoinRateService.getUsdtoBtc(bitcoinRateService.getBtcRate()));
     String qrCodeUrl = String.format(qrUrl, sendToAddress, btcValue);
 
     log.info("Send coins to: {} ", sendToAddress);

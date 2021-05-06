@@ -1,4 +1,4 @@
-package com.hitop.service.litecoin;
+package com.hitop.service.bitcoin;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -19,20 +19,6 @@ package com.hitop.service.litecoin;
  *  limitations under the License.
  */    
 
-import org.litecoinj.core.NetworkParameters;
-import org.litecoinj.params.TestNet3Params;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
-
-@Component
-@Profile("test")
-public class LitecoinTestNetworkParameters implements LitecoinNetworkParameters {
-  private final static Logger log = LoggerFactory.getLogger(LitecoinTestNetworkParameters.class);
-  @Override
-  public NetworkParameters getNetworkParameters() {
-    log.info("using {} network.", TestNet3Params.ID_TESTNET);
-    return TestNet3Params.get();
-  }
+public interface BitcoinNetworkParameters {
+  org.bitcoinj.core.NetworkParameters getNetworkParameters();
 }

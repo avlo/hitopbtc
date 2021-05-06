@@ -12,3 +12,5 @@ target/
 .project
 .settings/
 .metadata/
+litecoin-monitor-service-testnet.spvchain
+litecoin-monitor-service-testnet.wallet
