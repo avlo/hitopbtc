@@ -19,7 +19,6 @@ package com.hitop;
  *  limitations under the License.
  */    
 
-
 import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +26,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import com.hitop.service.BWalletFile;
-import com.hitop.service.LWalletFile;
+import com.hitop.service.bitcoin.BWalletFile;
 import com.hitop.service.bitcoin.BitcoinNetworkParameters;
+import com.hitop.service.litecoin.LWalletFile;
 import com.hitop.service.litecoin.LitecoinNetworkParameters;
 
 @Configuration
