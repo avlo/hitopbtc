@@ -40,7 +40,7 @@ public class AppConfig {
   @ConditionalOnExpression("${bitcoin.bean:false}")
   public org.bitcoinj.kits.WalletAppKit bitcoinWalletAppKit(final BitcoinNetworkParameters params, final BWalletFile walletFile) {
 
-    log.info("wallet file {}", walletFile.toString());
+    log.info("bitcoin wallet file {}", walletFile.toString());
     
     log.debug("***********");
     log.debug("BITCOIN");
@@ -72,7 +72,7 @@ public class AppConfig {
   @Bean
   public org.litecoinj.kits.WalletAppKit litecoinWalletAppKit(final LitecoinNetworkParameters params, final LWalletFile walletFile) {
 
-    log.info("wallet file {}", walletFile.toString());
+    log.info("litecoin wallet file {}", walletFile.toString());
     
     log.debug("***********");
     log.debug("LITECOIN");
