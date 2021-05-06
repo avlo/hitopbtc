@@ -77,7 +77,6 @@ public class BitcoinReceivedService implements WalletCoinsReceivedEventListener 
     } catch (IOException e) {
       e.printStackTrace();
       log.info("{} save FAILED.", bitcoinWalletFile.getFilePrefix());
-
     }
 
     log.info("Received tx for {} : {}", tx.getValueSentToMe(wallet).toFriendlyString(), tx);

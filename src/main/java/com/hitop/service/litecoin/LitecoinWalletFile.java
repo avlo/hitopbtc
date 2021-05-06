@@ -25,6 +25,7 @@ import org.litecoinj.wallet.Wallet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +33,7 @@ import org.springframework.stereotype.Component;
 @ConditionalOnProperty(
     name = "spring.profiles.active", 
     havingValue = "test")
+@ConditionalOnExpression("${litecoin.bean:false}")
 public class LitecoinWalletFile implements LWalletFile {
   private final static Logger log = LoggerFactory.getLogger(LitecoinWalletFile.class);
 
@@ -42,6 +44,7 @@ public class LitecoinWalletFile implements LWalletFile {
     log.info("wallet filename: {}", filePrefix);
   }
 
+  @Override
   public void saveToFile(final Wallet wallet) throws IOException {
     // Runs in the dedicated "user thread" (see litecoinj docs for more info on this).
     // The transaction "tx" can either be pending, or included into a block (we didn't see the broadcast).
@@ -50,6 +53,7 @@ public class LitecoinWalletFile implements LWalletFile {
     log.info("{} saved.", file.toString());
   }
 
+  @Override
   public String getFilePrefix() {
     return this.file.getName();
   }

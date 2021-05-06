@@ -19,7 +19,10 @@ package com.hitop.service.bitcoin;
  *  limitations under the License.
  */
 
+import java.io.IOException;
+import org.bitcoinj.wallet.Wallet;
+
 public interface BWalletFile {
-//  void saveToFile(Wallet wallet) throws IOException;
+  void saveToFile(Wallet wallet) throws IOException;
   String getFilePrefix();
 }

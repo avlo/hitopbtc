@@ -27,6 +27,7 @@ import org.litecoinj.wallet.listeners.WalletCoinsReceivedEventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import com.hitop.controller.ReceiptListener;
@@ -35,6 +36,7 @@ import com.hitop.controller.ReceiptListener;
 @ConditionalOnProperty(
     name = "spring.profiles.active", 
     havingValue = "test")
+@ConditionalOnExpression("${litecoin.bean:false}")
 public class LitecoinReceivedService implements WalletCoinsReceivedEventListener {
   private final static Logger log = LoggerFactory.getLogger(LitecoinReceivedService.class);
 
@@ -75,7 +77,6 @@ public class LitecoinReceivedService implements WalletCoinsReceivedEventListener
     } catch (IOException e) {
       e.printStackTrace();
       log.info("{} save FAILED.", litecoinWalletFile.getFilePrefix());
-
     }
 
     log.info("Received tx for {} : {}", tx.getValueSentToMe(wallet).toFriendlyString(), tx);

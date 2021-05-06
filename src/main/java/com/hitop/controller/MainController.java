@@ -57,7 +57,7 @@ public class MainController implements ReceiptListener {
   private PurchaseOrderRepository orderRepository;
 
   @Autowired
-  private WalletService walletService;
+  private WalletService bitcoinWalletService;
 
   @Autowired
   private QRCodeService qrCodeService;
@@ -91,7 +91,7 @@ public class MainController implements ReceiptListener {
 
   @PostMapping("/ordersubmit")
   public String displayQR(final PurchaseOrder order, final BindingResult result, final Model model) throws Exception {
-    order.setSendToAddress(walletService.getFreshSendToAddress());
+    order.setSendToAddress(bitcoinWalletService.getFreshSendToAddress());
     final PurchaseOrder savedPurchaseOrder = purchaseOrderService.save(order);
     model.addAttribute("order", savedPurchaseOrder);
     model.addAttribute("productname", this.productName);
@@ -108,7 +108,7 @@ public class MainController implements ReceiptListener {
   }
 
   public PurchaseOrder displayReceiptSse(final TransactionWrapper transaction) {
-    final String sendToAddress = walletService.getTxReceiveAddress(transaction);
+    final String sendToAddress = bitcoinWalletService.getTxReceiveAddress(transaction);
     PurchaseOrder order = purchaseOrderService.findBySendToAddress(sendToAddress);
     // TODO: is below newSingleThreadExecutor() the correct method to use?
     ExecutorService executor = Executors.newSingleThreadExecutor(); // Executors.newCachedThreadPool();

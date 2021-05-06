@@ -44,6 +44,7 @@ public class BitcoinWalletFile implements BWalletFile {
     log.info("wallet filename: {}", filePrefix);
   }
 
+  @Override
   public void saveToFile(final Wallet wallet) throws IOException {
     // Runs in the dedicated "user thread" (see bitcoinj docs for more info on this).
     // The transaction "tx" can either be pending, or included into a block (we didn't see the broadcast).
@@ -52,6 +53,7 @@ public class BitcoinWalletFile implements BWalletFile {
     log.info("{} saved.", file.toString());
   }
 
+  @Override
   public String getFilePrefix() {
     return this.file.getName();
   }

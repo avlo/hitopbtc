@@ -21,6 +21,7 @@ package com.hitop.service.litecoin;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -34,6 +35,7 @@ import com.hitop.service.RateService;
 @ConditionalOnProperty(
     name = "spring.profiles.active", 
     havingValue = "test")
+@ConditionalOnExpression("${litecoin.bean:false}")
 public class LitecoinRateService implements RateService {
   
   private static final String CURRENCY = "USD";

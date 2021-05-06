@@ -23,11 +23,13 @@ import org.litecoinj.core.NetworkParameters;
 import org.litecoinj.params.TestNet3Params;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
 @Profile("test")
+@ConditionalOnExpression("${litecoin.bean:false}")
 public class LitecoinTestNetworkParameters implements LitecoinNetworkParameters {
   private final static Logger log = LoggerFactory.getLogger(LitecoinTestNetworkParameters.class);
   @Override
