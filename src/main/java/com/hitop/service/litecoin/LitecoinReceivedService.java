@@ -59,11 +59,6 @@ public class LitecoinReceivedService implements WalletCoinsReceivedEventListener
     this.litecoinTransactionWrapper = litecoinTransactionWrapper;
   }
 
-  /**
-   * litecoin specific listenener.  when this method is called by litecoin network,
-   * 1) take incoming parameters and construct TransactionWrapper object
-   * 2) pass TransactionWrapper object to CompositionCoinReceived Service
-  **/
   @Override
   public void onCoinsReceived(
       final Wallet wallet,

@@ -59,11 +59,6 @@ public class BitcoinReceivedService implements WalletCoinsReceivedEventListener 
     this.bitcoinTransactionWrapper = bitcoinTransactionWrapper;
   }
 
-  /**
-   * bitcoin specific listenener.  when this method is called by bitcoin network,
-   * 1) take incoming parameters and construct TransactionWrapper object
-   * 2) pass TransactionWrapper object to CompositionCoinReceived Service
-  **/
   @Override
   public void onCoinsReceived(
       final Wallet wallet, 
