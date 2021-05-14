@@ -69,7 +69,6 @@ public class BitcoinWalletService implements WalletService {
 
   @Override
   public String getFreshSendToAddress() {
-    // TODO: issue w/ Segwit, replace when fixed
-    return LegacyAddress.fromKey(this.bitcoinNetworkParameters.getNetworkParameters(), bitcoinWalletAppKit.wallet().freshReceiveKey()).toString();
+    return bitcoinWalletAppKit.wallet().freshReceiveAddress().toString();
   }
 }

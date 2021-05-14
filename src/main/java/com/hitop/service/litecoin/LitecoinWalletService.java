@@ -67,6 +67,6 @@ public class LitecoinWalletService implements WalletService {
 
   @Override
   public String getFreshSendToAddress() {
-    return SegwitAddress.fromKey(this.litecoinNetworkParameters.getNetworkParameters(), litecoinWalletAppKit.wallet().freshReceiveKey()).toString();
+    return litecoinWalletAppKit.wallet().freshReceiveAddress().toString();
   }
 }
