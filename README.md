@@ -1,10 +1,10 @@
-# HiTopBPF (HiTop Bitcoin Payment Framework)
+# HiTopCPF (HiTop Cryptocurrency Payment Framework)
 
 ### overview
-HiTopBPF is a self-contained bitcoin payment framework and store-front web-application. It uses no custodial or third party wallet/blockchain services (excluding exchange rate conversion and QR code generation). It has been specifically built with all business logic, bitcoin transaction logic & wallet custodianship completely within the application itself.
+HiTopCPF is a self-contained cryptocurrency payment framework and store-front web-application. It uses no custodial or third party wallet/blockchain services (excluding exchange rate conversion and QR code generation). It has been specifically built with all business logic, cryptocurrency-specific transaction logic & wallet custodianship completely within the application itself.
 
 ### motivation
-after having been denied payment gateway services by paypal and others and not finding an existing, open-source, free, self-custodial bitcoin transaction/wallet service with the features i wanted, i decided to build my own.  it's intended to be a simple (two page) store-front web-application with self-contained bitcoin transaction engine and user-custodian'd wallet.
+after having been denied payment gateway services by paypal and others and not finding an existing, open-source, free, self-custodial bitcoin transaction/wallet service with the features i wanted, i decided to build my own.  it's intended to be a simple (two page) store-front web-application with self-contained multi-cryptocurrency transaction engine and user-custodian'd wallet.
 
 ### sample application
 ***note:  SAMPLE APPLICATION RUNS ON THE BITCOIN TEST NETWORK.  DO NOT SEND REAL BITCOIN TO THE SAMPLE APPLICATION!!!  DOING SO WILL LOSE YOUR REAL BITCOIN!!!*** 
@@ -22,12 +22,13 @@ if you need test network bitcoin, you can obtain them [here](https://bitcoinfauc
 |Maven|[3.6.1](http://maven.apache.org/docs/3.6.1/release-notes.html)|
 |Spring Boot|[2.4.0](http:// "in pom.xml")|
 |BitcoinJ|[0.15.10](http:// "in pom.xml")|
+|LitecoinJ-core|[0.2](http:// "in pom.xml")|
 |MySql|[8.0.23](http:// "in docker-compose.yml")|
 |Docker (optional)|19.03.11|
 |Docker Compose (optional)|1.17.1|
 
 ### certificate requirements
-HiTopBPF uses bitpay to obtain current USD->BTC exchange rate.  after [downloading](https://www.shellhacks.com/get-ssl-certificate-from-server-site-url-export-download/) bitpay [SSL certificate](https://bitpay.com/) (or using your preferred exchange-rate service), run command:
+HiTopCPF uses bitpay to obtain current USD->BTC/LTC exchange rate.  after [downloading](https://www.shellhacks.com/get-ssl-certificate-from-server-site-url-export-download/) bitpay [SSL certificate](https://bitpay.com/) (or using your preferred exchange-rate service), run command:
 
 ```
 $ keytool -import -trustcacerts -file </location/of/downloaded/security.cer> -alias <any_alias> -keystore </location/of/java/lib/security/cacerts>
@@ -51,15 +52,15 @@ or build and execute directly using command:
 $ mvn spring-boot:run
 ```
 
-webserver on localhost:8080 will start and both web-app & bitcoin testnet logs will echo to console.  
+webserver on localhost:8080 will start and both web-app & crypto-specific testnet logs will echo to console.  
 
 
-bitcoinj and spvchain files: 
+for exampke, bitcoinj and spvchain files: 
 
 ```
-monitor-service-testnet
-monitor-service-testnet.spvchain
-monitor-service-testnet.wallet
+bitcoin-monitor-service-testnet
+bitcoin-monitor-service-testnet.spvchain
+bitcoin-monitor-service-testnet.wallet
 ```
 
 will be created and once spvchain load is completed (which can take some time on slow connections), console will display the following:
@@ -70,9 +71,9 @@ End of sync detected.
 TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
 ```
 
-indicating application is ready for use (by default, on bitcoin testnet).  any bitcoin payment made (to payment page HD wallet address) will be registered on the bitcoin network then displayed both on server console and in browser window.
+indicating application is ready for use (by default, on their respective testnets).  any crypto payment made (to payment page HD wallet address) will be registered on the relevant crypto (BTC/LTC) network then displayed both on server console and in browser window.
 
-> note: a unique bitcoin address is generated for each QR code displayed on the payment page. each of these addresses is a child address of the parent HD wallet address, such that all payments are accumulated in the parent HD wallet.
+> note: a unique bitcoin/litecoin address is generated for each QR code displayed on the payment page. each of these addresses is a child address of the parent HD wallet address, such that all payments are accumulated in the parent HD wallet.
 
 ### eclipse/intellij developers
 
@@ -85,7 +86,7 @@ $ java -jar lib/lombok.jar
 and follow steps as indicated
 
 ### docker image build (optional)
-to build an HiTopBPF docker image, use command:
+to build an HiTopCPF docker image, use command:
 ```
 $ docker build  -t <image_name>:<tag_name> dir
 ```
@@ -95,7 +96,7 @@ $ docker build  -t <image_repo>/<image_name>:<tag_name> dir
 ```
 and can be customized via `Dockerfile` in project root directory
 ### docker-compose container deployment (optional)
-to deplay an HiTopBPF container (along with a separate mysql volume container for data storage), use command:
+to deplay an HiTopCPF container (along with a separate mysql volume container for data storage), use command:
 ```
 $ docker-compose up
 ```
@@ -106,14 +107,14 @@ environment variables can be configured via `docker-compose.yml` in project root
 - seeking those interested to help grow, improve framework in the usual/celebrated open source ASF/2.0 spirit.
 
 ### application use (development mode)
-once you've started HiTopBPF (either via `mvn spring-boot:run` or `docker-compose up`), open a web browser to `http://localhost:8080`
+once you've started HiTopCPF (either via `mvn spring-boot:run` or `docker-compose up`), open a web browser to `http://localhost:8080`
 
 ---
 
 ##### current functionality
-- as of this writing, HiTopBPF currently can complete a full bitcoin payment transaction on the bitcoin test network.  - configuration exists to run on bitcoin main network, but hasn't been run there (yet).
+- as of this writing, HiTopCPF currently can complete a full bitcoin/litecoin payment transaction on the bitcoin test network.  - configuration exists to run on bitcoin & litecoin main networks, but hasn't been run there (yet).
 - uses HD wallet with newly generated HD child address for each order
-- currently supports bitcoin, but API/interface exists for (any) crypto-currency extension.
+- currently supports bitcoin & litecoin, but API/interface exists for (any) crypto-currency extension.
 - website images and product name completely customizable via application.properties file
 ##### known limitations
 - for ease of user testing, all but two entity bean fields (name and btcaddress) have been commented out.  users can uncomment remaining fields and include them in controller logic & html/thymeleaf template as needed
