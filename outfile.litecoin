@@ -1,6 +1,0 @@
- [  restartedMain] com.hitop.AppConfig                      : litecoin wallet file com.hitop.service.litecoin.LitecoinWalletFile@4e6be573
- [nio-8080-exec-9] c.h.s.l.LitecoinTestNetworkParameters    : using LTC org.litecoin.test network.
- [nio-8080-exec-9] com.hitop.service.PurchaseOrderService   : order PurchaseOrder(id=1, name=444444, sendToAddress=tltc1q9ekh80j57rr8w74unkuxa8y5zxgkl5vznjwugc) saved to db.
- [nio-8080-exec-9] c.h.s.litecoin.LitecoinQRCodeService     : Send coins to: tltc1q9ekh80j57rr8w74unkuxa8y5zxgkl5vznjwugc 
- [nio-8080-exec-9] c.h.s.litecoin.LitecoinQRCodeService     : QR-Code URL: https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=litecoin:tltc1q9ekh80j57rr8w74unkuxa8y5zxgkl5vznjwugc?amount=0.00000264
- [nio-8080-exec-9] c.h.s.litecoin.LitecoinQRCodeService     : Waiting for coins to arrive. Press Ctrl-C to quit.
