@@ -34,7 +34,7 @@ public class BitcoinProdNetworkParameters implements BitcoinNetworkParameters {
   private final static Logger log = LoggerFactory.getLogger(BitcoinProdNetworkParameters.class);
   @Override
   public NetworkParameters getNetworkParameters() {
-    log.info("using LTC {} network.", MainNetParams.ID_MAINNET);
+    log.info("using BTC {} network.", MainNetParams.ID_MAINNET);
     return MainNetParams.get();
   }
 }
