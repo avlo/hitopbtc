@@ -1,4 +1,4 @@
-package com.hitop.entity;
+package com.hitop.service.bitcoin;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -17,35 +17,24 @@ package com.hitop.entity;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- */    
+ */
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.bitcoinj.core.NetworkParameters;
+import org.bitcoinj.params.TestNet3Params;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import lombok.Data;
 
-@Data
-@Entity
 @Component
-public class BalancePayment {
-  @Id
-  @GeneratedValue(strategy=GenerationType.AUTO)
-  private Long id;
-  
-  /**
-   * "from" represents the current wallet parent HD address.
-   * it exists because any subsequent app deployments will have 
-   * a new parent HD address pointing to same db, and we'd like to keep 
-   * track of all those parent HD addresses.
-   * 
-   * "from" is also also a way to check wallet balances on the
-   * blockchain, such that wallet owner can then use related private key 
-   * to move funds into an external wallet if desired
-   */
-  private String fromAddress;
-  private String toAddress;
-//  private Double startingBalance;
-//  private Double endingBalance;
+@Profile("test")
+@ConditionalOnExpression("${bitcoin.bean:false}")
+public class BitcoinTestNetworkParameters implements BitcoinNetworkParameters {
+  private final static Logger log = LoggerFactory.getLogger(BitcoinTestNetworkParameters.class);
+  @Override
+  public NetworkParameters getNetworkParameters() {
+    log.info("using BTC {} network.", TestNet3Params.ID_TESTNET);
+    return TestNet3Params.get();
+  }
 }

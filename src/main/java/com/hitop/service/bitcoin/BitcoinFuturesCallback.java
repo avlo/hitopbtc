@@ -17,30 +17,31 @@ package com.hitop.service.bitcoin;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- */    
+ */
 
-import org.bitcoinj.core.Transaction;
 import org.bitcoinj.core.TransactionConfidence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Component;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.MoreExecutors;
 
 @Component
-public class FuturesCallback {
-  private final static Logger log = LoggerFactory.getLogger(FuturesCallback.class);
+@ConditionalOnExpression("${bitcoin.bean:false}")
+public class BitcoinFuturesCallback {
+  private final static Logger log = LoggerFactory.getLogger(BitcoinFuturesCallback.class);
 
-  public void addCallback(final Transaction tx) {
-    log.info("entered FuturesCallback");
+  public void addCallback(final BitcoinTransactionWrapper tx) {
+    log.info("entered Bitcoin FuturesCallback");
     // Wait until it's made it into the block chain (may run immediately if it's already there).
     //
     // For this dummy app of course, we could just forward the unconfirmed transaction. If it were
     // to be double spent, no harm done. Wallet.allowSpendingUnconfirmedTransactions() would have to
     // be called in onSetupCompleted() above. But we don't do that here to demonstrate the more common
     // case of waiting for a block.
-    Futures.addCallback(tx.getConfidence().getDepthFuture(1), new FutureCallback<TransactionConfidence>() {
+    Futures.addCallback(tx.getDepthFuture(), new FutureCallback<TransactionConfidence>() {
       @Override
       public void onSuccess(final TransactionConfidence result) {
         // TODO 40 : this notification arrives ~5min after above "onCoinsReceived" event arrives.
@@ -48,7 +49,7 @@ public class FuturesCallback {
         final String crlf = System.getProperty("line.separator");
         final String val = crlf + 
             "*********************" + crlf +
-            "Confirmation received" + crlf +
+            "BTC Confirmation received" + crlf +
             "*********************"; 
         log.info(val);
         // send user email notification of first confirmation received

@@ -11,3 +11,9 @@ target/
 .factorypath
 .project
 .settings/
+.metadata/
+litecoin-monitor-service-testnet.spvchain
+litecoin-monitor-service-testnet.wallet
+bitcoin-monitor-service-testnet
+bitcoin-monitor-service-testnet.spvchain
+bitcoin-monitor-service-testnet.wallet

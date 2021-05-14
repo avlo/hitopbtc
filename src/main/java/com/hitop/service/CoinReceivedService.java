@@ -17,13 +17,8 @@ package com.hitop.service;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- */    
+ */
 
-import org.bitcoinj.core.Coin;
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.wallet.Wallet;
-import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
-
-public interface CoinReceivedService extends WalletCoinsReceivedEventListener {
-  void onCoinsReceived(Wallet wallet, Transaction tx, Coin prevBalance, Coin newBalance);
+public interface CoinReceivedService {
+  void onCoinsReceived();
 }

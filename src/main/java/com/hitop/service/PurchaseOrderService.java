@@ -17,7 +17,7 @@ package com.hitop.service;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- */    
+ */
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ import com.hitop.repository.PurchaseOrderRepository;
 
 @Service
 public class PurchaseOrderService {
-  Logger log = LoggerFactory.getLogger(PurchaseOrderService.class);
+  private final static Logger log = LoggerFactory.getLogger(PurchaseOrderService.class);
   
   private final PurchaseOrderRepository purchaseOrderRepository;
   

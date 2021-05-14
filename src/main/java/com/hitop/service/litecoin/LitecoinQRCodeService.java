@@ -1,4 +1,4 @@
-package com.hitop.service.bitcoin;
+package com.hitop.service.litecoin;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -31,30 +31,30 @@ import com.hitop.service.RateService;
 
 @Service
 @ConditionalOnProperty(
-    name = "spring.profiles.active", 
+    name = "spring.profiles.active",
     havingValue = "test")
-@ConditionalOnExpression("${bitcoin.bean:false}")
-public class BitcoinQRCodeService implements QRCodeService {
-  private final static Logger log = LoggerFactory.getLogger(BitcoinQRCodeService.class);
-  
-  private final RateService bitcoinRateService;
+@ConditionalOnExpression("${litecoin.bean:false}")
+public class LitecoinQRCodeService implements QRCodeService {
+  private final static Logger log = LoggerFactory.getLogger(LitecoinQRCodeService.class);
+
+  private final RateService litecoinRateService;
   private final String decimalPrecision;
   private final String qrUrl;
-  
+
   @Autowired
-  public BitcoinQRCodeService(
-      final RateService bitcoinRateService,
+  public LitecoinQRCodeService(
+      final RateService litecoinRateService,
       final @Value("${decimalprecision}") String decimalPrecision,
-      final @Value("${qrurl.bitcoin}") String qrUrl) {
-    
-    this.bitcoinRateService = bitcoinRateService;
+      final @Value("${qrurl.litecoin}") String qrUrl) {
+
+    this.litecoinRateService = litecoinRateService;
     this.decimalPrecision = decimalPrecision;
     this.qrUrl = qrUrl;
   }
   
   @Override
   public String getQRCodeUrl(final String sendToAddress) {
-    String btcValue = String.format(decimalPrecision, bitcoinRateService.getUsdtoBtc(bitcoinRateService.getBtcRate()));
+    String btcValue = String.format(decimalPrecision, litecoinRateService.getUsdtoBtc(litecoinRateService.getBtcRate()));
     String qrCodeUrl = String.format(qrUrl, sendToAddress, btcValue);
 
     log.info("Send coins to: {} ", sendToAddress);

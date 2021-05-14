@@ -1,4 +1,4 @@
-package com.hitop.service;
+package com.hitop.service.bitcoin;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -17,13 +17,12 @@ package com.hitop.service;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- */   
+ */
 
-import org.bitcoinj.core.InsufficientMoneyException;
-import com.hitop.entity.BalancePayment;
+import java.io.IOException;
+import org.bitcoinj.wallet.Wallet;
 
-public interface BalanceTransferService {
-  boolean sendBalanceTo(String address) throws InsufficientMoneyException;
-  BalancePayment save(BalancePayment order);
-  String getMinTxFee();
+public interface BWalletFile {
+  void saveToFile(Wallet wallet) throws IOException;
+  String getFilePrefix();
 }

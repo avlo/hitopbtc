@@ -19,42 +19,22 @@ package com.hitop.service.bitcoin;
  *  limitations under the License.
  */
 
-import java.io.File;
-import java.io.IOException;
-import org.bitcoinj.wallet.Wallet;
+import org.bitcoinj.core.NetworkParameters;
+import org.bitcoinj.params.MainNetParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConditionalOnProperty(
-    name = "spring.profiles.active", 
-    havingValue = "test")
+@Profile("prod")
 @ConditionalOnExpression("${bitcoin.bean:false}")
-public class BitcoinWalletFile implements BWalletFile {
-  private final static Logger log = LoggerFactory.getLogger(BitcoinWalletFile.class);
-
-  private final File file;
-
-  public BitcoinWalletFile(final @Value("${bitcoin.wallet.filename.prefix}") String filePrefix) {
-    this.file = new File(filePrefix);
-    log.info("wallet filename: {}", filePrefix);
-  }
-
+public class BitcoinProdNetworkParameters implements BitcoinNetworkParameters {
+  private final static Logger log = LoggerFactory.getLogger(BitcoinProdNetworkParameters.class);
   @Override
-  public void saveToFile(final Wallet wallet) throws IOException {
-    // Runs in the dedicated "user thread" (see bitcoinj docs for more info on this).
-    // The transaction "tx" can either be pending, or included into a block (we didn't see the broadcast).
-    log.info("saving file {}...", file.toString());
-    wallet.saveToFile(file);
-    log.info("{} saved.", file.toString());
-  }
-
-  @Override
-  public String getFilePrefix() {
-    return this.file.getName();
+  public NetworkParameters getNetworkParameters() {
+    log.info("using BTC {} network.", MainNetParams.ID_MAINNET);
+    return MainNetParams.get();
   }
 }

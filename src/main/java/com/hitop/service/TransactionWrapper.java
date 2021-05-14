@@ -1,4 +1,4 @@
-package com.hitop.repository;
+package com.hitop.service;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -17,14 +17,8 @@ package com.hitop.repository;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- */    
+ */
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import com.hitop.entity.BalancePayment;
-
-public interface BalancePaymentRepository extends JpaRepository<BalancePayment, Integer> {
-//  List<BalancePayment> findByFrom(String address);
-//  List<BalancePayment> findByTo(String address);
-//  Double getStartingBalance();
-//  Double getEndingBalance();
+public interface TransactionWrapper {
+  String getTxReceiveAddress();
 }

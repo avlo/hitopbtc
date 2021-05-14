@@ -1,4 +1,4 @@
-package com.hitop.service.bitcoin;
+package com.hitop.service.litecoin;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -21,7 +21,7 @@ package com.hitop.service.bitcoin;
 
 import java.io.File;
 import java.io.IOException;
-import org.bitcoinj.wallet.Wallet;
+import org.litecoinj.wallet.Wallet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,22 +31,22 @@ import org.springframework.stereotype.Component;
 
 @Component
 @ConditionalOnProperty(
-    name = "spring.profiles.active", 
+    name = "spring.profiles.active",
     havingValue = "test")
-@ConditionalOnExpression("${bitcoin.bean:false}")
-public class BitcoinWalletFile implements BWalletFile {
-  private final static Logger log = LoggerFactory.getLogger(BitcoinWalletFile.class);
+@ConditionalOnExpression("${litecoin.bean:false}")
+public class LitecoinWalletFile implements LWalletFile {
+  private final static Logger log = LoggerFactory.getLogger(LitecoinWalletFile.class);
 
   private final File file;
 
-  public BitcoinWalletFile(final @Value("${bitcoin.wallet.filename.prefix}") String filePrefix) {
+  public LitecoinWalletFile(final @Value("${litecoin.wallet.filename.prefix}") String filePrefix) {
     this.file = new File(filePrefix);
     log.info("wallet filename: {}", filePrefix);
   }
 
   @Override
   public void saveToFile(final Wallet wallet) throws IOException {
-    // Runs in the dedicated "user thread" (see bitcoinj docs for more info on this).
+    // Runs in the dedicated "user thread" (see litecoinj docs for more info on this).
     // The transaction "tx" can either be pending, or included into a block (we didn't see the broadcast).
     log.info("saving file {}...", file.toString());
     wallet.saveToFile(file);

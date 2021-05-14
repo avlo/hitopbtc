@@ -1,4 +1,4 @@
-package com.hitop.service.bitcoin;
+package com.hitop.service.litecoin;
 
 /*
  *  Copyright 2020 Nick Avlonitis
@@ -20,46 +20,44 @@ package com.hitop.service.bitcoin;
  */
 
 import javax.annotation.PostConstruct;
-
-import org.bitcoinj.core.LegacyAddress;
-import org.bitcoinj.kits.WalletAppKit;
+import org.litecoinj.core.SegwitAddress;
+import org.litecoinj.kits.WalletAppKit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
-
 import com.hitop.service.TransactionWrapper;
 import com.hitop.service.WalletService;
 
 @Service
 @ConditionalOnProperty(
-    name = "spring.profiles.active", 
+    name = "spring.profiles.active",
     havingValue = "test")
-@ConditionalOnExpression("${bitcoin.bean:false}")
-public class BitcoinWalletService implements WalletService {
-  private final static Logger log = LoggerFactory.getLogger(BitcoinWalletService.class);
+@ConditionalOnExpression("${litecoin.bean:false}")
+public class LitecoinWalletService implements WalletService {
+  private final static Logger log = LoggerFactory.getLogger(LitecoinWalletService.class);
 
-  private final WalletAppKit bitcoinWalletAppKit;
-  private final BitcoinNetworkParameters bitcoinNetworkParameters;
-  private final BitcoinReceivedService bitcoinReceivedService;
+  private final WalletAppKit litecoinWalletAppKit;
+  private final LitecoinNetworkParameters litecoinNetworkParameters;
+  private final LitecoinReceivedService litecoinReceivedService;
 
   @Autowired
-  public BitcoinWalletService(
-      final BitcoinNetworkParameters bitcoinNetworkParameters,
-      final WalletAppKit bitcoinWalletAppKit,
-      final BitcoinReceivedService bitcoinReceivedService) throws Exception {
-    log.debug("BitcoinWalletService ctor()");
-    this.bitcoinNetworkParameters = bitcoinNetworkParameters;
-    this.bitcoinWalletAppKit = bitcoinWalletAppKit;
-    this.bitcoinReceivedService = bitcoinReceivedService;
+  public LitecoinWalletService(
+      final LitecoinNetworkParameters litecoinNetworkParameters,
+      final WalletAppKit litecoinWalletAppKit,
+      final LitecoinReceivedService litecoinReceivedService) throws Exception {
+    log.debug("LitecoinWalletService ctor()");
+    this.litecoinNetworkParameters = litecoinNetworkParameters;
+    this.litecoinWalletAppKit = litecoinWalletAppKit;
+    this.litecoinReceivedService = litecoinReceivedService;
   }
 
   @PostConstruct
   private void postConstruct() {
     log.debug("postConstruct()");
-    this.bitcoinWalletAppKit.wallet().addCoinsReceivedEventListener(bitcoinReceivedService);
+    this.litecoinWalletAppKit.wallet().addCoinsReceivedEventListener(litecoinReceivedService);
   }
 
   @Override
@@ -69,6 +67,6 @@ public class BitcoinWalletService implements WalletService {
 
   @Override
   public String getFreshSendToAddress() {
-    return bitcoinWalletAppKit.wallet().freshReceiveAddress().toString();
+    return litecoinWalletAppKit.wallet().freshReceiveAddress().toString();
   }
 }
