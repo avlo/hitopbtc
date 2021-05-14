@@ -20,7 +20,6 @@ package com.hitop.service.litecoin;
  */
 
 import javax.annotation.PostConstruct;
-import org.litecoinj.core.SegwitAddress;
 import org.litecoinj.kits.WalletAppKit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,16 +39,13 @@ public class LitecoinWalletService implements WalletService {
   private final static Logger log = LoggerFactory.getLogger(LitecoinWalletService.class);
 
   private final WalletAppKit litecoinWalletAppKit;
-  private final LitecoinNetworkParameters litecoinNetworkParameters;
   private final LitecoinReceivedService litecoinReceivedService;
 
   @Autowired
   public LitecoinWalletService(
-      final LitecoinNetworkParameters litecoinNetworkParameters,
       final WalletAppKit litecoinWalletAppKit,
       final LitecoinReceivedService litecoinReceivedService) throws Exception {
     log.debug("LitecoinWalletService ctor()");
-    this.litecoinNetworkParameters = litecoinNetworkParameters;
     this.litecoinWalletAppKit = litecoinWalletAppKit;
     this.litecoinReceivedService = litecoinReceivedService;
   }

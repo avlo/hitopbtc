@@ -20,8 +20,6 @@ package com.hitop.service.bitcoin;
  */
 
 import javax.annotation.PostConstruct;
-
-import org.bitcoinj.core.LegacyAddress;
 import org.bitcoinj.kits.WalletAppKit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
-
 import com.hitop.service.TransactionWrapper;
 import com.hitop.service.WalletService;
 
@@ -42,16 +39,13 @@ public class BitcoinWalletService implements WalletService {
   private final static Logger log = LoggerFactory.getLogger(BitcoinWalletService.class);
 
   private final WalletAppKit bitcoinWalletAppKit;
-  private final BitcoinNetworkParameters bitcoinNetworkParameters;
   private final BitcoinReceivedService bitcoinReceivedService;
 
   @Autowired
   public BitcoinWalletService(
-      final BitcoinNetworkParameters bitcoinNetworkParameters,
       final WalletAppKit bitcoinWalletAppKit,
       final BitcoinReceivedService bitcoinReceivedService) throws Exception {
     log.debug("BitcoinWalletService ctor()");
-    this.bitcoinNetworkParameters = bitcoinNetworkParameters;
     this.bitcoinWalletAppKit = bitcoinWalletAppKit;
     this.bitcoinReceivedService = bitcoinReceivedService;
   }
