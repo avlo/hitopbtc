@@ -23,11 +23,12 @@ import java.io.File;
 import org.bitcoinj.core.BlockChain;
 import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.core.PeerGroup;
+import org.bitcoinj.core.listeners.DownloadProgressTracker;
 import org.bitcoinj.crypto.ChildNumber;
 import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.crypto.HDKeyDerivation;
+import org.bitcoinj.net.discovery.DnsDiscovery;
 import org.bitcoinj.script.Script;
-import org.bitcoinj.store.BlockStore;
 import org.bitcoinj.store.BlockStoreException;
 import org.bitcoinj.store.SPVBlockStore;
 import org.bitcoinj.wallet.Wallet;
@@ -86,7 +87,7 @@ public class AppConfig {
   public org.bitcoinj.wallet.Wallet bitcoinWallet(
       final @Value("${bitcoin.wallet.xpub}") String pub,
       final BitcoinNetworkParameters params,
-      final BWalletFile walletFile) throws BlockStoreException {
+      final BWalletFile walletFile) throws BlockStoreException, InterruptedException {
 
     log.info("bitcoin wallet (no app kit) file {}", walletFile.toString());
     
@@ -96,9 +97,7 @@ public class AppConfig {
     log.info(params.toString());
     log.info("-----------");
     log.info(walletFile.getFilePrefix());
-    log.info("***********");
-    log.info("BITCOIN WALLET (NO APP KIT)");
-    log.info("***********");
+    log.info("-----------");
     
     // log output more compact and easily read, especially when using the JDK log adapter.
     org.bitcoinj.utils.BriefLogFormatter.init();
@@ -109,12 +108,30 @@ public class AppConfig {
     DeterministicKey key = HDKeyDerivation.deriveChildKey(keyChainSeed, new ChildNumber(0, false));
     Wallet wallet = Wallet.fromWatchingKey(networkParameters, key, Script.ScriptType.P2PKH);
 
-    BlockStore blockStore = new SPVBlockStore(networkParameters, walletFile.getFile());
-    BlockChain chain = new BlockChain(networkParameters, wallet, blockStore);
+    // Setting up the BlochChain, the BlocksStore and connecting to the network.
+    SPVBlockStore chainStore = new SPVBlockStore(networkParameters, walletFile.getFile());
+    BlockChain chain = new BlockChain(networkParameters, chainStore);
     PeerGroup peerGroup = new PeerGroup(networkParameters, chain);
+    peerGroup.addPeerDiscovery(new DnsDiscovery(networkParameters));
+
+    // Now we need to hook the wallet up to the blockchain and the peers. This registers event listeners that notify our wallet about new transactions.
+    chain.addWallet(wallet);
     peerGroup.addWallet(wallet);
-    
-    peerGroup.startAsync();
+
+    DownloadProgressTracker bListener = new DownloadProgressTracker() {
+        @Override
+        public void doneDownload() {
+          log.info("@@@@@@@@@@@@@@@@@@@@@");
+          log.info("blockchain downloaded");
+          log.info("@@@@@@@@@@@@@@@@@@@@@");
+        }
+    };
+
+    // Now we re-download the blockchain. This replays the chain into the wallet. Once this is completed our wallet should know of all its transactions and print the correct balance.
+    peerGroup.start();
+    peerGroup.startBlockChainDownload(bListener);
+
+    bListener.await();
 
     return wallet;
   }
