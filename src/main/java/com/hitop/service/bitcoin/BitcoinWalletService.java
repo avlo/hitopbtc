@@ -20,16 +20,13 @@ package com.hitop.service.bitcoin;
  */
 
 import javax.annotation.PostConstruct;
-
-import org.bitcoinj.core.LegacyAddress;
-import org.bitcoinj.kits.WalletAppKit;
+import org.bitcoinj.wallet.Wallet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
-
 import com.hitop.service.TransactionWrapper;
 import com.hitop.service.WalletService;
 
@@ -41,25 +38,22 @@ import com.hitop.service.WalletService;
 public class BitcoinWalletService implements WalletService {
   private final static Logger log = LoggerFactory.getLogger(BitcoinWalletService.class);
 
-  private final WalletAppKit bitcoinWalletAppKit;
-  private final BitcoinNetworkParameters bitcoinNetworkParameters;
+  private final Wallet bitcoinWallet;
   private final BitcoinReceivedService bitcoinReceivedService;
 
   @Autowired
   public BitcoinWalletService(
-      final BitcoinNetworkParameters bitcoinNetworkParameters,
-      final WalletAppKit bitcoinWalletAppKit,
+      final Wallet bitcoinWallet,
       final BitcoinReceivedService bitcoinReceivedService) throws Exception {
     log.debug("BitcoinWalletService ctor()");
-    this.bitcoinNetworkParameters = bitcoinNetworkParameters;
-    this.bitcoinWalletAppKit = bitcoinWalletAppKit;
+    this.bitcoinWallet = bitcoinWallet;
     this.bitcoinReceivedService = bitcoinReceivedService;
   }
 
   @PostConstruct
   private void postConstruct() {
     log.debug("postConstruct()");
-    this.bitcoinWalletAppKit.wallet().addCoinsReceivedEventListener(bitcoinReceivedService);
+    this.bitcoinWallet.addCoinsReceivedEventListener(bitcoinReceivedService);
   }
 
   @Override
@@ -69,6 +63,6 @@ public class BitcoinWalletService implements WalletService {
 
   @Override
   public String getFreshSendToAddress() {
-    return bitcoinWalletAppKit.wallet().freshReceiveAddress().toString();
+    return bitcoinWallet.freshReceiveAddress().toString();
   }
 }

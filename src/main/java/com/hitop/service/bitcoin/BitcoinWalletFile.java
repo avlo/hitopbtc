@@ -57,4 +57,9 @@ public class BitcoinWalletFile implements BWalletFile {
   public String getFilePrefix() {
     return this.file.getName();
   }
+  
+  @Override
+  public File getFile() {
+    return this.file;
+  }
 }

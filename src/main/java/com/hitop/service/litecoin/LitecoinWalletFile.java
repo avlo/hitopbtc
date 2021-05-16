@@ -57,4 +57,9 @@ public class LitecoinWalletFile implements LWalletFile {
   public String getFilePrefix() {
     return this.file.getName();
   }
+  
+  @Override
+  public File getFile() {
+    return this.file;
+  }
 }

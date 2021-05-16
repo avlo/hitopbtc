@@ -19,10 +19,12 @@ package com.hitop.service.litecoin;
  *  limitations under the License.
  */
 
+import java.io.File;
 import java.io.IOException;
 import org.litecoinj.wallet.Wallet;
 
 public interface LWalletFile {
   void saveToFile(Wallet wallet) throws IOException;
   String getFilePrefix();
+  File getFile();
 }

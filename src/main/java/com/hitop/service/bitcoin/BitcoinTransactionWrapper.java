@@ -22,7 +22,7 @@ package com.hitop.service.bitcoin;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.core.TransactionConfidence;
 import org.bitcoinj.core.TransactionOutput;
-import org.bitcoinj.kits.WalletAppKit;
+import org.bitcoinj.wallet.Wallet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,15 +41,15 @@ public class BitcoinTransactionWrapper implements TransactionWrapper {
   private final static Logger log = LoggerFactory.getLogger(BitcoinTransactionWrapper.class);
 
   private Transaction transaction;
-  private final WalletAppKit bitcoinWalletAppKit;
+  private final Wallet bitcoinWallet;
   private final BitcoinNetworkParameters bitcoinNetworkParameters;
 
   @Autowired
   public BitcoinTransactionWrapper(
       final BitcoinNetworkParameters bitcoinNetworkParameters,
-      final WalletAppKit bitcoinWalletAppKit) {
+      final Wallet bitcoinWallet) {
     this.bitcoinNetworkParameters = bitcoinNetworkParameters;
-    this.bitcoinWalletAppKit = bitcoinWalletAppKit;
+    this.bitcoinWallet = bitcoinWallet;
   }
 
   public void setTransaction(final Transaction transaction) {
@@ -64,7 +64,7 @@ public class BitcoinTransactionWrapper implements TransactionWrapper {
   public String getTxReceiveAddress() {
     // TODO: replace for/if with functional functionalIF / lambda
     for(TransactionOutput txo : transaction.getOutputs()){
-      if (txo.isMine(bitcoinWalletAppKit.wallet())) {
+      if (txo.isMine(bitcoinWallet)) {
         String walletTxo = txo.getScriptPubKey().getToAddress(bitcoinNetworkParameters.getNetworkParameters(), true).toString();
         log.info("wallet txo: {}", walletTxo);
         return walletTxo;
