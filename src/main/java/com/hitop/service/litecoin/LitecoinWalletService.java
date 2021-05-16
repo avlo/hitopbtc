@@ -20,7 +20,7 @@ package com.hitop.service.litecoin;
  */
 
 import javax.annotation.PostConstruct;
-import org.litecoinj.kits.WalletAppKit;
+import org.litecoinj.wallet.Wallet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,22 +38,22 @@ import com.hitop.service.WalletService;
 public class LitecoinWalletService implements WalletService {
   private final static Logger log = LoggerFactory.getLogger(LitecoinWalletService.class);
 
-  private final WalletAppKit litecoinWalletAppKit;
+  private final Wallet litecoinWallet;
   private final LitecoinReceivedService litecoinReceivedService;
 
   @Autowired
   public LitecoinWalletService(
-      final WalletAppKit litecoinWalletAppKit,
+      final Wallet litecoinWallet,
       final LitecoinReceivedService litecoinReceivedService) throws Exception {
     log.debug("LitecoinWalletService ctor()");
-    this.litecoinWalletAppKit = litecoinWalletAppKit;
+    this.litecoinWallet = litecoinWallet;
     this.litecoinReceivedService = litecoinReceivedService;
   }
 
   @PostConstruct
   private void postConstruct() {
     log.debug("postConstruct()");
-    this.litecoinWalletAppKit.wallet().addCoinsReceivedEventListener(litecoinReceivedService);
+    this.litecoinWallet.addCoinsReceivedEventListener(litecoinReceivedService);
   }
 
   @Override
@@ -63,6 +63,6 @@ public class LitecoinWalletService implements WalletService {
 
   @Override
   public String getFreshSendToAddress() {
-    return litecoinWalletAppKit.wallet().freshReceiveAddress().toString();
+    return litecoinWallet.freshReceiveAddress().toString();
   }
 }

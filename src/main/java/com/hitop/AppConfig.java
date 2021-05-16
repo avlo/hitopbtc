@@ -20,18 +20,6 @@ package com.hitop;
  */    
 
 import java.io.File;
-import org.bitcoinj.core.BlockChain;
-import org.bitcoinj.core.NetworkParameters;
-import org.bitcoinj.core.PeerGroup;
-import org.bitcoinj.core.listeners.DownloadProgressTracker;
-import org.bitcoinj.crypto.ChildNumber;
-import org.bitcoinj.crypto.DeterministicKey;
-import org.bitcoinj.crypto.HDKeyDerivation;
-import org.bitcoinj.net.discovery.DnsDiscovery;
-import org.bitcoinj.script.Script;
-import org.bitcoinj.store.BlockStoreException;
-import org.bitcoinj.store.SPVBlockStore;
-import org.bitcoinj.wallet.Wallet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -87,7 +75,7 @@ public class AppConfig {
   public org.bitcoinj.wallet.Wallet bitcoinWallet(
       final @Value("${bitcoin.wallet.xpub}") String pub,
       final BitcoinNetworkParameters params,
-      final BWalletFile walletFile) throws BlockStoreException, InterruptedException {
+      final BWalletFile walletFile) throws org.bitcoinj.store.BlockStoreException, InterruptedException {
 
     log.info("bitcoin wallet (no app kit) file {}", walletFile.toString());
     
@@ -102,23 +90,79 @@ public class AppConfig {
     // log output more compact and easily read, especially when using the JDK log adapter.
     org.bitcoinj.utils.BriefLogFormatter.init();
     
-    NetworkParameters networkParameters = params.getNetworkParameters();
+    org.bitcoinj.core.NetworkParameters networkParameters = params.getNetworkParameters();
     
-    DeterministicKey keyChainSeed =  DeterministicKey.deserializeB58(null, pub, networkParameters);
-    DeterministicKey key = HDKeyDerivation.deriveChildKey(keyChainSeed, new ChildNumber(0, false));
-    Wallet wallet = Wallet.fromWatchingKey(networkParameters, key, Script.ScriptType.P2PKH);
+    org.bitcoinj.crypto.DeterministicKey keyChainSeed =  org.bitcoinj.crypto.DeterministicKey.deserializeB58(null, pub, networkParameters);
+    org.bitcoinj.crypto.DeterministicKey key = org.bitcoinj.crypto.HDKeyDerivation.deriveChildKey(keyChainSeed, new org.bitcoinj.crypto.ChildNumber(0, false));
+    org.bitcoinj.wallet.Wallet wallet = org.bitcoinj.wallet.Wallet.fromWatchingKey(networkParameters, key, org.bitcoinj.script.Script.ScriptType.P2PKH);
 
     // Setting up the BlochChain, the BlocksStore and connecting to the network.
-    SPVBlockStore chainStore = new SPVBlockStore(networkParameters, walletFile.getFile());
-    BlockChain chain = new BlockChain(networkParameters, chainStore);
-    PeerGroup peerGroup = new PeerGroup(networkParameters, chain);
-    peerGroup.addPeerDiscovery(new DnsDiscovery(networkParameters));
+    org.bitcoinj.store.SPVBlockStore chainStore = new org.bitcoinj.store.SPVBlockStore(networkParameters, walletFile.getFile());
+    org.bitcoinj.core.BlockChain chain = new org.bitcoinj.core.BlockChain(networkParameters, chainStore);
+    org.bitcoinj.core.PeerGroup peerGroup = new org.bitcoinj.core.PeerGroup(networkParameters, chain);
+    peerGroup.addPeerDiscovery(new org.bitcoinj.net.discovery.DnsDiscovery(networkParameters));
 
     // Now we need to hook the wallet up to the blockchain and the peers. This registers event listeners that notify our wallet about new transactions.
     chain.addWallet(wallet);
     peerGroup.addWallet(wallet);
 
-    DownloadProgressTracker bListener = new DownloadProgressTracker() {
+    org.bitcoinj.core.listeners.DownloadProgressTracker bListener = new org.bitcoinj.core.listeners.DownloadProgressTracker() {
+        @Override
+        public void doneDownload() {
+          log.info("@@@@@@@@@@@@@@@@@@@@@");
+          log.info("blockchain downloaded");
+          log.info("@@@@@@@@@@@@@@@@@@@@@");
+        }
+    };
+
+    // Now we re-download the blockchain. This replays the chain into the wallet. Once this is completed our wallet should know of all its transactions and print the correct balance.
+    peerGroup.start();
+    peerGroup.startBlockChainDownload(bListener);
+
+    bListener.await();
+
+    return wallet;
+  }
+  
+  @Bean
+  @ConditionalOnExpression("${litecoin.bean:false}")
+  public org.litecoinj.wallet.Wallet litecoinWallet(
+      final @Value("${litecoin.wallet.xpub}") String pub,
+      final LitecoinNetworkParameters params,
+      final LWalletFile walletFile) throws org.litecoinj.store.BlockStoreException, InterruptedException {
+
+    log.info("litecoin wallet (no app kit) file {}", walletFile.toString());
+    
+    log.info("***********");
+    log.info("LITECOIN WALLET (NO APP KIT)");
+    log.info("***********");
+    log.info("xpub: {}", pub);
+    log.info("-----------");
+    log.info("network: {}", params.toString());
+    log.info("-----------");
+    log.info("wallet file prefix: {}", walletFile.getFilePrefix());
+    log.info("-----------");
+    
+    // log output more compact and easily read, especially when using the JDK log adapter.
+    org.litecoinj.utils.BriefLogFormatter.init();
+    
+    org.litecoinj.core.NetworkParameters networkParameters = params.getNetworkParameters();
+    
+    org.litecoinj.crypto.DeterministicKey keyXpub =  org.litecoinj.crypto.DeterministicKey.deserializeB58(null, pub, networkParameters);
+//    org.litecoinj.crypto.DeterministicKey key = org.litecoinj.crypto.HDKeyDerivation.deriveChildKey(keyChainSeed, new org.litecoinj.crypto.ChildNumber(0, false));
+    org.litecoinj.wallet.Wallet wallet = org.litecoinj.wallet.Wallet.fromWatchingKey(networkParameters, keyXpub, org.litecoinj.script.Script.ScriptType.P2PKH);
+
+    // Setting up the BlochChain, the BlocksStore and connecting to the network.
+    org.litecoinj.store.SPVBlockStore chainStore = new org.litecoinj.store.SPVBlockStore(networkParameters, walletFile.getFile());
+    org.litecoinj.core.BlockChain chain = new org.litecoinj.core.BlockChain(networkParameters, chainStore);
+    org.litecoinj.core.PeerGroup peerGroup = new org.litecoinj.core.PeerGroup(networkParameters, chain);
+    peerGroup.addPeerDiscovery(new org.litecoinj.net.discovery.DnsDiscovery(networkParameters));
+
+    // Now we need to hook the wallet up to the blockchain and the peers. This registers event listeners that notify our wallet about new transactions.
+    chain.addWallet(wallet);
+    peerGroup.addWallet(wallet);
+
+    org.litecoinj.core.listeners.DownloadProgressTracker bListener = new org.litecoinj.core.listeners.DownloadProgressTracker() {
         @Override
         public void doneDownload() {
           log.info("@@@@@@@@@@@@@@@@@@@@@");

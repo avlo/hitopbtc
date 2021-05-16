@@ -22,7 +22,7 @@ package com.hitop.service.litecoin;
 import org.litecoinj.core.Transaction;
 import org.litecoinj.core.TransactionConfidence;
 import org.litecoinj.core.TransactionOutput;
-import org.litecoinj.kits.WalletAppKit;
+import org.litecoinj.wallet.Wallet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,15 +41,15 @@ public class LitecoinTransactionWrapper implements TransactionWrapper {
   private final static Logger log = LoggerFactory.getLogger(LitecoinTransactionWrapper.class);
 
   private Transaction transaction;
-  private final WalletAppKit litecoinWalletAppKit;
+  private final Wallet litecoinWallet;
   private final LitecoinNetworkParameters litecoinNetworkParameters;
 
   @Autowired
   public LitecoinTransactionWrapper(
       final LitecoinNetworkParameters litecoinNetworkParameters,
-      final WalletAppKit litecoinWalletAppKit) {
+      final Wallet litecoinWallet) {
     this.litecoinNetworkParameters = litecoinNetworkParameters;
-    this.litecoinWalletAppKit = litecoinWalletAppKit;
+    this.litecoinWallet = litecoinWallet;
   }
 
   public void setTransaction(final Transaction transaction) {
@@ -64,7 +64,7 @@ public class LitecoinTransactionWrapper implements TransactionWrapper {
   public String getTxReceiveAddress() {
     // TODO: replace for/if with functional functionalIF / lambda
     for(TransactionOutput txo : transaction.getOutputs()){
-      if (txo.isMine(litecoinWalletAppKit.wallet())) {
+      if (txo.isMine(litecoinWallet)) {
         String walletTxo = txo.getScriptPubKey().getToAddress(litecoinNetworkParameters.getNetworkParameters(), true).toString();
         log.info("wallet txo: {}", walletTxo);
         return walletTxo;
