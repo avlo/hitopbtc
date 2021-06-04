@@ -20,6 +20,12 @@ package com.hitop;
  */    
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.bitcoinj.core.CheckpointManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -75,7 +81,7 @@ public class AppConfig {
   public org.bitcoinj.wallet.Wallet bitcoinWallet(
       final @Value("${bitcoin.wallet.xpub}") String pub,
       final BitcoinNetworkParameters params,
-      final BWalletFile walletFile) throws org.bitcoinj.store.BlockStoreException, InterruptedException {
+      final BWalletFile walletFile) throws org.bitcoinj.store.BlockStoreException, InterruptedException, IOException {
 
     log.info("bitcoin wallet (no app kit) file {}", walletFile.toString());
     
@@ -92,12 +98,21 @@ public class AppConfig {
     
     org.bitcoinj.core.NetworkParameters networkParameters = params.getNetworkParameters();
     
-    org.bitcoinj.crypto.DeterministicKey keyChainSeed =  org.bitcoinj.crypto.DeterministicKey.deserializeB58(null, pub, networkParameters);
-    org.bitcoinj.crypto.DeterministicKey key = org.bitcoinj.crypto.HDKeyDerivation.deriveChildKey(keyChainSeed, new org.bitcoinj.crypto.ChildNumber(0, false));
-    org.bitcoinj.wallet.Wallet wallet = org.bitcoinj.wallet.Wallet.fromWatchingKey(networkParameters, key, org.bitcoinj.script.Script.ScriptType.P2PKH);
+    org.bitcoinj.crypto.DeterministicKey keyXpub =  org.bitcoinj.crypto.DeterministicKey.deserializeB58(null, pub, networkParameters);
+//    org.bitcoinj.crypto.DeterministicKey key = org.bitcoinj.crypto.HDKeyDerivation.deriveChildKey(keyChainSeed, new org.bitcoinj.crypto.ChildNumber(0, false));
+    org.bitcoinj.wallet.Wallet wallet = org.bitcoinj.wallet.Wallet.fromWatchingKey(networkParameters, keyXpub, org.bitcoinj.script.Script.ScriptType.P2PKH);
 
     // Setting up the BlochChain, the BlocksStore and connecting to the network.
-    org.bitcoinj.store.SPVBlockStore chainStore = new org.bitcoinj.store.SPVBlockStore(networkParameters, walletFile.getFile());
+    org.bitcoinj.store.SPVBlockStore chainStore = 
+    		new org.bitcoinj.store.SPVBlockStore(networkParameters, walletFile.getFile());
+
+    org.bitcoinj.core.CheckpointManager.checkpoint(
+    		networkParameters, 
+    		new FileInputStream(
+    				 new File("/home/nick/git/hitopbtc/src/main/resources/checkpoints-testnet.txt")), 
+    		chainStore,
+    		1622688850L);
+    
     org.bitcoinj.core.BlockChain chain = new org.bitcoinj.core.BlockChain(networkParameters, chainStore);
     org.bitcoinj.core.PeerGroup peerGroup = new org.bitcoinj.core.PeerGroup(networkParameters, chain);
     peerGroup.addPeerDiscovery(new org.bitcoinj.net.discovery.DnsDiscovery(networkParameters));
@@ -110,7 +125,7 @@ public class AppConfig {
         @Override
         public void doneDownload() {
           log.info("@@@@@@@@@@@@@@@@@@@@@");
-          log.info("blockchain downloaded");
+          log.info("BTC blockchain downloaded");
           log.info("@@@@@@@@@@@@@@@@@@@@@");
         }
     };
@@ -166,7 +181,7 @@ public class AppConfig {
         @Override
         public void doneDownload() {
           log.info("@@@@@@@@@@@@@@@@@@@@@");
-          log.info("blockchain downloaded");
+          log.info("LTC blockchain downloaded");
           log.info("@@@@@@@@@@@@@@@@@@@@@");
         }
     };

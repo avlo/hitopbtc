@@ -1,0 +1,13 @@
+- test persistent DB using litecoin w app kit
+- slow blockchain load times / SPV file size (costs user $ for hard drive space) / BuildCheckpoints shipped with app shortens synch/download time - and/or - need to make sure ctrl-c quitting shuts down properly so next mvn run:start doesn't throw execptions.  
+  -- BTC HD not working, restart still throws exceptions.  try litecoin
+    ---- confirm full blockchain load w/ HD wallet works
+    ------ use local wallet
+    ---- confirm chainmanaged blockchain load w/ HD wallet works
+- "blockchain synced" email/sms
+- multiple simul currencies
+- iota
+- more than 1 item purchase
+- large log files (set logfile size limit)
+- lightning network
+- ethereum
